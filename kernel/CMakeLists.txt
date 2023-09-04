@@ -10,5 +10,5 @@ target_include_directories(kernel
 )
 
 # Add a dependency on the bootloader target
-add_dependencies(kernel bootloader)
+add_dependencies(kernel /home/levent/Projects/ArtilleryOs/kernel/arch/x64/bootloader)
 
