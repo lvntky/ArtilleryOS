@@ -1,14 +1,13 @@
-# Kernel CMakeLists.txt (artilleryos/kernel/CMakeLists.txt)
+# kernel/CMakeLists.txt
 
-add_library(kernel OBJECT
-    src/kernel.c
-    # Add other source files if any
+add_executable(kernel
+        src/kernel.c
+        # Add other source files if any
 )
 
 target_include_directories(kernel
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+        PUBLIC ${CMAKE_SOURCE_DIR}/kernel/include
 )
 
-# Add a dependency on the bootloader target
-add_dependencies(kernel /home/levent/Projects/ArtilleryOs/kernel/arch/x64/bootloader)
-
+# Set the output binary name
+set_target_properties(kernel PROPERTIES OUTPUT_NAME "kernel.bin")
