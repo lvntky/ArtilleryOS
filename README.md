@@ -48,7 +48,7 @@ We welcome contributions from the community to improve and expand ArtilleryOS. T
 ## License
 
 <a href="https://opensource.org/licenses/MIT">
-  <img align="right" height="96" alt="MIT License" src="meta/shared/mit-license.png" />
+  <img align="right" height="96" alt="MIT License" src="/docs/mit.jpg" />
 </a>
 
 The Artillery OS and its core components are licensed under the **MIT License**.
