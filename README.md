@@ -1,4 +1,5 @@
 # ArtilleryOS 
+![Discord](https://img.shields.io/discord/1148155381290369074?logo=Discord&label=Discord)
 
 ![ArtilleryOS Logo](/docs/logo.png)
 
