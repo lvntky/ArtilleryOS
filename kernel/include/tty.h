@@ -11,8 +11,10 @@
 #define TERMINAL_MESSAGE "Artillery OS v0.1.0 ~ WELCOME !"
 
 void terminal_init(void);
-uint16_t terminal_putchar(char c, enum VGA_COLOR color);
-void terminal_write(char *c, char color);
-int strlen(char *str);
+uint16_t terminal_makechar(char c, enum VGA_COLOR color);
+void terminal_putchar(int x, int y, char c, enum VGA_COLOR color);
+void terminal_write(char c, char color);
+void terminal_print(char *str, char color);
+size_t strlen(char *str);
 
 #endif

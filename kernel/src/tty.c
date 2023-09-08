@@ -1,35 +1,60 @@
 #include "./tty.h"
 #include "./vga_color.h"
 
-uint16_t *vid_mem = (uint16_t *)(VIDEO_MEM_ADDRESS);
+uint16_t *vid_mem = 0;
+uint16_t terminal_column = 0; // x
+uint16_t terminal_row = 0; // y
 
-void terminal_init(void)
-{
-	size_t vga_area = VGA_WIDTH * VGA_HEIGHT;
-	for (size_t i = 0; i < vga_area; i++) {
-		vid_mem[i] = terminal_putchar('.', VGA_COLOR_BLACK);
-	}
-	terminal_write(TERMINAL_MESSAGE, VGA_COLOR_BRIGHT_WHITE);
-	terminal_write("###", VGA_COLOR_YELLOW);
-}
-
-uint16_t terminal_putchar(char c, enum VGA_COLOR color)
+uint16_t terminal_makechar(char c, enum VGA_COLOR color)
 {
 	return (color << 8) | c;
 }
 
-void terminal_write(char *c, char color)
+void terminal_putchar(int x, int y, char c, enum VGA_COLOR color)
 {
-	for (size_t i = 0; i < strlen(c); i++) {
-		vid_mem[i] = terminal_putchar(c[i], color);
+	vid_mem[(y * VGA_WIDTH) + x] = terminal_makechar(c, color);
+}
+
+void terminal_write(char c, char color)
+{
+	if (c == '\n') {
+		terminal_column = 0;
+		terminal_row++;
+		return;
+	}
+
+	terminal_putchar(terminal_column, terminal_row, c, color);
+	terminal_column++;
+	if (terminal_column >= VGA_WIDTH) {
+		terminal_column = 0;
+		terminal_row++;
 	}
 }
 
-int strlen(char *str)
+size_t strlen(char *str)
 {
-	int len = 0;
+	size_t len = 0;
 	while (str[len]) {
 		len++;
 	}
 	return len;
+}
+
+void terminal_print(char *str, char color)
+{
+	for (size_t i = 0; i < strlen(str); i++) {
+		terminal_write(str[i], color);
+	}
+}
+
+void terminal_init(void)
+{
+	vid_mem = (uint16_t *)(VIDEO_MEM_ADDRESS);
+	for (int y = 0; y < VGA_HEIGHT; y++) {
+		for (int x = 0; x < VGA_WIDTH; x++) {
+			terminal_putchar(x, y, ' ', VGA_COLOR_BLACK);
+		}
+	}
+	terminal_print("ARTILLERY OS v0.1.0-alpha\n", VGA_COLOR_WHITE);
+	terminal_print("~~ WELCOME! ~~", VGA_COLOR_RED);
 }
