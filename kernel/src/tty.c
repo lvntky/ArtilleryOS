@@ -1,16 +1,15 @@
 #include "./tty.h"
-#include "./vga_color.h"
 
 uint16_t *vid_mem = 0;
 uint16_t terminal_column = 0; // x
 uint16_t terminal_row = 0; // y
 
-uint16_t terminal_makechar(char c, enum VGA_COLOR color)
+uint16_t terminal_makechar(char c, char color)
 {
 	return (color << 8) | c;
 }
 
-void terminal_putchar(int x, int y, char c, enum VGA_COLOR color)
+void terminal_putchar(int x, int y, char c, char color)
 {
 	vid_mem[(y * VGA_WIDTH) + x] = terminal_makechar(c, color);
 }
@@ -52,9 +51,9 @@ void terminal_init(void)
 	vid_mem = (uint16_t *)(VIDEO_MEM_ADDRESS);
 	for (int y = 0; y < VGA_HEIGHT; y++) {
 		for (int x = 0; x < VGA_WIDTH; x++) {
-			terminal_putchar(x, y, ' ', VGA_COLOR_BLACK);
+			terminal_putchar(x, y, ' ', 0);
 		}
 	}
-	terminal_print("ARTILLERY OS v0.1.0-alpha\n", VGA_COLOR_WHITE);
-	terminal_print("~~ WELCOME! ~~", VGA_COLOR_RED);
+	terminal_print("ARTILLERY OS v0.1.0-alpha\n", 15);
+	terminal_print("~~ WELCOME! ~~", 4);
 }
