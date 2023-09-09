@@ -54,6 +54,6 @@ void terminal_init(void)
 			terminal_putchar(x, y, ' ', 0);
 		}
 	}
-	terminal_print("ARTILLERY OS v0.1.0-alpha\n", 15);
-	terminal_print("~~ WELCOME! ~~", 4);
+	terminal_print("ARTILLERY OS v0.1.0-alpha\n", VGA_COLOR_WHITE);
+	terminal_print("~~ WELCOME! ~~", VGA_COLOR_RED);
 }
