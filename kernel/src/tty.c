@@ -4,17 +4,17 @@ uint16_t *vid_mem = 0;
 uint16_t terminal_column = 0; // x
 uint16_t terminal_row = 0; // y
 
-uint16_t terminal_makechar(char c, char color)
+uint16_t terminal_makechar(char c, enum VGA_COLOR color)
 {
 	return (color << 8) | c;
 }
 
-void terminal_putchar(int x, int y, char c, char color)
+void terminal_putchar(int x, int y, char c, enum VGA_COLOR color)
 {
 	vid_mem[(y * VGA_WIDTH) + x] = terminal_makechar(c, color);
 }
 
-void terminal_write(char c, char color)
+void terminal_write(char c, enum VGA_COLOR color)
 {
 	if (c == '\n') {
 		terminal_column = 0;
@@ -39,7 +39,7 @@ size_t strlen(char *str)
 	return len;
 }
 
-void terminal_print(char *str, char color)
+void terminal_print(char *str, enum VGA_COLOR color)
 {
 	for (size_t i = 0; i < strlen(str); i++) {
 		terminal_write(str[i], color);
