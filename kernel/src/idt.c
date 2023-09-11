@@ -32,7 +32,7 @@ void idt_init(void)
 	idtr_descriptor.limit = sizeof(idt_desctriptors) - 1;
 	idtr_descriptor.base = (uint32_t)idt_desctriptors;
 
-	idt_set(0, idt_zero);
+	idt_load(&idtr_descriptor);
 
 	//load the descriptor table
 	idt_load(&idtr_descriptor);
