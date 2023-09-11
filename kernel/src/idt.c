@@ -1,16 +1,16 @@
-#include "idt.h"
+#include "./idt.h"
 #include "./config.h"
 #include "tty.h"
 #include "memory_util.h"
 
-struct Idt_desc idt_desctriptors[ARTILLERYOS_MAX_INTERRUPT_SIZE];
-struct Idtr idtr_descriptor;
+struct idt_desc idt_desctriptors[ARTILLERYOS_MAX_INTERRUPT_SIZE];
+struct idtr_desc idtr_descriptor;
 
-extern void idt_load(struct idtr *ptr);
+extern void idt_load(struct idtr_desc *ptr);
 
 void idt_set(int int_no, void *address)
 {
-	struct Idt_desc *desc = &idt_desctriptors[int_no];
+	struct idt_desc *desc = &idt_desctriptors[int_no];
 
 	desc->offset_1 = (uint32_t)address & 0x000ffff;
 	desc->selector = KERNEL_CODE_SELECTOR;
@@ -21,8 +21,8 @@ void idt_set(int int_no, void *address)
 
 void idt_zero()
 {
-	kernel_print("KENREL_INTERRUPT: Divide by zero error!\n",
-		     VGA_COLOR_RED);
+	terminal_print("KENREL_INTERRUPT: Divide by zero error!\n",
+		       VGA_COLOR_RED);
 }
 
 // initialize the idt with null value
@@ -30,7 +30,7 @@ void idt_init(void)
 {
 	memset(idt_desctriptors, 0, sizeof(idt_desctriptors));
 	idtr_descriptor.limit = sizeof(idt_desctriptors) - 1;
-	idtr_descriptor.base = idt_desctriptors;
+	idtr_descriptor.base = (uint32_t)idt_desctriptors;
 
 	idt_set(0, idt_zero);
 
