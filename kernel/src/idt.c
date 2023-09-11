@@ -1,4 +1,4 @@
-#include "./idt.h"
+#include "idt.h"
 #include "./config.h"
 #include "tty.h"
 #include "memory_util.h"
