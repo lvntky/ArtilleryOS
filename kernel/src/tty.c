@@ -1,4 +1,5 @@
 #include "./tty.h"
+#include "./config.h"
 
 uint16_t *vid_mem = 0;
 uint16_t terminal_column = 0; // x
@@ -54,6 +55,6 @@ void terminal_init(void)
 			terminal_putchar(x, y, ' ', 0);
 		}
 	}
-	terminal_print("ARTILLERY OS v0.1.0-alpha\n", VGA_COLOR_WHITE);
-	terminal_print("~~ WELCOME! ~~", VGA_COLOR_RED);
+	terminal_print(TERMINAL_WELCOM_MESSAGE, VGA_COLOR_WHITE);
+	terminal_print(ARTILLERY_OS_VERSION, VGA_COLOR_RED);
 }
