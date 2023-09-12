@@ -40,11 +40,16 @@ size_t strlen(char *str)
 	return len;
 }
 
-void terminal_print(char *str, enum VGA_COLOR color)
+void terminal_print_color(char *str, enum VGA_COLOR color)
 {
 	for (size_t i = 0; i < strlen(str); i++) {
 		terminal_write(str[i], color);
 	}
+}
+
+void terminal_print(char *str)
+{
+	terminal_print_color(str, VGA_COLOR_WHITE);
 }
 
 void terminal_init(void)
@@ -55,6 +60,6 @@ void terminal_init(void)
 			terminal_putchar(x, y, ' ', 0);
 		}
 	}
-	terminal_print(TERMINAL_WELCOM_MESSAGE, VGA_COLOR_WHITE);
-	terminal_print(ARTILLERY_OS_VERSION, VGA_COLOR_RED);
+	terminal_print_color(TERMINAL_WELCOM_MESSAGE, VGA_COLOR_WHITE);
+	terminal_print_color(ARTILLERY_OS_VERSION, VGA_COLOR_RED);
 }
