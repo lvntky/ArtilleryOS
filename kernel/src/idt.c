@@ -1,5 +1,5 @@
-#include "./idt.h"
-#include "./config.h"
+#include "idt.h"
+#include "config.h"
 #include "tty.h"
 #include "memory_util.h"
 
@@ -32,7 +32,7 @@ void idt_init(void)
 	idtr_descriptor.limit = sizeof(idt_desctriptors) - 1;
 	idtr_descriptor.base = (uint32_t)idt_desctriptors;
 
-	idt_load(&idtr_descriptor);
+	idt_set(0, idt_zero);
 
 	//load the descriptor table
 	idt_load(&idtr_descriptor);

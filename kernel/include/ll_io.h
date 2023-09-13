@@ -11,10 +11,10 @@
 #ifndef __LL_IO_H__
 #define __LL_IO_H__
 
-static inline unsigned char in_byte(unsigned short);
-static inline unsigned short in_word(unsigned short);
+unsigned char insb(unsigned short);
+unsigned short insw(unsigned short);
 
-static inline void out_byte(unsigned short, unsigned char);
-static inline void out_word(unsigned short, unsigned short);
+void outb(unsigned short, unsigned char);
+void outw(unsigned short, unsigned short);
 
 #endif
