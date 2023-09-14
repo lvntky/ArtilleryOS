@@ -1,5 +1,5 @@
 FILES = ./build/kernel.asm.o ./build/kernel.o ./build/tty.o ./build/idt.asm.o ./build/idt.o ./build/memory_util.o ./build/ll_io.asm.o
-INCLUDES = -I./kernel/include
+INCLUDES = -I./kernel/include -I./kernel/libc
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 all: ./bin/boot.bin ./bin/kernel.bin
 	rm -rf ./bin/artillery.bin

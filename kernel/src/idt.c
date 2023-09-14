@@ -21,8 +21,8 @@ void idt_set(int int_no, void *address)
 
 void idt_zero()
 {
-	terminal_print("KENREL_INTERRUPT: Divide by zero error!\n",
-		       VGA_COLOR_RED);
+	terminal_print_color("KENREL_INTERRUPT: Divide by zero error!\n",
+			     VGA_COLOR_RED);
 }
 
 // initialize the idt with null value
