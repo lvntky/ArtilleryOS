@@ -1,11 +1,7 @@
-#include "./kernel.h"
-#include "./tty.h"
-#include "./idt.h"
-#include "./ll_io.h"
+#include "../include/kernel.h"
+#include "../include/tty.h"
 
 void kernel_main()
 {
 	terminal_init();
-	idt_init();
-	outb(0x60, 0xff);
 }

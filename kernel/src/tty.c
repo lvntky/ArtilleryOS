@@ -1,5 +1,5 @@
-#include "./tty.h"
-#include "./config.h"
+#include "../include/tty.h"
+#include "../include/config.h"
 
 uint16_t *vid_mem = 0;
 uint16_t terminal_column = 0; // x

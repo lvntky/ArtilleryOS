@@ -12,7 +12,7 @@ ARG GCC_VERSION=10.2.0
 # Install cross-compiler prerequisites
 RUN set -x \
     && apt-get update \
-    && apt-get install -y wget gcc build-essential bison flex libgmp3-dev \
+    && apt-get install -y wget gcc cmake build-essential bison flex libgmp3-dev \
     libmpc-dev libmpfr-dev texinfo
 
 # Pull binutils and gcc source code
