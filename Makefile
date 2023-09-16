@@ -1,32 +1,31 @@
-# List of C source files in the kernel/src directory
-kernel_source_files := $(shell find kernel/src -name *.c)
+FILES = ./build/kernel.asm.o ./build/kernel.o ./build/tty.o
+INCLUDES = -I./kernel/include
+FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
+all: ./bin/boot.bin ./bin/kernel.bin
+	rm -rf ./bin/artillery.bin
+	dd if=./bin/boot.bin >> ./bin/artillery.bin
+	dd if=./bin/kernel.bin >> ./bin/artillery.bin
+	dd if=/dev/zero bs=512 count=100 >> ./bin/artillery.bin
 
-# List of assembly source files in the kernel/boot/x86_64 directory
-x86_64_asm_source_files := $(shell find kernel/boot/x86_64 -name *.asm)
+./bin/kernel.bin: $(FILES)
+	i686-elf-ld -g -relocatable $(FILES) -o ./build/kernelfull.o
+	i686-elf-gcc $(FLAGS) -T ./targets/x86_64/linker.ld -o ./bin/kernel.bin -ffreestanding -O0 -nostdlib ./build/kernelfull.o
 
-# List of object files for C source files
-kernel_object_files := $(patsubst kernel/src/%.c, build/kernel/%.o, $(kernel_source_files))
+./bin/boot.bin: ./kernel/boot/x86_64/boot.asm
+	nasm -f bin ./kernel/boot/x86_64/boot.asm -o ./bin/boot.bin
 
-# List of object files for assembly source files
-x86_64_asm_object_files := $(patsubst kernel/boot/x86_64/%.asm, build/x86_64/%.o, $(x86_64_asm_source_files))
+./build/kernel.asm.o: ./kernel/boot/x86_64/kernel.asm
+	nasm -f elf -g ./kernel/boot/x86_64/kernel.asm -o ./build/kernel.asm.o
 
-# Combine C and assembly object files for the x86_64 architecture
-x86_64_object_files := $(kernel_object_files) $(x86_64_asm_object_files)
+./build/kernel.o: ./kernel/src/kernel.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/src/kernel.c -o ./build/kernel.o
 
-# Rule to build object files from C source files
-build/kernel/%.o : kernel/src/%.c
-	mkdir -p $(dir $@) && \
-	x86_64-elf-gcc -c -I src/include -ffreestanding $< -o $@
+./build/tty.o: ./kernel/src/tty.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/src/tty.c -o ./build/tty.o
 
-# Rule to build object files from assembly source files
-build/x86_64/%.o : kernel/boot/x86_64/%.asm
-	mkdir -p $(dir $@) && \
-	nasm -f elf64 $< -o $@
-
-# Rule to build the final kernel image
-.PHONY: build-x86_64
-build-x86_64: $(x86_64_object_files)
-	mkdir -p dist/x86_64 && \
-	x86_64-elf-ld -n -o dist/x86_64/kernel.bin -T targets/x86_64/linker.ld $(x86_64_object_files) && \
-	cp dist/x86_64/kernel.bin targets/x86_64/iso/boot/kernel.bin && \
-	grub-mkrescue /usr/lib/grub/i386-pc -o dist/x86_64/kernel.iso targets/x86_64/iso
+clean:
+	rm -rf ./bin/boot.bin
+	rm -rf ./bin/kernel.bin
+	rm -rf ./artillery.bin
+	rm -rf $(FILES)
+	rm -rf ./build/kernelfull.o

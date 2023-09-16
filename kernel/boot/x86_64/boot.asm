@@ -1,136 +1,133 @@
-global start
-extern long_mode_start
+;--------------------------------;
+;   Artillery OS                 ;
+;   Bootloader                   ;
+;   SEP. 2023 - Levent Kaya      ;
+;--------------------------------;
 
-section .text
-bits 32
+ORG 0X7C00
+[BITS 16]
+
+CODE_SEG equ gdt_code - gdt_start
+DATA_SEG equ gdt_data - gdt_start
+
+jmp short start
+nop
+
+
 start:
-	mov esp, stack_top
+    jmp 0:step2
 
-	call check_multiboot
-	call check_cpuid
-	call check_long_mode
+step2:
+    cli 
+    mov ax, 0x00
+    mov ds, ax
+    mov es, ax
+    mov ss, ax
+    mov sp, 0x7c00
+    sti 
 
-	call setup_page_tables
-	call enable_paging
+.load_protected:
+    cli
+    lgdt[gdt_descriptor]
+    mov eax, cr0
+    or eax, 0x1
+    mov cr0, eax
+    jmp CODE_SEG:load32
 
-	lgdt [gdt64.pointer]
-	jmp gdt64.code_segment:long_mode_start
+; GDT
+gdt_start:
+gdt_null:
+    dd 0x0
+    dd 0x0
 
-	hlt
+; offset 0x8
+gdt_code:     
+    dw 0xffff 
+    dw 0      
+    db 0      
+    db 0x9a   
+    db 11001111b 
+    db 0        
 
-check_multiboot:
-	cmp eax, 0x36d76289
-	jne .no_multiboot
-	ret
-.no_multiboot:
-	mov al, "M"
-	jmp error
+gdt_data:      
+    dw 0xffff 
+    dw 0      
+    db 0      
+    db 0x92   
+    db 11001111b 
+    db 0   
+gdt_end:
 
-check_cpuid:
-	pushfd
-	pop eax
-	mov ecx, eax
-	xor eax, 1 << 21
-	push eax
-	popfd
-	pushfd
-	pop eax
-	push ecx
-	popfd
-	cmp eax, ecx
-	je .no_cpuid
-	ret
-.no_cpuid:
-	mov al, "C"
-	jmp error
+gdt_descriptor:
+    dw gdt_end - gdt_start-1
+    dd gdt_start
 
-check_long_mode:
-	mov eax, 0x80000000
-	cpuid
-	cmp eax, 0x80000001
-	jb .no_long_mode
+ [BITS 32]
+ load32:
+    mov eax, 1
+    mov ecx, 100
+    mov edi, 0x0100000
+    call ata_lba_read
+    jmp CODE_SEG:0x0100000
 
-	mov eax, 0x80000001
-	cpuid
-	test edx, 1 << 29
-	jz .no_long_mode
-	
-	ret
-.no_long_mode:
-	mov al, "L"
-	jmp error
+ata_lba_read:
+    mov ebx, eax, 
+    
+    shr eax, 24
+    or eax, 0xE0 
+    mov dx, 0x1F6
+    out dx, al
+    
 
-setup_page_tables:
-	mov eax, page_table_l3
-	or eax, 0b11 ; present, writable
-	mov [page_table_l4], eax
-	
-	mov eax, page_table_l2
-	or eax, 0b11 ; present, writable
-	mov [page_table_l3], eax
+    
+    mov eax, ecx
+    mov dx, 0x1F2
+    out dx, al
+    
 
-	mov ecx, 0 ; counter
-.loop:
+    
+    mov eax, ebx 
+    mov dx, 0x1F3
+    out dx, al
+    
 
-	mov eax, 0x200000 ; 2MiB
-	mul ecx
-	or eax, 0b10000011 ; present, writable, huge page
-	mov [page_table_l2 + ecx * 8], eax
+    
+    mov dx, 0x1F4
+    mov eax, ebx 
+    shr eax, 8
+    out dx, al
+    
 
-	inc ecx ; increment counter
-	cmp ecx, 512 ; checks if the whole table is mapped
-	jne .loop ; if not, continue
+    
+    mov dx, 0x1F5
+    mov eax, ebx 
+    shr eax, 16
+    out dx, al
+    
 
-	ret
+    mov dx, 0x1f7
+    mov al, 0x20
+    out dx, al
 
-enable_paging:
-	; pass page table location to cpu
-	mov eax, page_table_l4
-	mov cr3, eax
+    
+.next_sector:
+    push ecx
 
-	; enable PAE
-	mov eax, cr4
-	or eax, 1 << 5
-	mov cr4, eax
 
-	; enable long mode
-	mov ecx, 0xC0000080
-	rdmsr
-	or eax, 1 << 8
-	wrmsr
+.try_again:
+    mov dx, 0x1f7
+    in al, dx
+    test al, 8
+    jz .try_again
 
-	; enable paging
-	mov eax, cr0
-	or eax, 1 << 31
-	mov cr0, eax
 
-	ret
+    mov ecx, 256
+    mov dx, 0x1F0
+    rep insw
+    pop ecx
+    loop .next_sector
+    ls
+    ret
 
-error:
-	; print "ERR: X" where X is the error code
-	mov dword [0xb8000], 0x4f524f45
-	mov dword [0xb8004], 0x4f3a4f52
-	mov dword [0xb8008], 0x4f204f20
-	mov byte  [0xb800a], al
-	hlt
-
-section .bss
-align 4096
-page_table_l4:
-	resb 4096
-page_table_l3:
-	resb 4096
-page_table_l2:
-	resb 4096
-stack_bottom:
-	resb 4096 * 4
-stack_top:
-
-section .rodata
-gdt64:
-	dq 0 ; zero entry
-.code_segment: equ $ - gdt64
-	dq (1 << 43) | (1 << 44) | (1 << 47) | (1 << 53) ; code segment
-.pointer:
-	dw $ - gdt64 - 1 ; length
-	dq gdt64 ; address
+times 510-($ - $$) db 0
+dw 0xAA55
