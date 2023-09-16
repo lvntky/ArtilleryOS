@@ -63,3 +63,21 @@ void terminal_init(void)
 	terminal_print_color(TERMINAL_WELCOM_MESSAGE, VGA_COLOR_WHITE);
 	terminal_print_color(ARTILLERY_OS_VERSION, VGA_COLOR_RED);
 }
+
+void terminal_print_hex_digit(uint8_t digit, enum VGA_COLOR color)
+{
+	char hex_digits[] = "0123456789ABCDEF";
+	volatile uint16_t *terminal_buffer = (volatile uint16_t *)0xB8000;
+	terminal_buffer[0] = (uint16_t)hex_digits[digit] |
+			     ((uint16_t)color << 8);
+}
+
+// Function to print a hexadecimal number
+void terminal_print_hex(uint8_t value)
+{
+	enum VGA_COLOR color =
+		VGA_COLOR_GRAY; // You can choose your desired color here
+	terminal_print_hex_digit((value >> 4) & 0xF,
+				 color); // Print the first digit
+	terminal_print_hex_digit(value & 0xF, color); // Print the second digit
+}
