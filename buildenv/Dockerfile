@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Update package lists and install required packages.
 RUN apt-get update -y && \
     apt-get install -y build-essential bison flex libgmp3-dev libmpc-dev \
-    libmpfr-dev texinfo wget curl qemu ca-certificates && \
+    libmpfr-dev texinfo wget curl qemu ca-certificates nasm && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
