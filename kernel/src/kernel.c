@@ -2,6 +2,7 @@
 #include "../include/tty.h"
 #include "../include/idt.h"
 #include "../libc/stdio.h"
+#include "../include/ll_io.h"
 
 void kernel_main()
 {
@@ -12,4 +13,6 @@ void kernel_main()
 	       9, 2023);
 	printf("\nWe can even handle the hex values -> %x", 0xFF);
 	printf("\nAnd string too -> %s", ":^)");
+
+	outb(0x60, 0xff);
 }
