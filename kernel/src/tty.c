@@ -1,5 +1,6 @@
 #include "../include/tty.h"
 #include "../include/config.h"
+#include "../libc/stdio.h"
 
 uint16_t *vid_mem = (uint16_t *)(VIDEO_MEM_ADDRESS);
 uint16_t terminal_column = 0; // x
@@ -100,6 +101,20 @@ void terminal_print(char *str)
 	terminal_print_color(str, VGA_COLOR_WHITE);
 }
 
+void display_logo()
+{
+	printf("  ___       _   _ _ _                   _____ _____ \n");
+	printf(" / _ \\     | | (_) | |                 |  _  /  ___|\n");
+	printf("/ /_\\ \\_ __| |_ _| | | ___ _ __ _   _  | | | \\ `--. \n");
+	printf("|  _  | '__| __| | | |/ _ \\ '__| | | | | | | `--. \\\n");
+	printf("| | | | |  | |_| | | |  __/ |  | |_| | \\ \\_/ /\\__/ /\n");
+	printf("\\_| |_/_|   \\__|_|_|_|\\___|_|   \\__, |  \\___/\\____/ \n");
+	printf("                                 __/ |              \n");
+	printf("                                |___/               \n");
+
+	terminal_print_color("v0.0.1-alpha\n", VGA_COLOR_GREEN);
+}
+
 void terminal_init(void)
 {
 	for (int y = 0; y < TERMINAL_ROWS; y++) {
@@ -107,6 +122,5 @@ void terminal_init(void)
 			terminal_putchar(x, y, ' ', VGA_COLOR_BLACK);
 		}
 	}
-	terminal_print_color("=== ARTILLERY OS ===\n", VGA_COLOR_GREEN);
-	terminal_print_color("v0.0.1-alpha", VGA_COLOR_RED);
+	display_logo();
 }

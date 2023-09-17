@@ -17,6 +17,5 @@ void terminal_write_default(char c);
 void terminal_print_color(char *str, enum VGA_COLOR color);
 void terminal_print(char *);
 size_t strlen(char *str);
-void terminal_print_hex_digit(uint8_t, enum VGA_COLOR color);
-void terminal_print_hex(uint8_t);
+void display_logo();
 #endif
