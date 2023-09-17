@@ -7,13 +7,7 @@ extern void idt_load(idt_ptr_t *ptr);
 
 void idt_zero()
 {
-	// Disable interrupts to prevent nesting
-	asm volatile("cli");
-
 	terminal_print("Divide by zero error\n");
-
-	// Re-enable interrupts
-	asm volatile("sti");
 }
 
 void idt_set(int interrupt_no, void *address)

@@ -8,4 +8,5 @@ void kernel_main()
 {
 	terminal_init();
 	idt_init();
+	problem();
 }

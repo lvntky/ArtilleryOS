@@ -59,6 +59,8 @@ void terminal_init(void)
 			terminal_putchar(x, y, ' ', 0);
 		}
 	}
+	terminal_print_color("=== ARTILLERY OS ===\n", VGA_COLOR_GREEN);
+	terminal_print_color("v0.0.1-alpha", VGA_COLOR_RED);
 }
 
 void terminal_print_hex_digit(uint8_t digit, enum VGA_COLOR color)
