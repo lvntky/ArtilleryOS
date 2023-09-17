@@ -1,10 +1,24 @@
 #include "../include/idt.h"
 #include "../libc/stdio.h"
+#include "../include/ll_io.h"
 
 idt_t idt[ARTILLERYOS_MAX_INTERRUPT_SIZE];
 idt_ptr_t idt_ptr;
 
 extern void idt_load(idt_ptr_t *ptr);
+extern void int21h();
+extern void no_interrupt();
+
+void no_interrupt_handler()
+{
+	outb(0x20, 0x20);
+}
+
+void int21h_handler()
+{
+	printf("Keyboard has pressed...");
+	outb(0x20, 0x20);
+}
 
 static int int_call_num = 1;
 void idt_zero()
@@ -32,7 +46,12 @@ void idt_init()
 	idt_ptr.limit = sizeof(idt) - 1;
 	idt_ptr.base = (uint32_t)idt;
 
+	for (int i = 0; i < ARTILLERYOS_MAX_INTERRUPT_SIZE; i++) {
+		idt_set(i, no_interrupt);
+	}
+
 	idt_set(0, idt_zero);
+	idt_set(0x21, int21h);
 
 	idt_load(&idt_ptr);
 }

@@ -13,6 +13,4 @@ void kernel_main()
 	       9, 2023);
 	printf("\nWe can even handle the hex values -> %x", 0xFF);
 	printf("\nAnd string too -> %s", ":^)");
-
-	outb(0x60, 0xff);
 }
