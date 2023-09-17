@@ -4,10 +4,13 @@ idt_t idt[ARTILLERYOS_MAX_INTERRUPT_SIZE];
 idt_ptr_t idt_ptr;
 
 extern void idt_load(idt_ptr_t *ptr);
-
+static int handled = 0;
 void idt_zero()
 {
-	terminal_print("Divide by zero error\n");
+	if (handled == 0) {
+		terminal_print("\n div error");
+		handled = 1;
+	}
 }
 
 void idt_set(int interrupt_no, void *address)
@@ -28,7 +31,7 @@ void idt_init()
 	idt_ptr.limit = sizeof(idt) - 1;
 	idt_ptr.base = (uint32_t)idt;
 
-	idt_set(0, &idt_zero);
+	idt_set(0, idt_zero);
 
 	idt_load(&idt_ptr);
 }
