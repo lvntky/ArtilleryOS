@@ -45,6 +45,12 @@ RUN wget https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.gz && \
 # Cleanup
 RUN rm -rf /root/binutils-2.36 /root/build-binutils /root/gcc-10.2.0 /root/build-gcc
 
+# Install QEMU
+RUN apt-get update -y && \
+    apt-get install -y qemu-system-x86 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Print a message to indicate successful setup.
 RUN echo "Cross-compiler setup completed. You can now use 'i686-elf-gcc' and 'i686-elf-g++' for OS development."
 
