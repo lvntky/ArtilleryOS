@@ -17,11 +17,11 @@ all: ./bin/boot.bin ./bin/kernel.bin
 ./build/kernel.asm.o: ./kernel/boot/x86_64/kernel.asm
 	nasm -f elf -g ./kernel/boot/x86_64/kernel.asm -o ./build/kernel.asm.o
 
-./build/idt.asm.o: ./kernel/boot/x86_64/idt.asm
-	nasm -f elf -g ./kernel/boot/x86_64/idt.asm -o ./build/idt.asm.o
+./build/idt.asm.o: ./kernel/archx86_64/idt.asm
+	nasm -f elf -g ./kernel/archx86_64/idt.asm -o ./build/idt.asm.o
 
-./build/ll_io.asm.o: ./kernel/boot/x86_64/ll_io.asm
-	nasm -f elf -g ./kernel/boot/x86_64/ll_io.asm -o ./build/ll_io.asm.o
+./build/ll_io.asm.o: ./kernel/archx86_64/ll_io.asm
+	nasm -f elf -g ./kernel/archx86_64/ll_io.asm -o ./build/ll_io.asm.o
 
 ./build/kernel.o: ./kernel/src/kernel.c
 	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/src/kernel.c -o ./build/kernel.o
