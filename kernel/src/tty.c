@@ -31,6 +31,11 @@ void terminal_write(char c, enum VGA_COLOR color)
 	}
 }
 
+void terminal_write_default(char c)
+{
+	terminal_write(c, VGA_COLOR_WHITE);
+}
+
 size_t strlen(char *str)
 {
 	size_t len = 0;

@@ -13,6 +13,7 @@ void terminal_init(void);
 uint16_t terminal_makechar(char c, enum VGA_COLOR color);
 void terminal_putchar(int x, int y, char c, enum VGA_COLOR color);
 void terminal_write(char c, enum VGA_COLOR color);
+void terminal_write_default(char c);
 void terminal_print_color(char *str, enum VGA_COLOR color);
 void terminal_print(char *);
 size_t strlen(char *str);
