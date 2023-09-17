@@ -1,7 +1,7 @@
 #include "../include/tty.h"
 #include "../include/config.h"
 
-uint16_t *vid_mem = 0;
+uint16_t *vid_mem = (uint16_t *)(VIDEO_MEM_ADDRESS);
 uint16_t terminal_column = 0; // x
 uint16_t terminal_row = 0; // y
 
@@ -54,14 +54,11 @@ void terminal_print(char *str)
 
 void terminal_init(void)
 {
-	vid_mem = (uint16_t *)(VIDEO_MEM_ADDRESS);
 	for (int y = 0; y < VGA_HEIGHT; y++) {
 		for (int x = 0; x < VGA_WIDTH; x++) {
 			terminal_putchar(x, y, ' ', 0);
 		}
 	}
-	terminal_print_color(TERMINAL_WELCOM_MESSAGE, VGA_COLOR_WHITE);
-	terminal_print_color(ARTILLERY_OS_VERSION, VGA_COLOR_RED);
 }
 
 void terminal_print_hex_digit(uint8_t digit, enum VGA_COLOR color)
@@ -72,12 +69,4 @@ void terminal_print_hex_digit(uint8_t digit, enum VGA_COLOR color)
 			     ((uint16_t)color << 8);
 }
 
-// Function to print a hexadecimal number
-void terminal_print_hex(uint8_t value)
-{
-	enum VGA_COLOR color =
-		VGA_COLOR_GRAY; // You can choose your desired color here
-	terminal_print_hex_digit((value >> 4) & 0xF,
-				 color); // Print the first digit
-	terminal_print_hex_digit(value & 0xF, color); // Print the second digit
-}
+// TODO: Terminal Scroll needed.

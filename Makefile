@@ -8,8 +8,8 @@ all: ./bin/boot.bin ./bin/kernel.bin
 	dd if=/dev/zero bs=512 count=100 >> ./bin/artillery.bin
 
 ./bin/kernel.bin: $(FILES)
-	i686-elf-ld -g -relocatable $(FILES) -o ./build/kernelfull.o
-	i686-elf-gcc $(FLAGS) -T ./targets/x86_64/linker.ld -o ./bin/kernel.bin -ffreestanding -O0 -nostdlib ./build/kernelfull.o
+	i686-elf-ld -g -relocatable $(FILES) -o ./build/kernel_and_bootloader_combined.o
+	i686-elf-gcc $(FLAGS) -T ./targets/x86_64/linker.ld -o ./bin/kernel.bin -ffreestanding -O0 -nostdlib ./build/kernel_and_bootloader_combined.o
 
 ./bin/boot.bin: ./kernel/boot/x86_64/boot.asm
 	nasm -f bin ./kernel/boot/x86_64/boot.asm -o ./bin/boot.bin
@@ -37,4 +37,4 @@ clean:
 	rm -rf ./bin/kernel.bin
 	rm -rf ./bin/artillery.bin
 	rm -rf $(FILES)
-	rm -rf ./build/kernelfull.o
+	rm -rf ./build/kernel_and_bootloader_combined.o

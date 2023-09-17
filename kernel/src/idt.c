@@ -7,7 +7,13 @@ extern void idt_load(idt_ptr_t *ptr);
 
 void idt_zero()
 {
+	// Disable interrupts to prevent nesting
+	asm volatile("cli");
+
 	terminal_print("Divide by zero error\n");
+
+	// Re-enable interrupts
+	asm volatile("sti");
 }
 
 void idt_set(int interrupt_no, void *address)
@@ -20,7 +26,6 @@ void idt_set(int interrupt_no, void *address)
 	desc->zero = 0x00;
 	desc->type_attr = 0xEE;
 	desc->offset_2 = (addr >> 16) & 0xFFFF;
-	terminal_print_color("idt_set", VGA_COLOR_GREEN);
 }
 
 void idt_init()
@@ -30,6 +35,6 @@ void idt_init()
 	idt_ptr.base = (uint32_t)idt;
 
 	idt_set(0, &idt_zero);
-	terminal_print_color("\nidt_init", VGA_COLOR_RED);
+
 	idt_load(&idt_ptr);
 }
