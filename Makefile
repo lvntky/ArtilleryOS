@@ -41,3 +41,4 @@ clean:
 	rm -rf ./bin/artillery.bin
 	rm -rf $(FILES)
 	rm -rf ./build/kernel_and_bootloader_combined.o
+	rm -rf ./build/libc/*

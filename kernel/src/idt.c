@@ -1,16 +1,15 @@
 #include "../include/idt.h"
+#include "../libc/stdio.h"
 
 idt_t idt[ARTILLERYOS_MAX_INTERRUPT_SIZE];
 idt_ptr_t idt_ptr;
 
 extern void idt_load(idt_ptr_t *ptr);
-static int handled = 0;
+int call_num = 1;
 void idt_zero()
 {
-	if (handled == 0) {
-		terminal_print("\n div error");
-		handled = 1;
-	}
+	printf("\n interrupt: division by zero, call number %d", call_num);
+	call_num++;
 }
 
 void idt_set(int interrupt_no, void *address)
