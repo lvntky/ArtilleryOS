@@ -5,11 +5,13 @@ idt_t idt[ARTILLERYOS_MAX_INTERRUPT_SIZE];
 idt_ptr_t idt_ptr;
 
 extern void idt_load(idt_ptr_t *ptr);
-int call_num = 1;
+
+static int int_call_num = 1;
 void idt_zero()
 {
-	printf("\n interrupt: division by zero, call number %d", call_num);
-	call_num++;
+	printf("\ninterrupt: divide by zero interrupt happend! : %d",
+	       int_call_num);
+	asm volatile("hlt");
 }
 
 void idt_set(int interrupt_no, void *address)

@@ -3,8 +3,6 @@
 #include "../include/idt.h"
 #include "../libc/stdio.h"
 
-extern void problem();
-
 void kernel_main()
 {
 	terminal_init();
@@ -14,7 +12,4 @@ void kernel_main()
 	       9, 2023);
 	printf("\nWe can even handle the hex values -> %x", 0xFF);
 	printf("\nAnd string too -> %s", ":^)");
-
-	// trigger the division by zero interrupt
-	problem();
 }
