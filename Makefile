@@ -19,6 +19,7 @@ LIBC_SRCS = $(wildcard kernel/libc/*.c)
 SRCS = $(KERNEL_SRCS) $(LIBC_SRCS)
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
+OBJS += $(OBJ_DIR)/interruptstubs.o  # Include interruptstubs.asm
 LOADER_ASM = bootloader/loader.asm
 LOADER_OBJ = $(OBJ_DIR)/loader.o
 
@@ -44,6 +45,9 @@ $(OBJ_DIR)/%.o: kernel/src/%.c | $(OBJ_DIR)
 $(OBJ_DIR)/%.o: kernel/libc/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(OBJ_DIR)/%.o: kernel/arch-86_64/interruptstubs.asm | $(OBJ_DIR)
+	$(GAS) -march=i386 $< -o $@
+
 $(LOADER_OBJ): $(LOADER_ASM) | $(OBJ_DIR)
 	$(GAS) -march=i386 $< -o $@
 
@@ -58,4 +62,3 @@ $(OBJ_DIR):
 
 clean:
 	rm -rf $(OBJ_DIR)/* $(BIN_DIR)/* $(ISO)
-	rm -rf /isodir/boot/artilleryos.bin

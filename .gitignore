@@ -4,6 +4,8 @@
 *.bin
 bin/artilleryos.iso
 build/
+bin
+*.iso
 # User-specific stuff
 .idea/
 .idea/**/workspace.xml
@@ -196,3 +198,4 @@ flycheck_*.el
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 bin/artilleryos.iso
+isodir/
