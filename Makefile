@@ -6,7 +6,7 @@ NASM_PREFIX = nasm
 CC = $(CC_PREFIX)gcc
 LD = $(CC_PREFIX)ld
 GAS = $(CC_PREFIX)as
-CFLAGS = -std=c11 -ffreestanding -O2 -Wall -Wextra -I./kernel/include
+CFLAGS = -std=c11 -g -ffreestanding -O2 -Wall -Wextra -I./kernel/include
 LDFLAGS = -nostdlib -T linker.ld
 
 # NASM assembler options
@@ -58,3 +58,4 @@ $(OBJ_DIR):
 
 clean:
 	rm -rf $(OBJ_DIR)/* $(BIN_DIR)/* $(ISO)
+	rm -rf /isodir/boot/artilleryos.bin
