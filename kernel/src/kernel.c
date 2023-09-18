@@ -7,7 +7,5 @@
 void kernel_main(void)
 {
 	terminal_init();
-	printf("\nprintf actually works %s\n", ":^)");
 	init_gdt();
-	outb(0x60, 0xff);
 }

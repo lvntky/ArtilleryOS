@@ -1,4 +1,6 @@
-#include <tty.h>
+#include "../include/tty.h"
+
+#define ARTILLERYOS_VERSION "0.0.2-alpha"
 
 uint16_t *vid_mem = (uint16_t *)(VIDEO_MEM_ADDRESS);
 uint16_t terminal_column = 0; // x
@@ -117,8 +119,7 @@ void display_logo()
 		"                                 __/ |              \n");
 	terminal_print(
 		"                                |___/               \n");
-
-	terminal_print_color("v0.0.1-alpha\n", VGA_COLOR_GREEN);
+	terminal_print_color(ARTILLERYOS_VERSION, VGA_COLOR_GREEN);
 }
 
 void terminal_init(void)
