@@ -1,5 +1,5 @@
-#ifndef _VGA_H
-#define _VGA_H
+#ifndef _TTY_H
+#define _TTY_H
 
 #include <vga_color_enum.h>
 #include <stddef.h>

@@ -14,7 +14,10 @@ NASM = $(NASM_PREFIX)
 NASMFLAGS = -f elf32
 
 # Source files
-SRCS = $(wildcard kernel/src/*.c)
+KERNEL_SRCS = $(wildcard kernel/src/*.c)
+LIBC_SRCS = $(wildcard kernel/libc/*.c)
+SRCS = $(KERNEL_SRCS) $(LIBC_SRCS)
+
 OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
 LOADER_ASM = bootloader/loader.asm
 LOADER_OBJ = $(OBJ_DIR)/loader.o
@@ -38,12 +41,15 @@ $(KERNEL): $(OBJS) $(LOADER_OBJ)
 $(OBJ_DIR)/%.o: kernel/src/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(OBJ_DIR)/%.o: kernel/libc/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
 $(LOADER_OBJ): $(LOADER_ASM) | $(OBJ_DIR)
 	$(GAS) -march=i386 $< -o $@
 
 $(ISO): $(KERNEL)
 	mkdir -p $(ISO_DIR)/boot/grub
-	cp $< $(ISO_DIR)/boot/artilleryos.bin  # Updated to use the correct path
+	cp $< $(ISO_DIR)/boot/artilleryos.bin
 	cp ./boot/grub.cfg $(ISO_DIR)/boot/grub
 	grub-mkrescue -o $@ $(ISO_DIR)
 
