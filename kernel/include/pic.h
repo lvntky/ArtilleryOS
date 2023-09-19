@@ -16,6 +16,8 @@
 #define _PIC_H
 
 #include "ll_io.h"
+#include "interrupt.h"
+#include "../libc/stdio.h"
 #include <stdint.h>
 
 #define PIC_MASTER 0x20 /* IO base address for master PIC */
