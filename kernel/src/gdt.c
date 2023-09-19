@@ -26,6 +26,20 @@ void init_gdt()
 	gdt_ptr.limit = sizeof(gdt_entries) - 1;
 	gdt_ptr.base = (uint32_t)&gdt_entries[0];
 
+	printf("\n***GDT CHECK*** ");
+	printf("\nBefore initializing GDT:\n");
+
+	// Print the values of segment registers
+	uint16_t cs, ds, es, fs, gs;
+	__asm__ __volatile__("mov %%cs, %0" : "=r"(cs));
+	__asm__ __volatile__("mov %%ds, %0" : "=r"(ds));
+	__asm__ __volatile__("mov %%es, %0" : "=r"(es));
+	__asm__ __volatile__("mov %%fs, %0" : "=r"(fs));
+	__asm__ __volatile__("mov %%gs, %0" : "=r"(gs));
+
+	printf("CS: 0x%x\nDS: 0x%x\nES: 0x%x\nFS: 0x%x\nGS: 0x%x\n", cs, ds, es,
+	       fs, gs);
+
 	__asm__ __volatile__("lgdt %0" : : "m"(gdt_ptr));
 
 	// Load segment registers to reload CS and DS
@@ -36,4 +50,16 @@ void init_gdt()
 			     "mov %ax, %gs;"
 			     "ljmp $0x08, $reload_cs;"
 			     "reload_cs:");
+
+	printf("After initializing GDT:\n");
+
+	// Print the values of segment registers after initialization
+	__asm__ __volatile__("mov %%cs, %0" : "=r"(cs));
+	__asm__ __volatile__("mov %%ds, %0" : "=r"(ds));
+	__asm__ __volatile__("mov %%es, %0" : "=r"(es));
+	__asm__ __volatile__("mov %%fs, %0" : "=r"(fs));
+	__asm__ __volatile__("mov %%gs, %0" : "=r"(gs));
+
+	printf("CS: 0x%x\nDS: 0x%x\nES: 0x%x\nFS: 0x%x\nGS: 0x%x\n", cs, ds, es,
+	       fs, gs);
 }
