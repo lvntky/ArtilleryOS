@@ -1,5 +1,5 @@
-#ifndef __STDIO_H__
-#define __STDIO_H__
+#ifndef _STDIO_H
+#define _STDIO_H
 
 #include "../include/tty.h"
 #include <stdarg.h>

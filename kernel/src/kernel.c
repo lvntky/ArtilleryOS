@@ -1,16 +1,17 @@
-#include "../include/kernel.h"
-#include "../include/tty.h"
-#include "../include/idt.h"
+#include <kernel.h>
+#include <tty.h>
 #include "../libc/stdio.h"
-#include "../include/ll_io.h"
+#include <gdt.h>
+#include <ll_io.h>
 
-void kernel_main()
+void kernel_main(void)
 {
 	terminal_init();
-	idt_init();
-
-	printf("\nHi, we have a printf function now on date %d - %d - %d", 17,
-	       9, 2023);
-	printf("\nWe can even handle the hex values -> %x", 0xFF);
-	printf("\nAnd string too -> %s", ":^)");
+	init_gdt();
+	printf("\n\n    ===========================================\n");
+	printf("    TODO FOR NEXT RELEASE:\n");
+	printf("    - [ ] IDT\n");
+	printf("    - [ ] Keyboard\n");
+	printf("    - [ ] Mause\n");
+	printf("    ===========================================\n");
 }

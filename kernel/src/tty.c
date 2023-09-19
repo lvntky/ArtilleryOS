@@ -1,6 +1,6 @@
 #include "../include/tty.h"
-#include "../include/config.h"
-#include "../libc/stdio.h"
+
+#define ARTILLERYOS_VERSION "0.0.2-alpha"
 
 uint16_t *vid_mem = (uint16_t *)(VIDEO_MEM_ADDRESS);
 uint16_t terminal_column = 0; // x
@@ -103,16 +103,23 @@ void terminal_print(char *str)
 
 void display_logo()
 {
-	printf("  ___       _   _ _ _                   _____ _____ \n");
-	printf(" / _ \\     | | (_) | |                 |  _  /  ___|\n");
-	printf("/ /_\\ \\_ __| |_ _| | | ___ _ __ _   _  | | | \\ `--. \n");
-	printf("|  _  | '__| __| | | |/ _ \\ '__| | | | | | | `--. \\\n");
-	printf("| | | | |  | |_| | | |  __/ |  | |_| | \\ \\_/ /\\__/ /\n");
-	printf("\\_| |_/_|   \\__|_|_|_|\\___|_|   \\__, |  \\___/\\____/ \n");
-	printf("                                 __/ |              \n");
-	printf("                                |___/               \n");
-
-	terminal_print_color("v0.0.1-alpha\n", VGA_COLOR_GREEN);
+	terminal_print(
+		"  ___       _   _ _ _                   _____ _____ \n");
+	terminal_print(
+		" / _ \\     | | (_) | |                 |  _  /  ___|\n");
+	terminal_print(
+		"/ /_\\ \\_ __| |_ _| | | ___ _ __ _   _  | | | \\ `--. \n");
+	terminal_print(
+		"|  _  | '__| __| | | |/ _ \\ '__| | | | | | | `--. \\\n");
+	terminal_print(
+		"| | | | |  | |_| | | |  __/ |  | |_| | \\ \\_/ /\\__/ /\n");
+	terminal_print(
+		"\\_| |_/_|   \\__|_|_|_|\\___|_|   \\__, |  \\___/\\____/ \n");
+	terminal_print(
+		"                                 __/ |              \n");
+	terminal_print(
+		"                                |___/               \n");
+	terminal_print_color(ARTILLERYOS_VERSION, VGA_COLOR_GREEN);
 }
 
 void terminal_init(void)

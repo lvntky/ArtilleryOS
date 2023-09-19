@@ -1,7 +1,7 @@
-#ifndef __TTY_H__
-#define __TTY_H__
+#ifndef _TTY_H
+#define _TTY_H
 
-#include "vga_color.h"
+#include <vga_color_enum.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -18,4 +18,5 @@ void terminal_print_color(char *str, enum VGA_COLOR color);
 void terminal_print(char *);
 size_t strlen(char *str);
 void display_logo();
+
 #endif

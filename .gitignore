@@ -2,7 +2,10 @@
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 *.bin
+bin/artilleryos.iso
 build/
+bin
+*.iso
 # User-specific stuff
 .idea/
 .idea/**/workspace.xml
@@ -194,3 +197,5 @@ flycheck_*.el
 
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
+bin/artilleryos.iso
+isodir/
