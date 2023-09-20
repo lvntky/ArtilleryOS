@@ -1,42 +1,43 @@
-.set IRQ_BASE, 0x20
-.section .text
+# ISRs
 
-.extern handle_interrupt
+.global _isr0
+.global _isr1
 
-.macro handle_exception num 
-.global handle_exception\num\()
-    movb $\num, (interruptnumber)
-    jmp int_bottom
-.endm
+# Divide by zero exception
+_isr0:
+    cli
+    pushl $0
+    pushl $1
+    jmp isr_common_stub
 
-.macro handle_interrupt_request num 
-.global handle_interrupt_request\num\()
-    movb $\num + IRQ_BASE, (interruptnumber)
-    jmp int_bottom
-.endm
+_isr1:
+    cli
+    pushl $0
+    pushl $1
+    jmp isr_common_stub
 
-handle_interrupt_request 0x00
-handle_interrupt_request 0x01
+extern _fault_handler
 
-int_bottom:
-
-    pusha
-    pushl %ds
-    pushl %es
-    pushl %fs
-    pushl %gs
-
-    pushl %esp
-    push (interruptnumber)
-    call handle_interrupt
-    movl %eax, %esp
-
-    popl %gs
-    popl %fs
-    popl %es
-    popl %ds
-    popa
-
-    iret
-.data
-    interruptnumber: .byte 0
+isr_common_stub:
+    pushal
+    push %ds
+    push %es
+    push %fs
+    push %gs
+    mov $0x10, %ax   # Load the Kernel Data Segment descriptor!
+    mov %ax, %ds
+    mov %ax, %es
+    mov %ax, %fs
+    mov %ax, %gs
+    mov %esp, %eax   # Push us the stack
+    push %eax
+    mov $_fault_handler, %eax
+    call *%eax       # A special call, preserves the 'eip' register
+    pop %eax
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    popal
+    add $8, %esp     # Cleans up the pushed error code and pushed ISR number
+    iret  

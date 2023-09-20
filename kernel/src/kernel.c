@@ -9,4 +9,5 @@ void kernel_main(void)
 {
 	terminal_init();
 	init_gdt();
+	init_idt();
 }
