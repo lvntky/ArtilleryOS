@@ -44,11 +44,7 @@ We welcome contributions from the community to improve and expand ArtilleryOS. T
 3. Make your changes and commit them.
 4. Push your changes
 
-# Screenshots
-We are documenting the current state of Artillery by screenshots. here is some of them:
-![logo](./docs/screenshots/ss_logo_and_interrupts.png)
-
-you can check the [screenshots](./docs/screenshots/) folder for more!
+## License
 
 ## License
 

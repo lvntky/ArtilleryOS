@@ -17,6 +17,11 @@ void terminal_write_default(char c);
 void terminal_print_color(char *str, enum VGA_COLOR color);
 void terminal_print(char *);
 size_t strlen(char *str);
+<<<<<<< HEAD
 void display_logo();
 
+=======
+void terminal_print_hex_digit(uint8_t, enum VGA_COLOR color);
+void terminal_print_hex(uint8_t);
+>>>>>>> parent of 3e9dcfe ([misc] logo and screenshots)
 #endif
