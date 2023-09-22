@@ -46,10 +46,10 @@ $(OBJ_DIR)/%.o: kernel/libc/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.o: kernel/arch-86_64/interruptstubs.asm | $(OBJ_DIR)
-	$(GAS) -march=i386 $< -o $@
+	$(NASM) $(NASMFLAGS) $< -o $@
 
 $(LOADER_OBJ): $(LOADER_ASM) | $(OBJ_DIR)
-	$(GAS) -march=i386 $< -o $@
+	$(NASM) $(NASMFLAGS) $< -o $@
 
 $(ISO): $(KERNEL)
 	mkdir -p $(ISO_DIR)/boot/grub

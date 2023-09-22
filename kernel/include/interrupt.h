@@ -18,8 +18,6 @@ typedef struct idt_ptr_t {
 	uint32_t base;
 } __attribute__((packed)) idt_ptr_t;
 
-void idt_set_descriptor(uint8_t, void *, uint8_t);
 void init_idt();
-void exception_handler(void);
 
 #endif
