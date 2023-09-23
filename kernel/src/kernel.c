@@ -1,13 +1,9 @@
-#include <kernel.h>
-#include <tty.h>
-#include "../libc/stdio.h"
-#include <gdt.h>
-#include <ll_io.h>
-#include "../include/interrupt.h"
-
-void kernel_main(void)
+#include "../include/kernel.h"
+extern void error();
+void kernel_main()
 {
 	terminal_init();
-	init_gdt();
-	init_idt();
+	idt_init();
+	get_cpu_info();
+	error();
 }

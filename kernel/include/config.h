@@ -1,4 +1,6 @@
-#ifndef _CONFIG_G
-#define _CONFIG_G
+#ifndef _CONFIG_H
+#define _CONFIG_H
+
+#define ARTILLERYOS_MAX_INTERRUPT_SIZE 512
 
 #endif

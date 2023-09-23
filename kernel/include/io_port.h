@@ -1,15 +1,5 @@
-/**
- * @file ll_io.h
- * @author levent kaya (leventkayadev@gmail.com)
- * @brief low level io functions
- * @version 0.1
- * @date 2023-09-18
- * 
- * @copyright Copyright (c) 2023
- * 
- */
-#ifndef _LL_IO_H
-#define _LL_IO_H
+#ifndef _IO_PORT_H
+#define _IO_PORT_H
 
 // read 8 bit
 unsigned char insb(unsigned short);

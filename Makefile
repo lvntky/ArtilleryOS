@@ -1,64 +1,50 @@
-# Toolchain prefix
-CC_PREFIX = i686-elf-
-NASM_PREFIX = nasm
+FILES = ./build/kernel.asm.o ./build/kernel.o ./build/tty.o ./build/stdio.o ./build/string.o ./build/idt.asm.o ./build/idt.o ./build/cpu_info.o ./build/io_port.o
+INCLUDES = -I./src
+FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 
-# Compiler and linker options
-CC = $(CC_PREFIX)gcc
-LD = $(CC_PREFIX)ld
-GAS = $(CC_PREFIX)as
-CFLAGS = -std=c11 -g -ffreestanding -O2 -Wall -Wextra -I./kernel/include
-LDFLAGS = -nostdlib -T linker.ld
+all: ./bin/boot.bin ./bin/kernel.bin
+	rm -rf ./bin/artilleryos.bin
+	dd if=./bin/boot.bin >> ./bin/artilleryos.bin
+	dd if=./bin/kernel.bin >> ./bin/artilleryos.bin
+	dd if=/dev/zero bs=512 count=100 >> ./bin/artilleryos.bin
 
-# NASM assembler options
-NASM = $(NASM_PREFIX)
-NASMFLAGS = -f elf32
+./bin/kernel.bin: $(FILES)
+	i686-elf-ld -g -relocatable $(FILES) -o ./build/kernel_bootloader_combined.o
+	i686-elf-gcc $(FLAGS) -T ./kernel/linker.ld -o ./bin/kernel.bin -ffreestanding -O0 -nostdlib ./build/kernel_bootloader_combined.o
 
-# Source files
-KERNEL_SRCS = $(wildcard kernel/src/*.c)
-LIBC_SRCS = $(wildcard kernel/libc/*.c)
-SRCS = $(KERNEL_SRCS) $(LIBC_SRCS)
+./bin/boot.bin: ./boot/boot.asm
+	nasm -f bin ./boot/boot.asm -o ./bin/boot.bin
 
-OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
-OBJS += $(OBJ_DIR)/interruptstubs.o  # Include interruptstubs.asm
-LOADER_ASM = bootloader/loader.asm
-LOADER_OBJ = $(OBJ_DIR)/loader.o
+./build/kernel.asm.o: ./boot/kernel_entry.asm
+	nasm -f elf -g ./boot/kernel_entry.asm -o ./build/kernel.asm.o
 
-# Output directories
-OBJ_DIR = build
-BIN_DIR = bin
-ISO_DIR = isodir
+./build/kernel.o: ./kernel/src/kernel.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/src/kernel.c -o ./build/kernel.o
 
-# Target executables
-KERNEL = $(BIN_DIR)/artilleryos.bin
-ISO = $(BIN_DIR)/artilleryos.iso
+./build/tty.o: ./kernel/src/tty.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/src/tty.c -o ./build/tty.o
 
-.PHONY: all clean
+./build/stdio.o: ./kernel/libc/stdio.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/libc/stdio.c -o ./build/stdio.o
 
-all: $(ISO)
+./build/string.o: ./kernel/libc/string.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/libc/string.c -o ./build/string.o
 
-$(KERNEL): $(OBJS) $(LOADER_OBJ)
-	$(LD) $(LDFLAGS) -o $@ $^
+./build/idt.asm.o: ./kernel/idt/idt.asm
+	nasm -f elf -g ./kernel/idt/idt.asm -o ./build/idt.asm.o
 
-$(OBJ_DIR)/%.o: kernel/src/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+./build/idt.o: ./kernel/idt/idt.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/idt/idt.c -o ./build/idt.o
 
-$(OBJ_DIR)/%.o: kernel/libc/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+./build/cpu_info.o: ./kernel/src/cpu_info.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/src/cpu_info.c -o ./build/cpu_info.o
 
-$(OBJ_DIR)/%.o: kernel/arch-86_64/interruptstubs.asm | $(OBJ_DIR)
-	$(NASM) $(NASMFLAGS) $< -o $@
-
-$(LOADER_OBJ): $(LOADER_ASM) | $(OBJ_DIR)
-	$(NASM) $(NASMFLAGS) $< -o $@
-
-$(ISO): $(KERNEL)
-	mkdir -p $(ISO_DIR)/boot/grub
-	cp $< $(ISO_DIR)/boot/artilleryos.bin
-	cp ./boot/grub.cfg $(ISO_DIR)/boot/grub
-	grub-mkrescue -o $@ $(ISO_DIR)
-
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+./build/io_port.o: ./kernel/src/io_port.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/src/io_port.c -o ./build/io_port.o
 
 clean:
-	rm -rf $(OBJ_DIR)/* $(BIN_DIR)/* $(ISO)
+	rm -rf ./bin/boot.bin
+	rm -rf ./bin/kernel.bin
+	rm -rf ./bin/artilleryos.bin
+	rm -rf ${FILES}
+	rm -rf ./build/kernel_bootloader_combined.o
