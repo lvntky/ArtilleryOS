@@ -6,6 +6,7 @@
 #include "../libc/string.h"
 #include "../libc/stdio.h"
 #include "../include/config.h"
+#include "../include/io_port.h"
 
 typedef struct idt_t {
 	uint16_t offset_1; // Offset bits 0 - 15
