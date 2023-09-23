@@ -101,14 +101,30 @@ void terminal_print(char *str)
 
 void print_logo()
 {
-	printf("  ___       _   _ _ _                   _____ _____ \n");
-	printf(" / _ \\     | | (_) | |                 |  _  /  ___|\n");
-	printf("/ /_\\ \\_ __| |_ _| | | ___ _ __ _   _  | | | \\ `--. \n");
-	printf("|  _  | '__| __| | | |/ _ \\ '__| | | | | | | `--. \\\n");
-	printf("| | | | |  | |_| | | |  __/ |  | |_| | \\ \\_/ /\\__/ /\n");
-	printf("\\_| |_/_|   \\__|_|_|_|\\___|_|   \\__, |  \\___/\\____/ \n");
-	printf("                                 __/ |              \n");
-	printf("                                |___/               \n");
+	terminal_print_color(
+		"  ___       _   _ _ _                   _____ _____ \n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		" / _ \\     | | (_) | |                 |  _  /  ___|\n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"/ /_\\ \\_ __| |_ _| | | ___ _ __ _   _  | | | \\ `--. \n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"|  _  | '__| __| | | |/ _ \\ '__| | | | | | | `--. \\\n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"| | | | |  | |_| | | |  __/ |  | |_| | \\ \\_/ /\\__/ /\n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"\\_| |_/_|   \\__|_|_|_|\\___|_|   \\__, |  \\___/\\____/ \n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"                                 __/ |              \n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"                                |___/               \n",
+		VGA_COLOR_GREEN);
 }
 
 void terminal_init(void)
@@ -119,5 +135,5 @@ void terminal_init(void)
 		}
 	}
 	print_logo();
-	terminal_print_color("v0.2.1", VGA_COLOR_GREEN);
+	terminal_print_color("v0.2.1", VGA_COLOR_YELLOW);
 }

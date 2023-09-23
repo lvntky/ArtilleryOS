@@ -3,6 +3,7 @@
 
 #include "../libc/stdio.h"
 #include "../idt/idt.h"
+#include "cpu_info.h"
 
 void kernel_main();
 
