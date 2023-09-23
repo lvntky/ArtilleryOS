@@ -1,10 +1,4 @@
 #include "../include/tty.h"
-<<<<<<< HEAD
-
-#define ARTILLERYOS_VERSION "0.0.2-alpha"
-=======
-#include "../include/config.h"
->>>>>>> parent of 3e9dcfe ([misc] logo and screenshots)
 
 uint16_t *vid_mem = (uint16_t *)(VIDEO_MEM_ADDRESS);
 uint16_t terminal_column = 0; // x
@@ -105,30 +99,34 @@ void terminal_print(char *str)
 	terminal_print_color(str, VGA_COLOR_WHITE);
 }
 
-<<<<<<< HEAD
-void display_logo()
+void print_logo()
 {
-	terminal_print(
-		"  ___       _   _ _ _                   _____ _____ \n");
-	terminal_print(
-		" / _ \\     | | (_) | |                 |  _  /  ___|\n");
-	terminal_print(
-		"/ /_\\ \\_ __| |_ _| | | ___ _ __ _   _  | | | \\ `--. \n");
-	terminal_print(
-		"|  _  | '__| __| | | |/ _ \\ '__| | | | | | | `--. \\\n");
-	terminal_print(
-		"| | | | |  | |_| | | |  __/ |  | |_| | \\ \\_/ /\\__/ /\n");
-	terminal_print(
-		"\\_| |_/_|   \\__|_|_|_|\\___|_|   \\__, |  \\___/\\____/ \n");
-	terminal_print(
-		"                                 __/ |              \n");
-	terminal_print(
-		"                                |___/               \n");
-	terminal_print_color(ARTILLERYOS_VERSION, VGA_COLOR_GREEN);
+	terminal_print_color(
+		"  ___       _   _ _ _                   _____ _____ \n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		" / _ \\     | | (_) | |                 |  _  /  ___|\n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"/ /_\\ \\_ __| |_ _| | | ___ _ __ _   _  | | | \\ `--. \n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"|  _  | '__| __| | | |/ _ \\ '__| | | | | | | `--. \\\n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"| | | | |  | |_| | | |  __/ |  | |_| | \\ \\_/ /\\__/ /\n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"\\_| |_/_|   \\__|_|_|_|\\___|_|   \\__, |  \\___/\\____/ \n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"                                 __/ |              \n",
+		VGA_COLOR_GREEN);
+	terminal_print_color(
+		"                                |___/               \n",
+		VGA_COLOR_GREEN);
 }
 
-=======
->>>>>>> parent of 3e9dcfe ([misc] logo and screenshots)
 void terminal_init(void)
 {
 	for (int y = 0; y < TERMINAL_ROWS; y++) {
@@ -136,6 +134,6 @@ void terminal_init(void)
 			terminal_putchar(x, y, ' ', VGA_COLOR_BLACK);
 		}
 	}
-	terminal_print_color("=== ARTILLERY OS ===\n", VGA_COLOR_GREEN);
-	terminal_print_color("v0.0.1-alpha", VGA_COLOR_RED);
+	print_logo();
+	terminal_print_color("v0.2.1", VGA_COLOR_YELLOW);
 }
