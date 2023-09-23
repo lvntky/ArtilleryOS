@@ -99,6 +99,18 @@ void terminal_print(char *str)
 	terminal_print_color(str, VGA_COLOR_WHITE);
 }
 
+void print_logo()
+{
+	printf("  ___       _   _ _ _                   _____ _____ \n");
+	printf(" / _ \\     | | (_) | |                 |  _  /  ___|\n");
+	printf("/ /_\\ \\_ __| |_ _| | | ___ _ __ _   _  | | | \\ `--. \n");
+	printf("|  _  | '__| __| | | |/ _ \\ '__| | | | | | | `--. \\\n");
+	printf("| | | | |  | |_| | | |  __/ |  | |_| | \\ \\_/ /\\__/ /\n");
+	printf("\\_| |_/_|   \\__|_|_|_|\\___|_|   \\__, |  \\___/\\____/ \n");
+	printf("                                 __/ |              \n");
+	printf("                                |___/               \n");
+}
+
 void terminal_init(void)
 {
 	for (int y = 0; y < TERMINAL_ROWS; y++) {
@@ -106,6 +118,6 @@ void terminal_init(void)
 			terminal_putchar(x, y, ' ', VGA_COLOR_BLACK);
 		}
 	}
-	terminal_print_color("=== ARTILLERY OS ===\n", VGA_COLOR_GREEN);
-	terminal_print_color("v0.0.1-alpha", VGA_COLOR_RED);
+	print_logo();
+	terminal_print_color("v0.2.1", VGA_COLOR_GREEN);
 }
