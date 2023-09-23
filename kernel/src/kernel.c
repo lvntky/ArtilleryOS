@@ -2,4 +2,5 @@
 
 void kernel_main()
 {
+	terminal_init();
 }

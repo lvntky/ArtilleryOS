@@ -1,4 +1,4 @@
-FILES = ./build/kernel.asm.o ./build/kernel.o
+FILES = ./build/kernel.asm.o ./build/kernel.o ./build/tty.o ./build/stdio.o ./build/string.o
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 
@@ -20,6 +20,15 @@ all: ./bin/boot.bin ./bin/kernel.bin
 
 ./build/kernel.o: ./kernel/src/kernel.c
 	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/src/kernel.c -o ./build/kernel.o
+
+./build/tty.o: ./kernel/src/tty.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/src/tty.c -o ./build/tty.o
+
+./build/stdio.o: ./kernel/libc/stdio.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/libc/stdio.c -o ./build/stdio.o
+
+./build/string.o: ./kernel/libc/string.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/libc/string.c -o ./build/string.o
 
 clean:
 	rm -rf ./bin/boot.bin
