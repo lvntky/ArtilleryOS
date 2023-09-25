@@ -1,57 +1,112 @@
 #include "./include/vga_driver.h"
 
-unsigned int vga_mode = 0;
+void write_registers(uint8_t *register_values)
+{
+	outb(VGA_MISC_PORT, *(register_values++));
 
-unsigned int get_graphics_reg(unsigned int index)
-{
-	unsigned int saved_addr_reg = insb(GRAPHICS_REG_ADDR);
-	outb(GRAPHICS_REG_ADDR, index);
-	unsigned int graphics_reg_value = insb(GRAPHICS_REG_DATA);
-	outb(GRAPHICS_REG_ADDR,
-	     saved_addr_reg); // restore address register
-	return graphics_reg_value;
-}
-
-void set_graphics_reg(unsigned int index, unsigned int value)
-{
-	unsigned int saved_addr_reg = insb(GRAPHICS_REG_ADDR);
-	outb(GRAPHICS_REG_ADDR, index);
-	outb(GRAPHICS_REG_DATA, value);
-	outb(GRAPHICS_REG_ADDR,
-	     saved_addr_reg); // restore address register
-}
-void vga_enter()
-{
-	if (vga_mode == 1)
-		return;
-	vga_mode = 1;
-	printf("Attempting to switch modes...");
-	for (int i = 500; i > 0; i--) {
-		printf("\n Setting graphics: %d", i / 10);
+	// sequencer
+	for (uint8_t i = 0; i < 5; i++) {
+		outb(VGA_SEQUENCER_INDEX_PORT, i);
+		outb(VGA_SEQUENCER_DATA_PORT, *(register_values++));
 	}
 
-	// Save video memory somewhere else
-	// 0xb8000 to 0xbffff (32K)
-	//memcpy(0x0010b8000, 0xb8000, COLS * ROWS * 2);
+	// cathode ray tube controller
+	outb(VGA_CRTC_INDEX_PORT, 0x03);
+	uint8_t crtc_data_value = insb(VGA_CRTC_DATA_PORT | 0x80);
+	outb(VGA_CRTC_DATA_PORT, crtc_data_value);
+	outb(VGA_CRTC_INDEX_PORT, 0x11);
+	crtc_data_value = insb(VGA_CRTC_DATA_PORT & ~0x80);
 
-	// Set alphanumeric disable = 1
-	unsigned int misc_reg = get_graphics_reg(GRAPHICS_IDX_MISC);
-	misc_reg |= 1; // bit 0 is alphanumeric disable, set it to 1
-	set_graphics_reg(GRAPHICS_IDX_MISC, misc_reg);
+	register_values[0x03] = register_values[0x03] | 0x80;
+	register_values[0x11] = register_values[0x11] & ~0x80;
+
+	for (uint8_t j = 0; j < 25; j++) {
+		outb(VGA_CRTC_INDEX_PORT, j);
+		outb(VGA_CRTC_DATA_PORT, *(register_values++));
+	}
+
+	// gfx controller
+	for (uint8_t k = 0; k < 9; k++) {
+		outb(VGA_GFX_CONTROLLER_INDEX_PORT, k);
+		outb(VGA_GFX_CONTROLLER_DATA_PORT, *(register_values++));
+	}
+
+	// attribute controller
+	for (uint8_t l = 0; l < 21; l++) {
+		insb(VGA_ATTRIBUTE_CONTROLLER_RESET_PORT);
+		outb(VGA_ATTRIBUTE_CONTROLLER_INDEX_PORT, l);
+		outb(VGA_ATTRIBUTE_CONTROLLER_WRITE_PORT, *(register_values++));
+	}
+
+	insb(VGA_ATTRIBUTE_CONTROLLER_RESET_PORT);
+	outb(VGA_ATTRIBUTE_CONTROLLER_INDEX_PORT, 0x20);
 }
-void vga_clear_screen()
+
+bool is_mode_supported(uint32_t width, uint32_t height, uint32_t color_depth)
 {
-	// Note: "clear_screen" name conflicted with something in screen.h
-	// Now I see why namespacing is a thing
-	for (int i = 0; i < 320; i++) {
-		for (int j = 0; j < 200; j++) {
-			vga_plot_pixel(i, j, COLOR_PURPLE);
-		}
+	return width == 320 && height == 200 && color_depth == 8;
+}
+
+bool set_mode(uint32_t width, uint32_t height, uint32_t color_depth)
+{
+	if (!is_mode_supported(width, height, color_depth)) {
+		return false;
+	}
+
+	unsigned char gfx_320x200x256[] = {
+		/* MISC */
+		0x63,
+		/* SEQ */
+		0x03, 0x01, 0x0F, 0x00, 0x0E,
+		/* CRTC */
+		0x5F, 0x4F, 0x50, 0x82, 0x54, 0x80, 0xBF, 0x1F, 0x00, 0x41,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x9C, 0x0E, 0x8F, 0x28,
+		0x40, 0x96, 0xB9, 0xA3, 0xFF,
+		/* GC */
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F, 0xFF,
+		/* AC */
+		0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
+		0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x41, 0x00, 0x0F, 0x00, 0x00
+	};
+
+	write_registers(gfx_320x200x256);
+	return true;
+}
+
+uint8_t *get_frame_bufer_index()
+{
+	outb(VGA_GFX_CONTROLLER_INDEX_PORT, 0x06);
+	uint8_t segment_number = insb(VGA_GFX_CONTROLLER_DATA_PORT & (3 << 2));
+
+	switch (segment_number) {
+	default:
+	case 0 << 2:
+		return (uint8_t *)0x00000;
+	case 1 << 2:
+		return (uint8_t *)0xA0000;
+	case 2 << 2:
+		return (uint8_t *)0xB0000;
+	case 3 << 2:
+		return (uint8_t *)0xB8000;
 	}
 }
-void vga_plot_pixel(int x, int y, unsigned short color)
+
+void put_pixel(uint32_t x, uint32_t y, uint8_t color)
 {
-	unsigned short offset = x + 320 * y;
-	unsigned char *VGA = (unsigned char *)VGA_ADDRESS;
-	VGA[offset] = color;
+	uint8_t *frame_buffer_address = get_frame_bufer_index();
+	uint8_t *pixel_address = frame_buffer_address + 320 * y + x;
+	*pixel_address = color;
+}
+
+uint8_t get_color_index(uint8_t r, uint8_t g, uint8_t b)
+{
+	if (r == 0x00 && g == 0x00 && b == 0xA8) {
+		return 0x01;
+	}
+	return 0x00;
+}
+
+void draw(uint8_t x, uint8_t y, uint8_t r, uint8_t g, uint8_t b)
+{
+	put_pixel(x, y, get_color_index(r, g, b));
 }
