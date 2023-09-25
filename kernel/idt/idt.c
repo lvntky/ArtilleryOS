@@ -21,6 +21,7 @@ void no_interrupt_handler()
 void idt_0()
 {
 	printf("INTERRUPT_0: Division by zero!\n");
+	__asm__ __volatile__("hlt;");
 }
 
 void idt_set(int interrupt_no, void *handler)
