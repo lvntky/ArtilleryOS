@@ -22,5 +22,6 @@ typedef struct idt_ptr_t {
 } __attribute__((packed)) idt_ptr_t;
 
 void idt_init();
+void idt_activate();
 
 #endif

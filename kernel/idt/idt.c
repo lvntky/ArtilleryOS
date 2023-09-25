@@ -49,3 +49,8 @@ void idt_init()
 
 	idt_load(&idt_ptr);
 }
+
+void idt_activate()
+{
+	__asm__ __volatile__("sti;");
+}
