@@ -90,7 +90,7 @@ uint8_t* get_frame_buffer_segment() {
 
 // Function to put a pixel on the screen
 void put_pixel(uint32_t x, uint32_t y, uint8_t colorIndex) {
-    uint8_t* pixelAddress = get_frame_buffer_segment() + VGA_WIDTH * y + x;
+    uint8_t* pixelAddress = get_frame_buffer_segment() + VGA_GFX_WIDTH * y + x;
     *pixelAddress = colorIndex;
 }
 
@@ -104,4 +104,15 @@ uint8_t get_color_index(uint8_t r, uint8_t g, uint8_t b) {
 // Function to put a pixel with RGB color
 void put_pixel_rgb(uint32_t x, uint32_t y, uint8_t r, uint8_t g, uint8_t b) {
     put_pixel(x, y, get_color_index(r, g, b));
+}
+
+void clear_screen() {
+	for (int32_t y = 0; y < 200; y++)
+	{
+		for (int32_t x = 0; x < 320; x++)
+		{			
+			put_pixel(x, y, 0x01);
+		}
+		
+	}
 }

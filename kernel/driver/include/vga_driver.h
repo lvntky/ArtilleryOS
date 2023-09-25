@@ -32,5 +32,6 @@ uint8_t *get_frame_bufer_index();
 void put_pixel(uint32_t, uint32_t, uint8_t);
 uint8_t get_color_index(uint8_t, uint8_t, uint8_t);
 void put_pixel_rgb(uint32_t , uint32_t , uint8_t , uint8_t , uint8_t );
+void clear_screen();
 
 #endif
