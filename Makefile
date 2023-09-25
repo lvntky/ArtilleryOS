@@ -1,4 +1,4 @@
-FILES = ./build/kernel.asm.o ./build/kernel.o ./build/tty.o ./build/stdio.o ./build/string.o ./build/idt.asm.o ./build/idt.o ./build/cpu_info.o ./build/io_port.o
+FILES = ./build/kernel.asm.o ./build/kernel.o ./build/tty.o ./build/stdio.o ./build/string.o ./build/idt.asm.o ./build/idt.o ./build/cpu_info.o ./build/io_port.o ./build/vga_driver.o
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 
@@ -41,6 +41,9 @@ all: ./bin/boot.bin ./bin/kernel.bin
 
 ./build/io_port.o: ./kernel/src/io_port.c
 	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/src/io_port.c -o ./build/io_port.o
+
+./build/vga_driver.o: ./kernel/driver/vga_driver.c
+	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./kernel/driver/vga_driver.c -o ./build/vga_driver.o
 
 clean:
 	rm -rf ./bin/boot.bin

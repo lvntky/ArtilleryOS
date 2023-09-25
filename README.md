@@ -44,7 +44,12 @@ We welcome contributions from the community to improve and expand ArtilleryOS. T
 3. Make your changes and commit them.
 4. Push your changes
 
-## License
+## Screenshots
+We are tracking the progress of Artillery OS with screenshots. You can find more of them in [Documentation](docs/) folder.
+
+* Initial Graphics Mode :
+![InitialGraphics](docs/initial_vga_graphics.gif)
+
 
 ## License
 
