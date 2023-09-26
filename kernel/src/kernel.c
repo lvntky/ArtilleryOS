@@ -9,5 +9,5 @@ void kernel_main()
 	outb(0x60, 0x10);
 
 	set_mode(320, 200, 8);
-	color_demo();
+	clear_screen_withcolor(0x01);
 }
