@@ -1,3 +1,6 @@
+*.bin
+.vscode
+.vscode/*
 /bin
 /isodir
 /build
