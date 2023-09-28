@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "idt.h": "c",
-        "stdio.h": "c",
-        "io_port.h": "c",
-        "stdbool.h": "c"
-    }
-}
