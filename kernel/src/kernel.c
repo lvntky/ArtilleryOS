@@ -1,15 +1,5 @@
 #include "../include/kernel.h"
 
-typedef void (*constructor)();
-extern constructor start_ctors;
-extern constructor end_ctors;
-
-void call_constructors()
-{
-	for (constructor *i = &start_ctors; i != &end_ctors; i++)
-		(*i)();
-}
-
 void kernel_main()
 {
 	terminal_init();
