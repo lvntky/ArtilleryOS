@@ -135,5 +135,5 @@ void terminal_init(void)
 		}
 	}
 	print_logo();
-	terminal_print_color("v0.2.1", VGA_COLOR_YELLOW);
+	terminal_print_color("v0.2.2", VGA_COLOR_YELLOW);
 }

@@ -145,7 +145,7 @@ void color_demo()
 		if (i > 16) {
 			i = i % 16;
 		}
-		for (size_t i = 0; i < 99999900; i++) {
+		for (size_t i = 0; i < 99999; i++) {
 			/* code */
 		}
 
