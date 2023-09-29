@@ -1,47 +1,43 @@
 #include "../include/gdt.h"
 
-gdt_entry_t gdt[GDT_SIZE];
-gdt_ptr_t gdt_ptr;
-
-static void gdt_set_gate(uint32_t num, uint32_t base, uint32_t limit,
-			 uint8_t access, uint8_t gran)
+void load_gdt(struct global_descriptor_table *gdt)
 {
-	gdt[num].base_low = (base & 0xFFFF);
-	gdt[num].base_middle = (base >> 16) & 0xFF;
-	gdt[num].base_high = (base >> 24) & 0xFF;
-
-	gdt[num].limit_low = (limit & 0xFFFF);
-	gdt[num].granularity = (limit >> 16) & 0x0F;
-
-	gdt[num].granularity |= gran & 0xF0;
-	gdt[num].access = access;
+	uint32_t i[2];
+	i[1] = (uint32_t)gdt;
+	i[0] = sizeof(struct global_descriptor_table) << 16;
+	asm volatile("lgdt (%0)" : : "p"(((uint8_t *)i) + 2));
 }
 
+uint16_t data_segment_selector(struct global_descriptor_table *gdt)
+{
+	return (uint8_t *)&gdt->data_segment_selector - (uint8_t *)gdt;
+}
+
+uint16_t code_segment_selector(struct global_descriptor_table *gdt)
+{
+	return (uint8_t *)&gdt->code_segment_selector - (uint8_t *)gdt;
+}
+
+global_descriptor_table gdt;
 void gdt_init()
 {
-	gdt_ptr.limit = (sizeof(gdt) * GDT_SIZE) - 1;
-	gdt_ptr.base = (uint32_t)&gdt;
+	// Adjusted initialization with a 64 MB limit
+	gdt.code_segment_selector = (struct segment_descriptor){
+		0, 64 * 1024 / 8, 0, 0x9A, 0xC, 0
+	};
+	gdt.data_segment_selector = (struct segment_descriptor){
+		0, 64 * 1024 / 8, 0, 0x92, 0xC, 0
+	};
 
-	/* initialize gdt segments */
-	gdt_set_gate(0, 0, 0, 0, 0); // Null segment
-	gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment
-	gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment
-	gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment
-	gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment
+	load_gdt(&gdt);
+}
 
-	/* copy the gdt_ptr to its memory area */
-	memcpy((char *)gdt_ptr.base, (char *)gdt, gdt_ptr.limit + 1);
+uint16_t get_code_segment()
+{
+	return code_segment_selector(&gdt);
+}
 
-	/* load the gdt_ptr registry */
-	asm("lgdtl (gdt_ptr)");
-
-	/* initiliaz the segments */
-	asm("   movw $0x10, %ax    \n \
-            movw %ax, %ds    \n \
-            movw %ax, %es    \n \
-            movw %ax, %fs    \n \
-            movw %ax, %gs    \n \
-			movw %ax, %ss    \n \
-            ljmp $0x08, $next    \n \
-            next:        \n");
+uint16_t get_data_segment()
+{
+	return data_segment_selector(&gdt);
 }

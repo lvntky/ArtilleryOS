@@ -92,6 +92,19 @@ int printf(const char *format, ...)
 				}
 				break;
 			}
+			case 'p': {
+				void *ptr = va_arg(args, void *);
+				uintptr_t num = (uintptr_t)ptr;
+				char buffer[18]; // Enough for a 64-bit hexadecimal
+				itoa(num, buffer, 16);
+				int i = 0;
+				while (buffer[i]) {
+					terminal_write_default(buffer[i]);
+					written++;
+					i++;
+				}
+				break;
+			}
 			default:
 				break;
 			}

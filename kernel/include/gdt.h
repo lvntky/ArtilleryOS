@@ -2,26 +2,28 @@
 #define _GDT_H
 
 #include <stdint.h>
-#include "../libc/stdio.h"
-#include "../libc/string.h"
 
-#define GDT_SIZE 5
-
-typedef struct gdt_entry_t {
+typedef struct segment_descriptor {
 	uint16_t limit_low;
 	uint16_t base_low;
 	uint8_t base_middle;
 	uint8_t access;
 	uint8_t granularity;
 	uint8_t base_high;
-} __attribute__((packed)) gdt_entry_t;
+} __attribute__((packed)) segment_descriptor;
 
-typedef struct gdt_ptr_t {
-	uint16_t limit;
-	uint32_t base;
-} __attribute__((packed)) gdt_ptr_t;
+typedef struct global_descriptor_table {
+	struct segment_descriptor null_segment_selector;
+	struct segment_descriptor unused_segment_selector;
+	struct segment_descriptor code_segment_selector;
+	struct segment_descriptor data_segment_selector;
+} __attribute__((packed)) global_descriptor_table;
 
-static void gdt_set_gate(uint32_t, uint32_t, uint32_t, uint8_t, uint8_t);
+void load_gdt(struct global_descriptor_table *gdt);
+
+uint16_t get_code_segment();
+uint16_t get_data_segment();
+
 void gdt_init();
 
-#endif
+#endif /* GDT_H */
