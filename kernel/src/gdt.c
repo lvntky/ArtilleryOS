@@ -35,9 +35,6 @@ void gdt_init()
 	/* load the gdt_ptr registry */
 	asm("lgdtl (gdt_ptr)");
 
-	// Verify segment register values
-	unsigned short ds_value, es_value, fs_value, gs_value, ss_value;
-
 	/* initiliaz the segments */
 	asm("   movw $0x10, %ax    \n \
             movw %ax, %ds    \n \
