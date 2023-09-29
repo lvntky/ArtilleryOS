@@ -6,7 +6,7 @@ void kernel_main()
 	get_cpu_info();
 	gdt_init();
 
-	//  idt_init();
+	idt_init();
 	//  idt_activate();
 	//  outb(0x60, 0x10);
 

@@ -2,19 +2,27 @@ CFLAGS = -m32 -ffreestanding -falign-jumps -falign-functions -falign-labels -fal
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
-objects = build/loader.o build/kernel.o build/tty.o build/stdio.o build/cpu_info.o build/string.o build/io_port.o ./build/vga_driver.o ./build/gdt.o
+objects = build/loader.o build/kernel.o build/tty.o build/stdio.o build/cpu_info.o build/string.o build/io_port.o ./build/vga_driver.o ./build/gdt.o ./build/interrupt.o
 
 
 
+# BASE KERNEL SOURCE
 build/%.o: kernel/src/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
+# LIBC
 build/%.o: kernel/libc/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
+# Driver
 build/%.o: kernel/driver/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
+# Interrupt
+build/%.o: kernel/interrupt/%.c
+	i686-elf-gcc $(CFLAGS) -c -o $@ $<
+
+# LOADER ASM
 build/%.o: boot/%.s
 	i686-elf-as $(ASPARAMS) -o $@ $<
 
