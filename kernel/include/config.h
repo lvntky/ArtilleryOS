@@ -3,5 +3,6 @@
 
 #define IRQ_BASE 0x20
 #define ARTILLERYOS_MAX_INTERRUPT_SIZE 256
+#define ARTILLERYOS_GDT_SIZE 5
 
 #endif

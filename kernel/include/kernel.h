@@ -3,10 +3,9 @@
 
 #include "../libc/stdio.h"
 #include "tty.h"
-#include "gdt.h"
 #include "cpu_info.h"
 #include "../driver/include/vga_driver.h"
-#include "../interrupt/interrupt.h"
+#include "../descriptor_tables/descriptor_tables.h"
 
 void kernel_main();
 

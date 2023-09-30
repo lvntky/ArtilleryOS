@@ -2,7 +2,7 @@ CFLAGS = -m32 -ffreestanding -falign-jumps -falign-functions -falign-labels -fal
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
-objects = build/loader.o build/kernel.o build/tty.o build/stdio.o build/cpu_info.o build/string.o build/io_port.o ./build/vga_driver.o ./build/gdt.o ./build/pic.o ./build/interrupt_stub.o ./build/interrupt.o
+objects = build/loader.o build/kernel.o build/tty.o build/stdio.o build/cpu_info.o build/string.o build/io_port.o ./build/vga_driver.o ./build/pic.o ./build/gdt.o ./build/idt.o ./build/descriptor_tables.o ./build/interrupt.o ./build/isr.o
 
 
 
@@ -18,12 +18,13 @@ build/%.o: kernel/libc/%.c
 build/%.o: kernel/driver/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
-# Interrupt
-build/%.o: kernel/interrupt/%.s
-	i686-elf-as $(ASPARAMS) -o $@ $<
+# Descriptor tables
 
-build/%.o: kernel/interrupt/%.c
+build/%.o: kernel/descriptor_tables/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
+
+build/%.o: kernel/descriptor_tables/%.s
+	i686-elf-as $(ASPARAMS) -o $@ $<
 
 # LOADER ASM
 build/%.o: boot/%.s
@@ -51,7 +52,7 @@ install: kernel.bin
 	sudo cp $< /boot/mykernel.bin
 
 clean:
-	sudo rm -r ./build/*
-	sudo rm -r kernel.bin
-	sudo rm -r artillery.iso
+	rm -r ./build/*
+	rm -r kernel.bin
+	rm -r artillery.iso
 
