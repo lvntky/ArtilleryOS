@@ -2,6 +2,7 @@
 #define _GDT_H
 
 #include <stdint.h>
+#include "../libc/stdio.h"
 
 typedef struct segment_descriptor {
 	uint16_t limit_low;

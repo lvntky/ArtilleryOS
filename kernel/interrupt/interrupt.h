@@ -5,6 +5,7 @@
 #include "../include/config.h"
 #include "../libc/string.h"
 #include "../libc/stdio.h"
+#include "../include/gdt.h"
 
 typedef struct idt_entry_t {
 	uint16_t base_low;
@@ -23,22 +24,4 @@ void idt_init();
 static void idt_set_gate(uint8_t, uint32_t, uint16_t, uint8_t);
 
 // These extern directives let us access the addresses of ASM ISR handlers.
-extern void isr0();
-extern void isr1();
-extern void isr2();
-extern void isr3();
-extern void isr4();
-extern void isr5();
-extern void isr6();
-extern void isr7();
-extern void isr8();
-extern void isr9();
-extern void isr10();
-extern void isr11();
-extern void isr12();
-extern void isr13();
-extern void isr14();
-extern void isr15();
-extern void isr31();
-
 #endif

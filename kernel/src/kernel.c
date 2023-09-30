@@ -1,5 +1,13 @@
 #include "../include/kernel.h"
 
+int make_error()
+{
+	int a = 5;
+	int b = 0;
+
+	return a / b;
+}
+
 void trigger_interrupt()
 {
 	asm volatile("mov $0x20, %al\n" // Set the interrupt number to 0x20
@@ -12,11 +20,9 @@ void kernel_main()
 	get_cpu_info();
 
 	gdt_init();
-	printf("\nGDT INFO:\n");
-	printf("\n Code Segment: 0x%x\n", get_code_segment());
-	printf("\n Data Segment: 0x%x\n", get_data_segment());
-	//idt_init();
-
+	idt_init();
+	make_error();
+	printf("this comes after error");
 	//  idt_activate();
 	//  outb(0x60, 0x10);
 

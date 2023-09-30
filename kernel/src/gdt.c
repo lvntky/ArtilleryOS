@@ -30,6 +30,12 @@ void gdt_init()
 	};
 
 	load_gdt(&gdt);
+
+	printf("\n============================\n");
+	printf("GDT INFO\n");
+	printf("\nCode Segment: 0x%x\n", get_code_segment());
+	printf("Data Segment: 0x%x\n", get_data_segment());
+	printf("============================\n");
 }
 
 uint16_t get_code_segment()
