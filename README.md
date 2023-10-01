@@ -50,6 +50,10 @@ We are tracking the progress of Artillery OS with screenshots. You can find more
 * VGA Graphics Screen Demo :
 ![InitialGraphics](docs/screen_demo.gif)
 
+* GUI Bitmap Font Rendering :
+![InitialGraphics](docs/font_render.gif)
+
+
 
 ## License
 
