@@ -4,6 +4,7 @@
 #include "../libc/string.h"
 #include "../include/config.h"
 #include "isr.h"
+#include "irq.h"
 
 typedef struct idt_entry_t {
 	unsigned short base_lo;

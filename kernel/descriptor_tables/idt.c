@@ -28,6 +28,7 @@ void idt_init()
 	memset(&idt, 0, sizeof(idt_entry_t) * ARTILLERYOS_MAX_INTERRUPT_SIZE);
 
 	isrs_install();
+	irqs_install();
 
 	/* Points the processor's internal register to the new IDT */
 	_idt_load();
