@@ -5,6 +5,8 @@
 #include "tty.h"
 #include "cpu_info.h"
 #include "../driver/include/vga_driver.h"
+#include "../descriptor_tables/gdt.h"
+#include "../descriptor_tables/idt.h"
 
 void kernel_main();
 

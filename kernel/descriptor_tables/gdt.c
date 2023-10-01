@@ -22,7 +22,7 @@ void gdt_set_gate(int num, unsigned long base, unsigned long limit,
 	gdt[num].access = access;
 }
 
-void gdt_install()
+void gdt_init()
 {
 	/* Setup the GDT pointer and limit */
 	_gp.limit = (sizeof(gdt_entry_t) * ARTILLERYOS_GDT_SIZE) - 1;

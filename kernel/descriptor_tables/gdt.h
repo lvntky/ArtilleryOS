@@ -20,4 +20,6 @@ typedef struct gdt_ptr_t {
 	unsigned int base;
 } __attribute__((packed)) gdt_ptr_t;
 
+void gdt_init();
+
 #endif
