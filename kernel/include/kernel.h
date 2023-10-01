@@ -7,6 +7,7 @@
 #include "../driver/include/vga_driver.h"
 #include "../descriptor_tables/gdt.h"
 #include "../descriptor_tables/idt.h"
+#include "../../gui/render_font.h"
 
 void kernel_main();
 
