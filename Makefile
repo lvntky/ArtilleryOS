@@ -2,7 +2,7 @@ CFLAGS = -m32 -g -ffreestanding -falign-jumps -falign-functions -falign-labels -
 ASPARAMS = --32
 LDPARAMS = -melf_i386 -g
 
-objects = build/loader.o build/kernel.o build/tty.o build/stdio.o build/cpu_info.o build/string.o build/io_port.o ./build/vga_driver.o ./build/pic.o ./build/gdt.o ./build/idt.o ./build/descriptor_tables.o ./build/interrupt.o ./build/isr.o
+objects = build/loader.o build/kernel.o build/tty.o build/stdio.o build/cpu_info.o build/string.o build/io_port.o ./build/vga_driver.o ./build/pic.o
 
 
 
@@ -20,15 +20,9 @@ build/%.o: kernel/driver/%.c
 
 # Descriptor tables
 
-build/%.o: kernel/descriptor_tables/%.c
-	i686-elf-gcc $(CFLAGS) -c -o $@ $<
-
-build/%.o: kernel/descriptor_tables/%.s
-	i686-elf-as $(ASPARAMS) -o $@ $<
-
 # LOADER ASM
-build/%.o: boot/%.s
-	i686-elf-as $(ASPARAMS) -o $@ $<
+build/%.o: boot/%.asm
+	nasm -f elf32 -o $@ $<
 
 kernel.bin: linker.ld $(objects)
 	i686-elf-ld $(LDPARAMS) -T $< -o $@ $(objects)

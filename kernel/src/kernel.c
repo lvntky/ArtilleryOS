@@ -4,7 +4,6 @@ void kernel_main()
 {
 	terminal_init();
 	get_cpu_info();
-	descriptor_tables_init();
 
 	//  idt_activate();
 	//  outb(0x60, 0x10);

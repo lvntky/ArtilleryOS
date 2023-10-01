@@ -1,32 +1,25 @@
-ENTRY(loader)
-OUTPUT_FORMAT(elf32-i386)
-OUTPUT_ARCH(i386:i386)
-
+OUTPUT_FORMAT("binary")
+ENTRY(start)
+phys = 0x00100000;
 SECTIONS
 {
-  . = 0x0100000;
-
-  .text :
-  {
-    *(.multiboot)
-    *(.text*)
+  .text phys : AT(phys) {
+    code = .;
+    *(.text)
     *(.rodata)
+    . = ALIGN(4096);
   }
-
-  .data  :
+  .data : AT(phys + (data - code))
   {
-    start_ctors = .;
-    KEEP(*( .init_array ));
-    KEEP(*(SORT_BY_INIT_PRIORITY( .init_array.* )));
-    end_ctors = .;
-
+    data = .;
     *(.data)
+    . = ALIGN(4096);
   }
-
-  .bss  :
+  .bss : AT(phys + (bss - code))
   {
+    bss = .;
     *(.bss)
+    . = ALIGN(4096);
   }
-
-  /DISCARD/ : { *(.fini_array*) *(.comment) }
+  end = .;
 }
