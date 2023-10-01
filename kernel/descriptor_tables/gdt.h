@@ -5,17 +5,19 @@
 #include "../include/config.h"
 
 typedef struct gdt_entry_t {
-	uint16_t limit_low;
-	uint16_t base_low;
-	uint8_t base_middle;
-	uint8_t access;
-	uint8_t granularity;
-	uint8_t base_high;
+	unsigned short limit_low;
+	unsigned short base_low;
+	unsigned char base_middle;
+	unsigned char access;
+	unsigned char granularity;
+	unsigned char base_high;
 } __attribute__((packed)) gdt_entry_t;
 
+/* Special pointer which includes the limit: The max bytes
+*  taken up by the GDT, minus 1. Again, this NEEDS to be packed */
 typedef struct gdt_ptr_t {
-	uint16_t limit;
-	uint8_t base;
+	unsigned short limit;
+	unsigned int base;
 } __attribute__((packed)) gdt_ptr_t;
 
 #endif
