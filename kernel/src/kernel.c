@@ -16,7 +16,7 @@ void kernel_main()
 		for (int i = 0; i < 99999999; i++) {
 			/* code */
 		}
-
+		gui_draw_string(10, 26, "Enjoy the GUI :^)", 0x00);
 		color_i++;
 		if (color_i > 16) {
 			color_i = 0;
