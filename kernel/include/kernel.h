@@ -8,6 +8,8 @@
 #include "../descriptor_tables/gdt.h"
 #include "../descriptor_tables/idt.h"
 #include "../../gui/render_font.h"
+#include "timer.h"
+#include "../driver/include/keyboard.h"
 
 void kernel_main();
 

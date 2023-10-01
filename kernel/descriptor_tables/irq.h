@@ -8,5 +8,6 @@
 #include "idt.h"
 
 void irqs_install();
+void irq_install_handler(int irq, void (*handler)(register_t *r));
 
 #endif

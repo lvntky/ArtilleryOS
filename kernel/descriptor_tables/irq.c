@@ -20,7 +20,7 @@ extern void irq15();
 void *irq_routines[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 /* This installs a custom IRQ handler for the given IRQ */
-void irq_install_handler(int irq, void (*handler)(regiser_t *r))
+void irq_install_handler(int irq, void (*handler)(register_t *r))
 {
 	irq_routines[irq] = handler;
 }
@@ -59,10 +59,10 @@ void irqs_install()
 	idt_set_gate(47, (unsigned)irq15, 0x08, 0x8E);
 }
 
-void irq_handler(regiser_t *reg)
+void irq_handler(register_t *reg)
 {
 	printf("HARDWARE INTERRUPT\n");
-	void (*handler)(regiser_t * r);
+	void (*handler)(register_t * r);
 
 	/* Find out if we have a custom handler to run for this
     *  IRQ, and then finally, run it */

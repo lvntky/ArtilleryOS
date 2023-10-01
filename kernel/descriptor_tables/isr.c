@@ -113,7 +113,7 @@ const char *exception_messages[] = { "Division By Zero",
 #define EXCEPTION_MESSAGES_COUNT \
 	(sizeof(exception_messages) / sizeof(exception_messages[0]))
 
-void _fault_handler(regiser_t *reg)
+void _fault_handler(register_t *reg)
 {
 	if (reg->int_no < 32) {
 		printf("Exception: %s\n", exception_messages[reg->int_no]);
