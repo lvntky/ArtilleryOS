@@ -51,7 +51,10 @@ We are tracking the progress of Artillery OS with screenshots. You can find more
 ![InitialGraphics](docs/screen_demo.gif)
 
 * GUI Bitmap Font Rendering :
-![InitialGraphics](docs/font_render.gif)
+![Font](docs/font_render.gif)
+
+* Kernel Panic aka Red Screen of Death :
+![kernelPanic](docs/kernel_panic.png)
 
 
 
