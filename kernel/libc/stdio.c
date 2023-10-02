@@ -115,3 +115,8 @@ int printf(const char *format, ...)
 	va_end(args);
 	return written;
 }
+
+void putchar(char c)
+{
+	terminal_write_default(c);
+}

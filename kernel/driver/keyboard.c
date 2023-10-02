@@ -42,7 +42,15 @@ void keyboard_handler(register_t *reg)
 	scan_code = insb(0x60); // Use inb instead of insb
 	if (scan_code < 128) {
 		char key = kbdus[scan_code];
-		printf("Pressed: %c\n", key);
+
+		// Handle special keys
+		if (key == '\n') {
+			putchar('\n'); // Handle Enter
+		} else if (key == '\b') {
+			putchar('\b'); // Handle Backspace
+		} else if (key != 0) {
+			putchar(key);
+		}
 	}
 }
 

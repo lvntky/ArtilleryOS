@@ -6,6 +6,7 @@ void kernel_main()
 	get_cpu_info();
 	gdt_init();
 	idt_init();
+	timer_init(50);
 	keyboard_init();
 
 	/**

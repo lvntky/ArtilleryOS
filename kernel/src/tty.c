@@ -1,15 +1,13 @@
 #include "../include/tty.h"
 
 uint16_t *vid_mem = (uint16_t *)(VIDEO_MEM_ADDRESS);
-uint16_t terminal_column = 0; // x
-uint16_t terminal_row = 0; // y
+uint16_t terminal_cursor_x = 0;
+uint16_t terminal_cursor_y = 0;
+uint16_t scroll_offset = 0;
 
 // Define the number of rows and columns for the terminal.
 #define TERMINAL_ROWS VGA_HEIGHT
 #define TERMINAL_COLS VGA_WIDTH
-
-// Track the current scroll position.
-uint16_t scroll_offset = 0;
 
 uint16_t terminal_makechar(char c, enum VGA_COLOR color)
 {
@@ -18,64 +16,79 @@ uint16_t terminal_makechar(char c, enum VGA_COLOR color)
 
 void scroll_terminal()
 {
-	// Shift the entire screen content up by one row.
-	for (int y = 0; y < TERMINAL_ROWS - 1; y++) {
-		for (int x = 0; x < TERMINAL_COLS; x++) {
-			vid_mem[y * TERMINAL_COLS + x] =
-				vid_mem[(y + 1) * TERMINAL_COLS + x];
+	for (int y = 0; y < VGA_HEIGHT - 1; y++) {
+		for (int x = 0; x < VGA_WIDTH; x++) {
+			vid_mem[y * VGA_WIDTH + x] =
+				vid_mem[(y + 1) * VGA_WIDTH + x];
 		}
 	}
 
-	// Clear the last row.
-	for (int x = 0; x < TERMINAL_COLS; x++) {
-		vid_mem[(TERMINAL_ROWS - 1) * TERMINAL_COLS + x] =
+	for (int x = 0; x < VGA_WIDTH; x++) {
+		vid_mem[(VGA_HEIGHT - 1) * VGA_WIDTH + x] =
 			terminal_makechar(' ', VGA_COLOR_BLACK);
 	}
+
+	terminal_cursor_x = 0;
+	terminal_cursor_y = VGA_HEIGHT - 1;
 }
 
 void terminal_putchar(int x, int y, char c, enum VGA_COLOR color)
 {
-	// Check for overflow and scroll if needed.
-	if (y >= TERMINAL_ROWS) {
+	if (y >= VGA_HEIGHT) {
 		scroll_terminal();
-		y = TERMINAL_ROWS - 1;
+		y = VGA_HEIGHT - 1;
 	}
 
-	vid_mem[(y * TERMINAL_COLS) + x] = terminal_makechar(c, color);
+	vid_mem[y * VGA_WIDTH + x] = terminal_makechar(c, color);
 }
 
 void terminal_write(char c, enum VGA_COLOR color)
 {
 	if (c == '\n') {
-		terminal_column = 0;
-		terminal_row++;
+		terminal_cursor_x = 0;
+		terminal_cursor_y++;
 
-		// Check if we've reached the end of the screen and scroll if needed.
-		if (terminal_row >= TERMINAL_ROWS) {
+		if (terminal_cursor_y >= VGA_HEIGHT) {
 			scroll_terminal();
-			terminal_row = TERMINAL_ROWS - 1;
+			terminal_cursor_y = VGA_HEIGHT - 1;
 		}
 	} else {
-		terminal_putchar(terminal_column, terminal_row, c, color);
-		terminal_column++;
+		terminal_putchar(terminal_cursor_x, terminal_cursor_y, c,
+				 color);
+		terminal_cursor_x++;
 
-		// Check if we've reached the end of the line and wrap to the next line.
-		if (terminal_column >= TERMINAL_COLS) {
-			terminal_column = 0;
-			terminal_row++;
-		}
+		if (terminal_cursor_x >= VGA_WIDTH) {
+			terminal_cursor_x = 0;
+			terminal_cursor_y++;
 
-		// Check if we've reached the end of the screen and scroll if needed.
-		if (terminal_row >= TERMINAL_ROWS) {
-			scroll_terminal();
-			terminal_row = TERMINAL_ROWS - 1;
+			if (terminal_cursor_y >= VGA_HEIGHT) {
+				scroll_terminal();
+				terminal_cursor_y = VGA_HEIGHT - 1;
+			}
 		}
 	}
 }
 
+void handle_backspace()
+{
+	if (terminal_cursor_x > 0) {
+		terminal_cursor_x--;
+	} else if (terminal_cursor_y > 0) {
+		terminal_cursor_x = VGA_WIDTH - 1;
+		terminal_cursor_y--;
+	}
+
+	vid_mem[terminal_cursor_y * VGA_WIDTH + terminal_cursor_x] =
+		terminal_makechar(' ', VGA_COLOR_BLACK);
+}
+
 void terminal_write_default(char c)
 {
-	terminal_write(c, VGA_COLOR_WHITE);
+	if (c == '\b') {
+		handle_backspace();
+	} else {
+		terminal_write(c, VGA_COLOR_WHITE);
+	}
 }
 
 size_t strlen(char *str)
@@ -129,6 +142,8 @@ void print_logo()
 
 void terminal_init(void)
 {
+	terminal_cursor_x = 0;
+	terminal_cursor_y = 0;
 	for (int y = 0; y < TERMINAL_ROWS; y++) {
 		for (int x = 0; x < TERMINAL_COLS; x++) {
 			terminal_putchar(x, y, ' ', VGA_COLOR_BLACK);
@@ -139,60 +154,3 @@ void terminal_init(void)
 }
 
 // LOGGER FUNCTIONS
-uint16_t terminal_makechar_logger(char c, enum VGA_COLOR fg_color,
-				  enum VGA_COLOR bg_color)
-{
-	return (bg_color << 12) | (fg_color << 8) | c;
-}
-
-void terminal_putchar_logger(int x, int y, char c, enum VGA_COLOR fg_color,
-			     enum VGA_COLOR bg_color)
-{
-	// Check for overflow and scroll if needed.
-	if (y >= TERMINAL_ROWS) {
-		scroll_terminal();
-		y = TERMINAL_ROWS - 1;
-	}
-
-	vid_mem[(y * TERMINAL_COLS) + x] =
-		terminal_makechar_logger(c, fg_color, bg_color);
-}
-
-void terminal_write_logger(char c, enum VGA_COLOR fg_color,
-			   enum VGA_COLOR bg_color)
-{
-	if (c == '\n') {
-		terminal_column = 0;
-		terminal_row++;
-
-		// Check if we've reached the end of the screen and scroll if needed.
-		if (terminal_row >= TERMINAL_ROWS) {
-			scroll_terminal();
-			terminal_row = TERMINAL_ROWS - 1;
-		}
-	} else {
-		terminal_putchar_logger(terminal_column, terminal_row, c,
-					fg_color, bg_color);
-		terminal_column++;
-
-		// Check if we've reached the end of the line and wrap to the next line.
-		if (terminal_column >= TERMINAL_COLS) {
-			terminal_column = 0;
-			terminal_row++;
-		}
-
-		// Check if we've reached the end of the screen and scroll if needed.
-		if (terminal_row >= TERMINAL_ROWS) {
-			scroll_terminal();
-			terminal_row = TERMINAL_ROWS - 1;
-		}
-	}
-}
-
-void terminal_print_color_logger(char *str, enum VGA_COLOR fg_color,
-				 enum VGA_COLOR bg_color)
-{
-	for (size_t i = 0; i < strlen(str); i++) {
-		terminal_write_logger(str[i], fg_color, bg_color);
-	}
-}

@@ -61,7 +61,7 @@ void irqs_install()
 
 void irq_handler(register_t *reg)
 {
-	printf("HARDWARE INTERRUPT\n");
+	//printf("HARDWARE INTERRUPT\n");
 	void (*handler)(register_t * r);
 
 	/* Find out if we have a custom handler to run for this

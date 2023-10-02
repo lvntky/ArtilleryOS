@@ -7,5 +7,6 @@
 
 void itoa(int, char *, int);
 int printf(const char *, ...);
+void putchar(char c);
 
 #endif
