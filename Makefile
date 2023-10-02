@@ -2,7 +2,7 @@ CFLAGS = -m32 -g -ffreestanding -falign-jumps -falign-functions -falign-labels -
 ASPARAMS = --32
 LDPARAMS = -melf_i386 -g
 
-objects = build/loader.o build/kernel.o build/tty.o build/stdio.o build/cpu_info.o build/string.o build/io_port.o ./build/vga_driver.o ./build/pic.o ./build/gdt.o ./build/idt.o ./build/isr.o ./build/irq.o  ./build/render_font.o ./build/timer.o ./build/keyboard.o ./build/panic.o
+objects = build/loader.o build/kernel.o build/tty.o build/stdio.o build/cpu_info.o build/string.o build/io_port.o ./build/vga_driver.o ./build/pic.o ./build/gdt.o ./build/idt.o ./build/isr.o ./build/irq.o  ./build/render_font.o ./build/timer.o ./build/keyboard.o ./build/panic.o ./build/render_image.o
 
 
 

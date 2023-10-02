@@ -11,6 +11,7 @@
 #include "timer.h"
 #include "../driver/include/keyboard.h"
 #include "panic.h"
+#include "../../gui/render_image.h"
 
 void kernel_main();
 
