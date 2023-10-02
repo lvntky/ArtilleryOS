@@ -19,5 +19,6 @@ void terminal_print_color(char *str, enum VGA_COLOR color);
 void terminal_print(char *);
 size_t strlen(char *str);
 void terminal_print_color_logger(char *, enum VGA_COLOR, enum VGA_COLOR);
-
+void clear_terminal(enum VGA_COLOR);
+void terminal_putstr_with_colors(const char *, enum VGA_COLOR, enum VGA_COLOR);
 #endif

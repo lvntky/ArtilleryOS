@@ -153,4 +153,68 @@ void terminal_init(void)
 	terminal_print_color("v0.2.3", VGA_COLOR_YELLOW);
 }
 
+void set_terminal_background(int x, int y, enum VGA_COLOR background_color)
+{
+	if (y < VGA_HEIGHT && x < VGA_WIDTH) {
+		// Set the background color for the entire character
+		vid_mem[y * VGA_WIDTH + x] =
+			(background_color << 12) |
+			(vid_mem[y * VGA_WIDTH + x] & 0xFF);
+	}
+}
+
+void clear_terminal(enum VGA_COLOR background_color)
+{
+	terminal_cursor_x = 0;
+	terminal_cursor_y = 0;
+	for (int y = 0; y < TERMINAL_ROWS; y++) {
+		for (int x = 0; x < TERMINAL_COLS; x++) {
+			// Set the background color for each position
+			terminal_putchar(x, y, ' ', background_color);
+			set_terminal_background(x, y, background_color);
+		}
+	}
+}
+
 // LOGGER FUNCTIONS
+uint16_t terminal_makechar_bg(char c, enum VGA_COLOR fg_color,
+			      enum VGA_COLOR bg_color)
+{
+	return (bg_color << 12) | (fg_color << 8) | c;
+}
+
+void terminal_putchar_with_colors(int x, int y, char c, enum VGA_COLOR fg_color,
+				  enum VGA_COLOR bg_color)
+{
+	if (y >= VGA_HEIGHT) {
+		scroll_terminal();
+		y = VGA_HEIGHT - 1;
+	}
+
+	vid_mem[y * VGA_WIDTH + x] =
+		terminal_makechar_bg(c, fg_color, bg_color);
+}
+
+void terminal_putstr_with_colors(const char *str, enum VGA_COLOR fg_color,
+				 enum VGA_COLOR bg_color)
+{
+	int i = 0;
+	while (str[i] != '\0') {
+		terminal_putchar_with_colors(terminal_cursor_x,
+					     terminal_cursor_y, str[i],
+					     fg_color, bg_color);
+		terminal_cursor_x++;
+
+		if (terminal_cursor_x >= VGA_WIDTH) {
+			terminal_cursor_x = 0;
+			terminal_cursor_y++;
+
+			if (terminal_cursor_y >= VGA_HEIGHT) {
+				scroll_terminal();
+				terminal_cursor_y = VGA_HEIGHT - 1;
+			}
+		}
+
+		i++;
+	}
+}

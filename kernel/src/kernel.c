@@ -8,6 +8,7 @@ void kernel_main()
 	idt_init();
 	timer_init(50);
 	keyboard_init();
+	panic("PANIC");
 
 	/**
 	 * @brief GUI

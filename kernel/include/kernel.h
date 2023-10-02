@@ -10,6 +10,7 @@
 #include "../../gui/render_font.h"
 #include "timer.h"
 #include "../driver/include/keyboard.h"
+#include "panic.h"
 
 void kernel_main();
 
