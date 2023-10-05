@@ -2,8 +2,8 @@
 #define _VGA_DRIVER_H
 
 #include "../../include/io_port.h"
-#include "../../libc/stdio.h"
-#include "../../libc/string.h"
+#include "../../libc/include/stdio.h"
+#include "../../libc/include/string.h"
 #include <stdint.h>
 #include <stdbool.h>
 

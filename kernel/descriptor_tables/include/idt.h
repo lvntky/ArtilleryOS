@@ -1,8 +1,8 @@
 #ifndef _IDT_H
 #define _IDT_H
 
-#include "../libc/string.h"
-#include "../include/config.h"
+#include "../../libc/include/string.h"
+#include "../../include/config.h"
 #include "isr.h"
 #include "irq.h"
 

@@ -1,7 +1,7 @@
 #ifndef _STDIO_H
 #define _STDIO_H
 
-#include "../include/tty.h"
+#include "../../include/tty.h"
 #include <stdarg.h>
 #include <stdbool.h>
 

@@ -2,7 +2,7 @@
 #define _GDT_H
 
 #include <stdint.h>
-#include "../include/config.h"
+#include "../../include/config.h"
 
 typedef struct gdt_entry_t {
 	unsigned short limit_low;

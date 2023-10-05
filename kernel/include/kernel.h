@@ -1,12 +1,12 @@
 #ifndef _KERNEL_H
 #define _KERNEL_H
 
-#include "../libc/stdio.h"
+#include "../libc/include/stdio.h"
 #include "tty.h"
 #include "cpu_info.h"
 #include "../driver/include/vga_driver.h"
-#include "../descriptor_tables/gdt.h"
-#include "../descriptor_tables/idt.h"
+#include "../descriptor_tables/include/gdt.h"
+#include "../descriptor_tables/include/idt.h"
 #include "../../gui/render_font.h"
 #include "timer.h"
 #include "../driver/include/keyboard.h"

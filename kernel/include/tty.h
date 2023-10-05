@@ -2,7 +2,7 @@
 #define _TTY_H
 
 #include "vga_color_enum.h"
-#include "../libc/stdio.h"
+#include "../libc/include/stdio.h"
 #include <stddef.h>
 #include <stdint.h>
 

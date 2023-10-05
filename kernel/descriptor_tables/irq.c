@@ -1,4 +1,4 @@
-#include "irq.h"
+#include "./include/irq.h"
 
 extern void irq0();
 extern void irq1();

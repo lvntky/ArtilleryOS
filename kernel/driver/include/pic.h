@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "../../include/io_port.h"
 #include "../../include/config.h"
-#include "../../libc/stdio.h"
+#include "../../libc/include/stdio.h"
 
 /**
  * NOTE: This microcontroller INTEL 8259A used hardware interrupts only. 
