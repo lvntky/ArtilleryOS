@@ -1,6 +1,6 @@
 #include "../include/panic.h"
 
-void panic(char *message)
+void panic(char *message, char *location)
 {
 	// Disable interrupts
 	asm volatile("cli");
@@ -23,8 +23,7 @@ void panic(char *message)
 		"This could be due to hardware issues,or kernel bug.",
 		VGA_COLOR_WHITE, VGA_COLOR_RED);
 
-	char *dummy_loaction = "kernel.c";
-	printf("\n\n\n\nLocation: %s\n", dummy_loaction);
+	printf("\n\n\n\nLocation: %s\n", location);
 	printf("Message: %s", message);
 	// Halt the system
 	asm volatile("hlt");

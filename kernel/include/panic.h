@@ -3,5 +3,5 @@
 
 #include "tty.h"
 
-void panic(char *);
+void panic(char *, char *);
 #endif
