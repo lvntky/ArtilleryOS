@@ -105,6 +105,12 @@ int printf(const char *format, ...)
 				}
 				break;
 			}
+			case 'c': {
+				char c = va_arg(args, int);
+				terminal_write_default(c);
+				written++;
+				break;
+			}
 			default:
 				break;
 			}
