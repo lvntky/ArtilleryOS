@@ -19,7 +19,8 @@ objects = build/loader.o \
           ./build/timer.o \
           ./build/keyboard.o \
           ./build/panic.o \
-          ./build/render_image.o
+          ./build/render_image.o \
+		  ./build/kheap.o
 
 
 
@@ -43,7 +44,9 @@ build/%.o: kernel/descriptor_tables/%.c
 build/%.o: gui/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 	
-# MEMORY.ASM
+# MEMORY
+build/%.o: kernel/memory/%.c
+	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
 # LOADER ASM
 build/%.o: boot/%.asm
