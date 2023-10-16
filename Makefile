@@ -6,7 +6,7 @@ objects = ./build/loader.o \
           ./build/kernel.o \
           ./build/tty.o \
           ./build/stdio.o \
-		  ./build/qemu_debug.o
+		  ./build/qemu_debug.o \
           ./build/cpu_info.o \
           ./build/string.o \
           ./build/io_port.o \
