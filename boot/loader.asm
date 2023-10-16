@@ -8,6 +8,8 @@ MBOOT_CHECKSUM      equ -(MBOOT_HEADER_MAGIC + MBOOT_HEADER_FLAGS)
 global start
 start:
     mov esp, _sys_stack
+    mov ebx, mboot
+    push ebx
     jmp stublet
 
 ALIGN 4  ; Ensure proper alignment for the Multiboot header
