@@ -8,9 +8,7 @@
 #define QEMU_DEBUGCON_PORT 0xe9
 
 void qemu_init_debug();
-void qemu_write_string(const char *message);
-void qemu_write_char(const char);
-void debugcon_write_string(const char *message);
-void debugcon_write_char(const char c);
+void qemu_write_string(char *message);
+void qemu_write_char(char);
 
 #endif

@@ -10,6 +10,7 @@ void kernel_main()
 	timer_init(50);
 	keyboard_init();
 
+	qemu_write_string("test qemu debug");
 	//set_mode(320, 200, 8);
 	//clear_screen_withcolor(0x04);
 }
