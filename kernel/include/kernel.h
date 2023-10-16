@@ -3,6 +3,7 @@
 
 #include "../libc/include/stdio.h"
 #include "tty.h"
+#include "qemu_debug.h"
 #include "cpu_info.h"
 #include "../driver/include/vga_driver.h"
 #include "../descriptor_tables/include/gdt.h"

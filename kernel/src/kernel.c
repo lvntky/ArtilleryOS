@@ -3,6 +3,7 @@
 void kernel_main()
 {
 	terminal_init();
+	qemu_init_debug();
 	get_cpu_info();
 	gdt_init();
 	idt_init();
