@@ -32,4 +32,5 @@ void idt_init()
 
 	/* Points the processor's internal register to the new IDT */
 	_idt_load();
+	printf("[INIT] IDT initialized successfully!\n");
 }

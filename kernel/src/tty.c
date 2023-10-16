@@ -151,6 +151,7 @@ void terminal_init(void)
 	}
 	print_logo();
 	terminal_print_color("v0.2.3", VGA_COLOR_YELLOW);
+	printf("\n\n[INIT] terminal interface initialized successfully!\n");
 }
 
 void set_terminal_background(int x, int y, enum VGA_COLOR background_color)

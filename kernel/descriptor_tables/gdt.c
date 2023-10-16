@@ -45,4 +45,5 @@ void gdt_init()
 
 	/* Flush out the old GDT and install the new changes! */
 	_gdt_flush();
+	printf("[INIT] GDT initialized successfully!\n");
 }

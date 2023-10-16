@@ -57,4 +57,5 @@ void keyboard_handler(register_t *reg)
 void keyboard_init()
 {
 	irq_install_handler(1, keyboard_handler);
+	printf("[INIT] PS/2 keyboard initialized successfully!\n");
 }

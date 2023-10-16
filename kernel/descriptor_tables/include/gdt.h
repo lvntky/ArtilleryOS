@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include "../../include/config.h"
-
+#include "../../libc/include/stdio.h"
 typedef struct gdt_entry_t {
 	unsigned short limit_low;
 	unsigned short base_low;

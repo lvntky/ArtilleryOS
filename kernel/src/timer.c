@@ -23,4 +23,5 @@ void timer_init(uint32_t hertz)
 	// Send the frequency divisor.
 	outb(0x40, l);
 	outb(0x40, h);
+	printf("[INIT] PIT initialized successfully!\n");
 }
