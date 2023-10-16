@@ -1,31 +1,32 @@
+MBOOT_PAGE_ALIGN    equ 1<<0    ; Load kernel and modules on a page boundary
+MBOOT_MEM_INFO      equ 1<<1    ; Provide your kernel with memory info
+MBOOT_HEADER_MAGIC  equ 0x1BADB002 ; Multiboot Magic value
+MBOOT_HEADER_FLAGS  equ MBOOT_PAGE_ALIGN | MBOOT_MEM_INFO
+MBOOT_CHECKSUM      equ -(MBOOT_HEADER_MAGIC + MBOOT_HEADER_FLAGS)
+
 [BITS 32]
 global start
 start:
     mov esp, _sys_stack
     jmp stublet
 
-ALIGN 4
+ALIGN 4  ; Ensure proper alignment for the Multiboot header
+
+global mboot
+extern code
+extern bss
+extern end
+
 mboot:
-    MULTIBOOT_PAGE_ALIGN	equ 1<<0
-    MULTIBOOT_MEMORY_INFO	equ 1<<1
-    MULTIBOOT_AOUT_KLUDGE	equ 1<<16
-    MULTIBOOT_HEADER_MAGIC	equ 0x1BADB002
-    MULTIBOOT_HEADER_FLAGS	equ MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO | MULTIBOOT_AOUT_KLUDGE
-    MULTIBOOT_CHECKSUM	equ -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_HEADER_FLAGS)
-    EXTERN code, bss, end
+    dd  MBOOT_HEADER_MAGIC      ; Multiboot Magic value
+    dd  MBOOT_HEADER_FLAGS      ; Multiboot header flags
+    dd  MBOOT_CHECKSUM          ; Multiboot checksum
 
-    
-    dd MULTIBOOT_HEADER_MAGIC
-    dd MULTIBOOT_HEADER_FLAGS
-    dd MULTIBOOT_CHECKSUM
-    
-    
-    dd mboot
-    dd code
-    dd bss
-    dd end
-    dd start
-
+    dd  mboot                   ; Location of this descriptor
+    dd  code                    ; Start of kernel '.text' (code) section.
+    dd  bss                     ; End of kernel '.bss' section.
+    dd  end                     ; End of kernel.
+    dd  start                   ; Kernel entry point (initial EIP).
 
 extern kernel_main
 stublet:

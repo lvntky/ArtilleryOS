@@ -1,6 +1,6 @@
 #include "../include/kernel.h"
 
-void kernel_main()
+void kernel_main(multiboot_info_t *mbi)
 {
 	terminal_init();
 	qemu_init_debug();
@@ -10,7 +10,6 @@ void kernel_main()
 	keyboard_init();
 	get_cpu_info();
 
-	qemu_write_string("test qemu debug");
 	//set_mode(320, 200, 8);
 	//clear_screen_withcolor(0x04);
 }

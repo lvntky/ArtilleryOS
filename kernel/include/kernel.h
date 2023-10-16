@@ -1,6 +1,7 @@
 #ifndef _KERNEL_H
 #define _KERNEL_H
 
+#include "multiboot.h"
 #include "../libc/include/stdio.h"
 #include "tty.h"
 #include "qemu_debug.h"
