@@ -71,6 +71,18 @@ int printf(const char *format, ...)
 				}
 				break;
 			}
+			case 'u': {
+				unsigned int num = va_arg(args, unsigned int);
+				char buffer[12]; // Enough for a 32-bit unsigned integer
+				itoa(num, buffer, 10);
+				int i = 0;
+				while (buffer[i]) {
+					terminal_write_default(buffer[i]);
+					written++;
+					i++;
+				}
+				break;
+			}
 			case 's': {
 				const char *str = va_arg(args, const char *);
 				while (*str) {

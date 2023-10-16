@@ -20,13 +20,14 @@ extern bss
 extern end
 
 mboot:
-    dd  MBOOT_HEADER_MAGIC      ; Multiboot Magic value
-    dd  MBOOT_HEADER_FLAGS      ; Multiboot header flags
-    dd  MBOOT_CHECKSUM          ; Multiboot checksum
-
+    dd  MBOOT_HEADER_MAGIC      ; GRUB will search for this value on each
+                                ; 4-byte boundary in your kernel file
+    dd  MBOOT_HEADER_FLAGS      ; How GRUB should load your file / settings
+    dd  MBOOT_CHECKSUM          ; To ensure that the above values are correct
+    
     dd  mboot                   ; Location of this descriptor
     dd  code                    ; Start of kernel '.text' (code) section.
-    dd  bss                     ; End of kernel '.bss' section.
+    dd  bss                     ; End of kernel '.data' section.
     dd  end                     ; End of kernel.
     dd  start                   ; Kernel entry point (initial EIP).
 
