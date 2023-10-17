@@ -25,8 +25,8 @@ extern uint32_t end;
 
 void pmm_init(uint32_t);
 uint32_t pmm_allocate_block();
-void pmm_free_block();
+void pmm_free_block(uint32_t);
 uint32_t pmm_first_free_block();
-void pmm_simple_test();
+void pmm_test();
 
 #endif
