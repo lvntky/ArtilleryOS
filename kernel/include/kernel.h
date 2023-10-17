@@ -2,6 +2,7 @@
 #define _KERNEL_H
 
 #include "multiboot.h"
+#include "system.h"
 #include "../libc/include/stdio.h"
 #include "tty.h"
 #include "qemu_debug.h"
@@ -14,6 +15,7 @@
 #include "../driver/include/keyboard.h"
 #include "panic.h"
 #include "../../gui/render_image.h"
+#include "../memory/include/pmm.h"
 
 void kernel_main();
 

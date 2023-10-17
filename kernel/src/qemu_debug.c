@@ -41,8 +41,51 @@ void qemu_write_char(char ch)
 	// Write the actual character
 	outb(QEMU_LOG_SERIAL_PORT, ch);
 }
+void itoa_dbg(int n, char *buffer, int base)
+{
+	int i = 0;
+	int isNegative = 0;
 
-void qemu_write_string(char *string)
+	// Handle 0 explicitly, otherwise empty string is printed
+	if (n == 0) {
+		buffer[i++] = '0';
+		buffer[i] = '\0';
+	} else {
+		// Handle negative numbers only if the base is 10
+		if (n < 0 && base == 10) {
+			isNegative = 1;
+			n = -n;
+		}
+
+		// Process individual digits
+		while (n != 0) {
+			int rem = n % base;
+			buffer[i++] = (rem > 9) ? (rem - 10) + 'a' : rem + '0';
+			n = n / base;
+		}
+
+		// Append negative sign for base 10
+		if (isNegative && base == 10) {
+			buffer[i++] = '-';
+		}
+
+		buffer[i] = '\0'; // Null-terminate the string
+	}
+
+	// Reverse the string
+	int start = 0;
+	int end = i - 1;
+	while (start < end) {
+		// Swap characters
+		char temp = buffer[start];
+		buffer[start] = buffer[end];
+		buffer[end] = temp;
+		start++;
+		end--;
+	}
+}
+
+void qemu_write_string(char *format, ...)
 {
 	// Write each character in the prefix individually
 	outb(QEMU_LOG_SERIAL_PORT, '[');
@@ -60,9 +103,45 @@ void qemu_write_string(char *string)
 	outb(QEMU_LOG_SERIAL_PORT, ']');
 	outb(QEMU_LOG_SERIAL_PORT, ' ');
 
-	// Write the actual string
-	while (*string != '\0') {
-		outb(QEMU_LOG_SERIAL_PORT, *string);
-		string++;
+	va_list args;
+	va_start(args, format);
+
+	char *ptr = format;
+	while (*ptr != '\0') {
+		if (*ptr == '%') {
+			ptr++;
+			switch (*ptr) {
+			case 'x': {
+				unsigned int value = va_arg(args, unsigned int);
+				char buffer[20];
+				itoa_dbg(value, buffer, 16);
+				char *buffer_ptr = buffer;
+				while (*buffer_ptr != '\0') {
+					outb(QEMU_LOG_SERIAL_PORT, *buffer_ptr);
+					buffer_ptr++;
+				}
+				break;
+			}
+			case 'd': {
+				int value = va_arg(args, int);
+				char buffer[20];
+				itoa_dbg(value, buffer, 10);
+				char *buffer_ptr = buffer;
+				while (*buffer_ptr != '\0') {
+					outb(QEMU_LOG_SERIAL_PORT, *buffer_ptr);
+					buffer_ptr++;
+				}
+				break;
+			}
+			default:
+				// Handle unsupported format specifier
+				break;
+			}
+		} else {
+			outb(QEMU_LOG_SERIAL_PORT, *ptr);
+		}
+		ptr++;
 	}
+
+	va_end(args);
 }

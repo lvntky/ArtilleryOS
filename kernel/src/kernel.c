@@ -10,6 +10,7 @@ void kernel_main()
 	keyboard_init();
 	get_cpu_info();
 
+	pmm_init(1096 * MB);
 	// set_mode(320, 200, 8);
 	// clear_screen_withcolor(0x04);
 }
