@@ -1,6 +1,6 @@
 #include "./include/idt.h"
 
-extern void _idt_load();
+extern void _idt_load(); // idt_flush.asm
 
 idt_entry_t idt[ARTILLERYOS_MAX_INTERRUPT_SIZE];
 idt_ptr_t _idtp;

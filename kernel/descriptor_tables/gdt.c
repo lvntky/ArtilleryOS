@@ -1,6 +1,6 @@
 #include "./include/gdt.h"
 
-extern void _gdt_flush();
+extern void _gdt_flush(); // gdt_flush.asm
 
 gdt_entry_t gdt[ARTILLERYOS_GDT_SIZE];
 gdt_ptr_t _gp;

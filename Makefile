@@ -14,6 +14,7 @@ objects = ./build/loader.o \
           ./build/pic.o \
 		  ./build/gdt_flush.o \
           ./build/gdt.o \
+		  ./build/idt_flush.o \
           ./build/idt.o \
           ./build/isr.o \
           ./build/irq.o \
