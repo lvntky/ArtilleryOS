@@ -12,6 +12,7 @@ objects = ./build/loader.o \
           ./build/io_port.o \
           ./build/vga_driver.o \
           ./build/pic.o \
+		  ./build/gdt_flush.o \
           ./build/gdt.o \
           ./build/idt.o \
           ./build/isr.o \
@@ -39,6 +40,9 @@ build/%.o: kernel/driver/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
 # Descriptor tables
+build/%.o: kernel/descriptor_tables/%.asm
+	nasm -f elf32 -o $@ $<
+
 build/%.o: kernel/descriptor_tables/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
