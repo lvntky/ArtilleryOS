@@ -1,6 +1,7 @@
 
 #include "./include/isr.h"
 
+// From isr_stubs.asm
 extern void isr0();
 extern void isr1();
 extern void isr2();

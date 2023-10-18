@@ -16,8 +16,10 @@ objects = ./build/loader.o \
           ./build/gdt.o \
 		  ./build/idt_flush.o \
           ./build/idt.o \
+		  ./build/isr_stubs.o \
           ./build/isr.o \
-          ./build/irq.o \
+          ./build/irq_stubs.o \
+		  ./build/irq.o \
           ./build/render_font.o \
           ./build/timer.o \
           ./build/keyboard.o \
