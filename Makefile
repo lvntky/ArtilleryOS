@@ -83,7 +83,7 @@ install: kernel.bin
 	sudo cp $< /boot/mykernel.bin
 
 clean:
-	rm -r ./build/*
-	rm -r kernel.bin
-	rm -r artillery.iso
+	rm -rf ./build/*
+	rm -f kernel.bin
+	rm -f artillery.iso
 
