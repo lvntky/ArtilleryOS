@@ -15,7 +15,7 @@
 #include "../driver/include/keyboard.h"
 #include "panic.h"
 #include "../../gui/render_image.h"
-#include "../memory/include/pmm.h"
+#include "../memory/include/paging.h"
 
 void kernel_main();
 

@@ -9,7 +9,8 @@ void kernel_main()
 	idt_init();
 	timer_init(50);
 	keyboard_init();
-	pmm_init(1096 * MB);
+
+	//paging_init();
 
 	//pmm_test();
 	// set_mode(320, 200, 8);

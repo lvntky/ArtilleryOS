@@ -35,6 +35,13 @@ extern void isr29();
 extern void isr30();
 extern void isr31();
 
+void *isr_routines[32] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+void isr_install_handler(int isr, void (*handler)(register_t *r))
+{
+	isr_routines[isr] = handler;
+}
 void isrs_install()
 {
 	idt_set_gate(0, (unsigned)isr0, 0x08, 0x8E);
@@ -116,6 +123,12 @@ const char *exception_messages[] = { "Division By Zero",
 
 void _fault_handler(register_t *reg)
 {
+	void (*handler)(register_t * r);
+	handler = isr_routines[reg->int_no - 32];
+	if (handler) {
+		handler(reg);
+	}
+
 	if (reg->int_no < 32) {
 		printf("Exception: %s\n", exception_messages[reg->int_no]);
 		printf("System Halted!\n");
