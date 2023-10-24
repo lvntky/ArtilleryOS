@@ -3,6 +3,19 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "../../include/panic.h"
+#include "../../../boot/loader_global_variables.h"
+
+#define PAGE_DIRECTORY_OFFSET_BITS 10
+#define PAGE_TABLE_OFFSET_BITS 10
+#define PAGE_OFFSET_BITS 12
+
+#define PAGE_SIZE_BYTES 4096
+#define PAGE_SIZE_DWORDS 1024
+
+#define KERNEL_PAGE_TABLE_NUMBER 768
+
+#define BITMAP_SIZE 4096
 
 typedef struct kernel_memort_descriptor_t {
 	uint32_t kernel_virtual_start;
