@@ -61,29 +61,29 @@ build/%.o: kernel/memory/%.c
 build/%.o: boot/%.asm
 	nasm -f elf32 -o $@ $<
 
-kernel.bin: linker.ld $(objects)
+kernel.elf: linker.ld $(objects)
 	i686-elf-ld $(LDPARAMS) -T $< -o $@ $(objects)
 
-all: kernel.bin
+all: kernel.elf
 	mkdir iso
 	mkdir iso/boot
 	mkdir iso/boot/grub
-	cp kernel.bin iso/boot/kernel.bin
+	cp kernel.elf iso/boot/kernel.elf
 	echo 'set timeout=10'                      > iso/boot/grub/grub.cfg
 	echo 'set default=0'                     >> iso/boot/grub/grub.cfg
 	echo ''                                  >> iso/boot/grub/grub.cfg
 	echo 'menuentry "Artillery OS" {' >> iso/boot/grub/grub.cfg
-	echo '  multiboot /boot/kernel.bin'    >> iso/boot/grub/grub.cfg
+	echo '  multiboot /boot/kernel.elf'    >> iso/boot/grub/grub.cfg
 	echo '  boot'                            >> iso/boot/grub/grub.cfg
 	echo '}'                                 >> iso/boot/grub/grub.cfg
 	grub-mkrescue --output=artillery.iso iso
 	rm -rf iso
 
-install: kernel.bin
-	sudo cp $< /boot/mykernel.bin
+install: kernel.elf
+	sudo cp $< /boot/mykernel.elf
 
 clean:
 	rm -rf ./build/*
-	rm -f kernel.bin
+	rm -f kernel.elf
 	rm -f artillery.iso
 
