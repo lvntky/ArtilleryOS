@@ -25,8 +25,7 @@ objects = ./build/loader.o \
           ./build/keyboard.o \
           ./build/panic.o \
           ./build/render_image.o \
-		  ./build/kheap.o \
-		  ./build/paging.o
+		  ./build/page_table.o
 
 
 
