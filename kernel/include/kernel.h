@@ -1,7 +1,7 @@
 #ifndef _KERNEL_H
 #define _KERNEL_H
 
-#include "multiboot.h"
+#include "multiboot_util.h"
 #include "system.h"
 #include "../libc/include/stdio.h"
 #include "tty.h"

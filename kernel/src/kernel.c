@@ -9,13 +9,18 @@ void kernel_main(multiboot_info_t *mboot_info, unsigned int magic)
 	idt_init();
 	timer_init(50);
 	keyboard_init();
-	printf("Cheking multiboot magic...\n");
-	printf("Magic: 0x%x\n", magic);
 
-	if (mboot_info->flags & 0x1) {
+	print_multiboot_magic(magic);
+
+	if (is_multiboot_info_present(mboot_info)) {
 		printf("=== Memory Information ===\n");
 		printf("Lower Memory: 0x%x\n", mboot_info->mem_lower);
 		printf("Upper Memory: 0x%x\n", mboot_info->mem_upper);
+
+		//uint32_t start_addr = mboot_info->mmap_addr;
+		//multiboot_memory_map_t *mmap =
+		//	(multiboot_memory_map_t *)start_addr;
+
 	} else {
 		panic("Can't get memory information",
 		      "loader.asm, multiboot.h");

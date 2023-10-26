@@ -5,6 +5,7 @@ LDPARAMS = -melf_i386 -g
 objects = ./build/loader.o \
           ./build/kernel.o \
           ./build/tty.o \
+		  ./build/multiboot_util.o \
           ./build/stdio.o \
 		  ./build/qemu_debug.o \
           ./build/cpu_info.o \
