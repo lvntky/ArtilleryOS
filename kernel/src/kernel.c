@@ -26,6 +26,8 @@ void kernel_main(multiboot_info_t *mboot_info, unsigned int magic)
 		      "loader.asm, multiboot.h");
 	}
 
-	// set_mode(320, 200, 8);
-	// clear_screen_withcolor(0x04);
+#if GUI_MODE
+	set_mode(320, 200, 8);
+	clear_screen_withcolor(0x04);
+#endif
 }

@@ -72,6 +72,8 @@ int set_mode(uint32_t width, uint32_t height, uint32_t colordepth)
 		0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x41, 0x00, 0x0F, 0x00, 0x00
 	};
 
+	qemu_write_string("%s Graphics mode enabled(VGA 320x200x256).\n",
+			  POSITIVE_OUTPUT);
 	write_registers(g_320x200x256);
 	return 1;
 }

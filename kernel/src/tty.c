@@ -122,6 +122,8 @@ void print_logo()
 	qemu_write_string(
 		" /_/ \\_\\_|  \\__|_|_|_\\___|_|  \\_, |  \\___/|___/\n");
 	qemu_write_string("                              |__/\n");
+
+	qemu_write_string("\n%s version 0.2.4-alpha\n", INFORMATION_OUTPUT);
 }
 
 void terminal_init(void)

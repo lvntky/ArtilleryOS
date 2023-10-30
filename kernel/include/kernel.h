@@ -1,7 +1,7 @@
 #ifndef _KERNEL_H
 #define _KERNEL_H
 
-#define GUI_MODE 0
+#define GUI_MODE 1
 
 #include "multiboot_util.h"
 #include "system.h"

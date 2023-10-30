@@ -2,6 +2,7 @@
 #define _VGA_DRIVER_H
 
 #include "../../include/io_port.h"
+#include "../../include/qemu_debug.h"
 #include "../../libc/include/stdio.h"
 #include "../../libc/include/string.h"
 #include <stdint.h>

@@ -7,6 +7,9 @@
 
 #define QEMU_LOG_SERIAL_PORT 0x3f8
 #define QEMU_DEBUGCON_PORT 0xe9
+#define POSITIVE_OUTPUT "[+]"
+#define NEGATIVE_OUTPUT "[-]"
+#define INFORMATION_OUTPUT "[*]"
 
 void qemu_init_debug();
 void qemu_write_string(char *format, ...);
