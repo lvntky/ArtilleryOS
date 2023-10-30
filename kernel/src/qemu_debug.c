@@ -12,14 +12,6 @@ int init_serial_port(unsigned short port)
 	return 0; // Return success
 }
 
-void qemu_init_debug()
-{
-	if (init_serial_port(QEMU_LOG_SERIAL_PORT) != 0) {
-		printf("\n[INIT - ERROR] Cannot initialized the qemu debugger...\n");
-	} else {
-		printf("[INIT] Qemu debug initialized successfully!\n");
-	}
-}
 void qemu_write_char(char ch)
 {
 	// Write each character in the prefix individually

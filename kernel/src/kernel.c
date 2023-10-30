@@ -3,8 +3,6 @@
 void kernel_main(multiboot_info_t *mboot_info, unsigned int magic)
 {
 	terminal_init();
-	get_cpu_info();
-	qemu_init_debug();
 	gdt_init();
 	idt_init();
 	timer_init(50);
