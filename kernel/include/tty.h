@@ -3,6 +3,8 @@
 
 #include "vga_color_enum.h"
 #include "../libc/include/stdio.h"
+#include "qemu_debug.h"
+#include "config.h"
 #include <stddef.h>
 #include <stdint.h>
 

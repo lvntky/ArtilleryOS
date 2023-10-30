@@ -114,30 +114,14 @@ void terminal_print(char *str)
 
 void print_logo()
 {
-	terminal_print_color(
-		"  ___       _   _ _ _                   _____ _____ \n",
-		VGA_COLOR_GREEN);
-	terminal_print_color(
-		" / _ \\     | | (_) | |                 |  _  /  ___|\n",
-		VGA_COLOR_GREEN);
-	terminal_print_color(
-		"/ /_\\ \\_ __| |_ _| | | ___ _ __ _   _  | | | \\ `--. \n",
-		VGA_COLOR_GREEN);
-	terminal_print_color(
-		"|  _  | '__| __| | | |/ _ \\ '__| | | | | | | `--. \\\n",
-		VGA_COLOR_GREEN);
-	terminal_print_color(
-		"| | | | |  | |_| | | |  __/ |  | |_| | \\ \\_/ /\\__/ /\n",
-		VGA_COLOR_GREEN);
-	terminal_print_color(
-		"\\_| |_/_|   \\__|_|_|_|\\___|_|   \\__, |  \\___/\\____/ \n",
-		VGA_COLOR_GREEN);
-	terminal_print_color(
-		"                                 __/ |              \n",
-		VGA_COLOR_GREEN);
-	terminal_print_color(
-		"                                |___/               \n",
-		VGA_COLOR_GREEN);
+	qemu_write_string("    _       _   _ _ _                 ___  ___ \n");
+	qemu_write_string(
+		"   /_\\  _ _| |_(_) | |___ _ _ _  _   / _ \\/ __|\n");
+	qemu_write_string(
+		"  / _ \\| '_|  _| | | / -_) '_| || | | (_) \\__ \\\n");
+	qemu_write_string(
+		" /_/ \\_\\_|  \\__|_|_|_\\___|_|  \\_, |  \\___/|___/\n");
+	qemu_write_string("                              |__/\n");
 }
 
 void terminal_init(void)
@@ -150,8 +134,8 @@ void terminal_init(void)
 		}
 	}
 	print_logo();
-	terminal_print_color("v0.2.3", VGA_COLOR_YELLOW);
-	printf("\n\n[INIT] terminal interface initialized successfully!\n");
+	qemu_write_string("%s Video mode initialized (80 * 25 text).",
+			  POSITIVE_OUTPUT);
 }
 
 void set_terminal_background(int x, int y, enum VGA_COLOR background_color)

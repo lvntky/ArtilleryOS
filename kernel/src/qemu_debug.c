@@ -87,22 +87,6 @@ void itoa_dbg(int n, char *buffer, int base)
 
 void qemu_write_string(char *format, ...)
 {
-	// Write each character in the prefix individually
-	outb(QEMU_LOG_SERIAL_PORT, '[');
-	outb(QEMU_LOG_SERIAL_PORT, 'Q');
-	outb(QEMU_LOG_SERIAL_PORT, 'U');
-	outb(QEMU_LOG_SERIAL_PORT, 'E');
-	outb(QEMU_LOG_SERIAL_PORT, 'M');
-	outb(QEMU_LOG_SERIAL_PORT, 'U');
-	outb(QEMU_LOG_SERIAL_PORT, ' ');
-	outb(QEMU_LOG_SERIAL_PORT, 'D');
-	outb(QEMU_LOG_SERIAL_PORT, 'E');
-	outb(QEMU_LOG_SERIAL_PORT, 'B');
-	outb(QEMU_LOG_SERIAL_PORT, 'U');
-	outb(QEMU_LOG_SERIAL_PORT, 'G');
-	outb(QEMU_LOG_SERIAL_PORT, ']');
-	outb(QEMU_LOG_SERIAL_PORT, ' ');
-
 	va_list args;
 	va_start(args, format);
 
@@ -130,6 +114,14 @@ void qemu_write_string(char *format, ...)
 				while (*buffer_ptr != '\0') {
 					outb(QEMU_LOG_SERIAL_PORT, *buffer_ptr);
 					buffer_ptr++;
+				}
+				break;
+			}
+			case 's': {
+				char *str = va_arg(args, char *);
+				while (*str != '\0') {
+					outb(QEMU_LOG_SERIAL_PORT, *str);
+					str++;
 				}
 				break;
 			}
