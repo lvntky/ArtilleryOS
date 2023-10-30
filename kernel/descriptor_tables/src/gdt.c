@@ -1,4 +1,4 @@
-#include "./include/gdt.h"
+#include "../include/gdt.h"
 
 extern void _gdt_flush(); // gdt_flush.asm
 

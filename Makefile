@@ -42,10 +42,10 @@ build/%.o: kernel/driver/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
 # Descriptor tables
-build/%.o: kernel/descriptor_tables/%.asm
+build/%.o: kernel/descriptor_tables/asm/%.asm
 	nasm -f elf32 -o $@ $<
 
-build/%.o: kernel/descriptor_tables/%.c
+build/%.o: kernel/descriptor_tables/src/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
 # GUI

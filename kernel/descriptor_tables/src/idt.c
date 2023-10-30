@@ -1,4 +1,4 @@
-#include "./include/idt.h"
+#include "../include/idt.h"
 
 extern void _idt_load(); // idt_flush.asm
 

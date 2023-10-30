@@ -1,4 +1,4 @@
-#include "./include/irq.h"
+#include "../include/irq.h"
 
 // From irq_stubs.asm
 extern void irq0();
