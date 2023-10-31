@@ -3,6 +3,7 @@
 
 #include "io_port.h"
 #include "../libc/include/stdio.h"
+#include "common.h"
 #include <stdarg.h>
 
 #define QEMU_LOG_SERIAL_PORT 0x3f8
@@ -10,9 +11,12 @@
 #define POSITIVE_OUTPUT "[+]"
 #define NEGATIVE_OUTPUT "[-]"
 #define INFORMATION_OUTPUT "[*]"
+#define DEBUG_OUTPUT "->"
+#define REGISTER_OUTPUT "[REGISTER]"
 
 void qemu_init_debug();
 void qemu_write_string(char *format, ...);
 void qemu_write_char(char);
+void qemu_print_register(register_t *);
 
 #endif

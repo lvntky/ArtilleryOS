@@ -129,3 +129,20 @@ void qemu_write_string(char *format, ...)
 
 	va_end(args);
 }
+
+void qemu_print_register(register_t *reg)
+{
+	qemu_write_string("%s Registers dump:\n", REGISTER_OUTPUT);
+
+	qemu_write_string("%s eax 0x%x ebx 0x%x 0x%ecx 0x%x %edx 0x%x\n",
+			  REGISTER_OUTPUT, reg->eax, reg->ebx, reg->ecx,
+			  reg->edx);
+
+	qemu_write_string("%s edi 0x%x esi 0x%x %ebp 0x%x %esp 0x%x\n",
+			  REGISTER_OUTPUT, reg->edi, reg->esi, reg->ebp,
+			  reg->esp);
+
+	qemu_write_string(
+		"%s eip 0x%x cs 0x%x ss 0x%x eflags 0x%x useresp 0x%x\n",
+		REGISTER_OUTPUT, reg->eip, reg->ss, reg->eflags, reg->useresp);
+}

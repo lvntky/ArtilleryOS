@@ -39,6 +39,7 @@ unsigned char scan_code;
 
 void keyboard_handler(register_t *reg)
 {
+	//qemu_write_string("%s keyboard_handler()", DEBUG_OUTPUT);
 	scan_code = insb(0x60); // Use inb instead of insb
 	if (scan_code < 128) {
 		char key = kbdus[scan_code];
@@ -56,6 +57,6 @@ void keyboard_handler(register_t *reg)
 
 void keyboard_init()
 {
-	irq_install_handler(1, keyboard_handler);
-	printf("[INIT] PS/2 keyboard initialized successfully!\n");
+	register_interrupt_handler(IRQ_BASE + 1, keyboard_handler);
+	//qemu_write_string("%s Keyboard driver initialized\n", POSITIVE_OUTPUT);
 }

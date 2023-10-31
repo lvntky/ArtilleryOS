@@ -1,15 +1,25 @@
 #include "../include/kernel.h"
 
-void kernel_main(multiboot_info_t *mboot_info, unsigned int magic)
+extern void make_err();
+void kernel_main()
 {
 	terminal_init();
 	gdt_init();
 	idt_init();
-	timer_init(50);
-	keyboard_init();
 
-	print_multiboot_magic(magic);
+	tss_init(5, 0x10, 0);
+	uint32_t esp;
+	asm volatile("mov %%esp, %0" : "=r"(esp));
+	tss_set_stack(0x10, esp);
+#if TEST_IDT
+	make_err();
+#endif
+	//timer_init(150);
+	//keyboard_init();
 
+	//print_multiboot_magic(magic);
+
+	/*
 	if (is_multiboot_info_present(mboot_info)) {
 		printf("=== Memory Information ===\n");
 		printf("Lower Memory: 0x%x\n", mboot_info->mem_lower);
@@ -23,6 +33,7 @@ void kernel_main(multiboot_info_t *mboot_info, unsigned int magic)
 		panic("Can't get memory information",
 		      "loader.asm, multiboot.h");
 	}
+	*/
 
 #if GUI_MODE
 	set_mode(320, 200, 8);

@@ -1,39 +1,33 @@
-global loader							; make entry point visible to linker
-global stack
-global stack_begin
-extern kernel_main							; kmain is defined elsewhere
+[BITS 32]
 
-;setting up the Multiboot header - see GRUB docs for details
-MODULEALIGN equ  1<<0					; align loaded modules on page boundaries
-MEMINFO		equ  1<<1					; provide memory map
-FLAGS		equ  MODULEALIGN | MEMINFO	; this is the Multiboot 'flag' field
-MAGIC		equ  0x1BADB002				; 'magic number' lets bootloader find the header
-CHECKSUM	equ  -(MAGIC + FLAGS)		; checksum required
+global start
+start:
+    mov esp, _sys_stack
+    mov ebx, mboot
+    push ebx
+    jmp stublet
 
-section .text
-align 4
-MultiBootHeader:
-	dd MAGIC
-	dd FLAGS
-	dd CHECKSUM
+ALIGN 4  ; Ensure proper alignment for the Multiboot header
+global mboot
+extern code
+extern bss
+extern end
 
-; reserve initial kernel stack space
-STACKSIZE equ 0x4000					; that's 16k.
+mboot:
+    align 4
+    MULTIBOOT_MAGIC     equ 0x1BADB002
+    MULTIBOOT_FLAGS     equ 0x03
+    MULTIBOOT_CHECKSUM  equ -MULTIBOOT_MAGIC-MULTIBOOT_FLAGS
+    
+    dd MULTIBOOT_MAGIC  
+    dd MULTIBOOT_FLAGS
+    dd MULTIBOOT_CHECKSUM
 
-loader:
-	mov esp, stack_begin				; set up the stack
-	push eax							; pass Multiboot magic number
-	push ebx							; pass Multiboot info structure
+extern kernel_main
+stublet:
+    call kernel_main
+    jmp $
 
-	call kernel_main							; call kernel proper
-
-	;cli								; disable interrupts
-hang:
-	hlt									; halt machine should kernel return
-	jmp	hang
-
-section .bss
-align 4
-stack:
-	resb STACKSIZE						; reserve 16k stack on a doubleword boundary
-stack_begin:
+SECTION .bss
+	resb 8192
+_sys_stack:

@@ -4,13 +4,12 @@ uint32_t tick = 0;
 static void timer_callback(register_t *regs)
 {
 	tick++;
+	printf("tick :%d\n", tick);
 }
 
 void timer_init(uint32_t hertz)
 {
-	__asm__ __volatile__("sti;");
-	irq_install_handler(0, timer_callback);
-
+	register_interrupt_handler(32, timer_callback);
 	uint32_t divisor = 1193180 / hertz;
 
 	// Send the command byte.
@@ -23,5 +22,6 @@ void timer_init(uint32_t hertz)
 	// Send the frequency divisor.
 	outb(0x40, l);
 	outb(0x40, h);
-	printf("[INIT] PIT initialized successfully!\n");
+	qemu_write_string("%s Timer initialized\n", POSITIVE_OUTPUT);
+	printf("tick :%d\n", tick);
 }

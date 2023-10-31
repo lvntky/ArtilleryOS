@@ -1,48 +1,34 @@
 #include "./include/pic.h"
 
-void pic_init(void)
+void pic_init()
 {
-	outb(PIC_MASTER_CMD_PORT, PIC_ICW1_ICW4 | PIC_ICW1_INIT);
-	outb(PIC_SLAVE_CMD_PORT, PIC_ICW1_ICW4 | PIC_ICW1_INIT);
+	// ICW1
+	outb(PIC1_COMMAND, ICW1);
+	outb(PIC2_COMMAND, ICW1);
 
-	outb(PIC_MASTER_DATA_PORT, IRQ_BASE);
-	outb(PIC_SLAVE_DATA_PORT, IRQ_BASE + 8);
+	// ICW2, irq 0 to 7 is mapped to 0x20 to 0x27, irq 8 to F is mapped to 28 to 2F
+	outb(PIC1_DATA, 0x20);
+	outb(PIC2_DATA, 0x28);
 
-	outb(PIC_MASTER_DATA_PORT, 4);
-	outb(PIC_SLAVE_DATA_PORT, 2);
+	// ICW3, connect master pic with slave pic
+	outb(PIC1_DATA, 0x4);
+	outb(PIC2_DATA, 0x2);
 
-	outb(PIC_MASTER_DATA_PORT, PIC_ICW4_PC);
-	outb(PIC_SLAVE_DATA_PORT, PIC_ICW4_PC);
+	// ICW4, set x86 mode
+	outb(PIC1_DATA, 1);
+	outb(PIC2_DATA, 1);
 
-	outb(PIC_MASTER_DATA_PORT, 0x00);
-	outb(PIC_SLAVE_DATA_PORT, 0x00);
+	// clear the mask register
+	outb(PIC1_DATA, 0);
+	outb(PIC2_DATA, 0);
 }
 
-void pic_disable_irq(uint8_t irq)
+/*
+ * Tell PIC interrupt is handled
+ * */
+void irq_ack(uint8_t irq)
 {
-	if (irq < 8) {
-		// IRQ fuer den Master-PIC
-		outb(PIC_MASTER_DATA_PORT,
-		     insb(PIC_MASTER_DATA_PORT) | (1 << irq));
-	} else if (irq < 16) {
-		// IRQ fuer den Slave-PIC
-		outb(PIC_SLAVE_DATA_PORT,
-		     insb(PIC_SLAVE_DATA_PORT) | (1 << (irq - 8)));
-	} else {
-		printf("Unsupported IRQ %d\n", irq);
-	}
-}
-
-// End of interrupt
-void pic_eoi(uint8_t irq)
-{
-	if (irq > 16) {
-		printf("Unsupproted IRQ %d\n", irq);
-	}
-
-	if (irq >= 8) {
-		outb(PIC_SLAVE_CMD_PORT, PIC_EOI);
-	}
-
-	outb(PIC_MASTER_CMD_PORT, PIC_EOI);
+	if (irq >= 0x28)
+		outb(PIC2, PIC_EOI);
+	outb(PIC1, PIC_EOI);
 }

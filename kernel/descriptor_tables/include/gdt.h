@@ -1,25 +1,26 @@
 #ifndef _GDT_H
 #define _GDT_H
 
+#define NUM_DESCRIPTORS 8
+
 #include <stdint.h>
 #include "../../include/config.h"
-#include "../../libc/include/stdio.h"
+#include "../../include/qemu_debug.h"
 typedef struct gdt_entry_t {
-	unsigned short limit_low;
-	unsigned short base_low;
-	unsigned char base_middle;
-	unsigned char access;
-	unsigned char granularity;
-	unsigned char base_high;
+	uint16_t limit_low;
+	uint16_t base_low;
+	uint8_t base_middle;
+	uint8_t access;
+	uint8_t granularity;
+	uint8_t base_high;
 } __attribute__((packed)) gdt_entry_t;
 
-/* Special pointer which includes the limit: The max bytes
-*  taken up by the GDT, minus 1. Again, this NEEDS to be packed */
 typedef struct gdt_ptr_t {
-	unsigned short limit;
-	unsigned int base;
+	uint16_t limit;
+	uint32_t base;
 } __attribute__((packed)) gdt_ptr_t;
 
 void gdt_init();
+void gdt_set_entry(int, uint32_t, uint32_t, uint8_t, uint8_t);
 
 #endif

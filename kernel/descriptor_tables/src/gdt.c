@@ -1,49 +1,59 @@
 #include "../include/gdt.h"
 
-extern void _gdt_flush(); // gdt_flush.asm
-
-gdt_entry_t gdt[ARTILLERYOS_GDT_SIZE];
+/*
+global _gdt_flush
+extern _gp
+*/
+gdt_entry_t gdt_entries[NUM_DESCRIPTORS];
 gdt_ptr_t _gp;
 
-void gdt_set_gate(int num, unsigned long base, unsigned long limit,
-		  unsigned char access, unsigned char gran)
-{
-	/* Setup the descriptor base address */
-	gdt[num].base_low = (base & 0xFFFF);
-	gdt[num].base_middle = (base >> 16) & 0xFF;
-	gdt[num].base_high = (base >> 24) & 0xFF;
-
-	/* Setup the descriptor limits */
-	gdt[num].limit_low = (limit & 0xFFFF);
-	gdt[num].granularity = ((limit >> 16) & 0x0F);
-
-	/* Finally, set up the granularity and access flags */
-	gdt[num].granularity |= (gran & 0xF0);
-	gdt[num].access = access;
-}
+extern void _gdt_flush();
 
 void gdt_init()
 {
-	/* Setup the GDT pointer and limit */
-	_gp.limit = (sizeof(gdt_entry_t) * ARTILLERYOS_GDT_SIZE) - 1;
-	_gp.base = (unsigned int)&gdt;
+	_gp.limit = sizeof(gdt_entries) - 1;
+	_gp.base = (uint32_t)gdt_entries;
 
-	/* Our NULL descriptor */
-	gdt_set_gate(0, 0, 0, 0, 0);
-
-	/* The second entry is our Code Segment. The base address
-    *  is 0, the limit is 4GBytes, it uses 4KByte granularity,
-    *  uses 32-bit opcodes, and is a Code Segment descriptor.
-    *  Please check the table above in the tutorial in order
-    *  to see exactly what each value means */
-	gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
-
-	/* The third entry is our Data Segment. It's EXACTLY the
-    *  same as our code segment, but the descriptor type in
-    *  this entry's access byte says it's a Data Segment */
-	gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
-
-	/* Flush out the old GDT and install the new changes! */
+	// NULL Segment, required
+	gdt_set_entry(0, 0, 0, 0, 0);
+	/* Kernel code, access(9A = 1 00 1 1 0 1 0)
+        1   present
+        00  ring 0
+        1   always 1
+        1   code segment
+        0   can be executed by ring lower or equal to DPL,
+        1   code segment is readable
+        0   access bit, always 0, cpu set this to 1 when accessing this sector
+    */
+	gdt_set_entry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
+	/* Kernel data, access(92 = 1 00 1 0 0 1 0)
+        Only differ at the fifth bit(counting from least insignificant bit), 0 means it's a data segment.
+    */
+	gdt_set_entry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
+	// User code and data segments, only differ in ring number(ring 3)
+	gdt_set_entry(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
+	gdt_set_entry(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
 	_gdt_flush();
-	printf("[INIT] GDT initialized successfully!\n");
+	qemu_write_string("%s GDT initialized\n", POSITIVE_OUTPUT);
+}
+
+void gdt_set_entry(int index, uint32_t base, uint32_t limit, uint8_t access,
+		   uint8_t gran)
+{
+	gdt_entry_t *this = &gdt_entries[index];
+
+	// Low 16 bits, middle 8 bits and high 8 bits of base
+	this->base_low = base & 0xFFFF;
+	this->base_middle = (base >> 16) & 0xFF;
+	this->base_high = (base >> 24 & 0xFF);
+
+	/* Low 16 bits and high 4 bits of limit, since the high 4 bits of limits is between granularity and access, and we don't have 4 bit variable,
+    low 4 bits of granularity actually represents high 4 bits of limits. It's weird, I know. */
+	this->limit_low = limit & 0xFFFF;
+	this->granularity = (limit >> 16) & 0x0F;
+
+	this->access = access;
+
+	// Only need the high 4 bits of gran
+	this->granularity = this->granularity | (gran & 0xF0);
 }

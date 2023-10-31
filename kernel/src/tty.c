@@ -136,7 +136,7 @@ void terminal_init(void)
 		}
 	}
 	print_logo();
-	qemu_write_string("%s Video mode initialized (80 * 25 text).",
+	qemu_write_string("%s Video mode initialized (80 * 25 text)\n",
 			  POSITIVE_OUTPUT);
 }
 
