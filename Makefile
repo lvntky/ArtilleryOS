@@ -27,7 +27,7 @@ objects = ./build/loader.o \
           ./build/panic.o \
           ./build/render_image.o \
 
-
+_mkdir := $(shell mkdir -p build)
 
 # BASE KERNEL SOURCE
 build/%.o: kernel/src/%.c
@@ -82,7 +82,7 @@ install: kernel.elf
 	sudo cp $< /boot/mykernel.elf
 
 clean:
-	rm -rf ./build/*
+	rm -rf ./iso/
+	rm -rf ./build/
 	rm -f kernel.elf
 	rm -f artillery.iso
-
