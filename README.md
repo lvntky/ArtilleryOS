@@ -45,6 +45,19 @@ We welcome contributions from the community to improve and expand ArtilleryOS. T
 3. Make your changes and commit them.
 4. Push your changes
 
+## Dependencies
+
+- `gcc`: GNU Compiler Collection
+- `nasm`: Netwide Assembler
+- `make`: For building automatically
+- `i686-elf-tools`: For cross-compiling code
+- `mtools`: For the use of the `mformat` command
+- `xorriso` - To manipulate ISO 9660 filesystems
+
+## Contributors
+
+- [angelpilled](https://github.com/angelpilled)
+
 ## Screenshots
 We are tracking the progress of Artillery OS with screenshots. You can find more of them in [Documentation](docs/) folder.
 
