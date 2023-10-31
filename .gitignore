@@ -3,6 +3,7 @@
 .vscode/*
 /bin
 /isodir
+/iso
 /build
 /bin/artilleryos.iso
 
