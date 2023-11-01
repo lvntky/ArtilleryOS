@@ -16,14 +16,14 @@ objects = ./build/loader.o \
 		  ./build/gdt_flush.o \
           ./build/gdt.o \
 		  ./build/idt_flush.o \
-          ./build/idt.o \
-		  ./build/isr_stubs.o \
-          ./build/isr.o \
-          ./build/irq_stubs.o \
-		  ./build/irq.o \
+		  ./build/idt.o \
+		  ./build/exception_helper.o \
+		  ./build/exception.o \
+		  ./build/interrupt_helper.o \
+		  ./build/interrupt.o \
+		  ./build/timer.o \
+		  ./build/keyboard.o \
           ./build/render_font.o \
-          ./build/timer.o \
-          ./build/keyboard.o \
           ./build/panic.o \
           ./build/render_image.o \
 

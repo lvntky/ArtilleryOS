@@ -1,16 +1,14 @@
-%define KERNEL_DATA_SEGMENT 0x10
-%define CODE_DATA_SEGMENT 0x08
+global asm_gdt_flush     ; Allows the C code to link to this
+extern gp
 
-global _gdt_flush
-extern _gp
-_gdt_flush:
-    lgdt [_gp]
-    mov ax, KERNEL_DATA_SEGMENT
+asm_gdt_flush:
+    lgdt [gp]        ; Load the GDT with our '_gp' which is a special pointer
+    mov ax, 0x10      ; 0x10 is the offset in the GDT to our data segment
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
     mov ss, ax
-    jmp CODE_DATA_SEGMENT:flush2
+    jmp 0x08:flush2   ; 0x08 is the offset to our code segment: Far jump!
 flush2:
-    ret
+    ret               ; Returns back to the C code!

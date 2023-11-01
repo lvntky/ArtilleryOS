@@ -1,12 +1,12 @@
 #include "../include/gdt.h"
 
-extern void _gdt_flush(); // gdt_flush.asm
+gdt_entry_t gdt[5];
+gdt_ptr_t gp;
 
-gdt_entry_t gdt[ARTILLERYOS_GDT_SIZE];
-gdt_ptr_t _gp;
+extern void asm_gdt_flush();
 
-void gdt_set_gate(int num, unsigned long base, unsigned long limit,
-		  unsigned char access, unsigned char gran)
+void gdt_set_gate(uint32_t num, uint32_t base, uint32_t limit, uint8_t access,
+		  uint8_t gran)
 {
 	/* Setup the descriptor base address */
 	gdt[num].base_low = (base & 0xFFFF);
@@ -25,25 +25,20 @@ void gdt_set_gate(int num, unsigned long base, unsigned long limit,
 void gdt_init()
 {
 	/* Setup the GDT pointer and limit */
-	_gp.limit = (sizeof(gdt_entry_t) * ARTILLERYOS_GDT_SIZE) - 1;
-	_gp.base = (unsigned int)&gdt;
+	gp.limit = (sizeof(struct gdt_entry) * 3) - 1;
+	gp.base = (uint32_t)&gdt;
 
-	/* Our NULL descriptor */
+	/* NULL descriptor */
 	gdt_set_gate(0, 0, 0, 0, 0);
 
-	/* The second entry is our Code Segment. The base address
-    *  is 0, the limit is 4GBytes, it uses 4KByte granularity,
-    *  uses 32-bit opcodes, and is a Code Segment descriptor.
-    *  Please check the table above in the tutorial in order
-    *  to see exactly what each value means */
 	gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
 
-	/* The third entry is our Data Segment. It's EXACTLY the
-    *  same as our code segment, but the descriptor type in
-    *  this entry's access byte says it's a Data Segment */
 	gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
 
-	/* Flush out the old GDT and install the new changes! */
-	_gdt_flush();
-	printf("[INIT] GDT initialized successfully!\n");
+	// User code and data segments, only differ in ring number(ring 3)
+	gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
+	gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
+
+	asm_gdt_flush();
+	qemu_write_string("%s GDT initialized\n", POSITIVE_OUTPUT);
 }
