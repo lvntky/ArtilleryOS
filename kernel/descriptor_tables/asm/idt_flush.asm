@@ -1,5 +1,6 @@
-global _idt_load
-extern _idtp
-_idt_load:
-    lidt [_idtp]
+global asm_idt_load
+extern idtp
+
+asm_idt_load:
+    lidt [idtp]
     ret

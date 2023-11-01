@@ -37,9 +37,13 @@ unsigned char kbdus[128] = {
 // input from keyboard device
 unsigned char scan_code;
 
+// Modifier key state
+unsigned char shift_pressed = 0;
+unsigned char ctrl_pressed = 0;
+
 void keyboard_handler(register_t *reg)
 {
-	//qemu_write_string("%s keyboard_handler()", DEBUG_OUTPUT);
+	// qemu_write_string("%s keyboard_handler()", DEBUG_OUTPUT);
 	scan_code = insb(0x60); // Use inb instead of insb
 	if (scan_code < 128) {
 		char key = kbdus[scan_code];
@@ -50,6 +54,33 @@ void keyboard_handler(register_t *reg)
 		} else if (key == '\b') {
 			putchar('\b'); // Handle Backspace
 		} else if (key != 0) {
+			// Check for modifier keys
+			if (key == '\b') {
+				ctrl_pressed = 1;
+			} else if (key == '`') {
+				shift_pressed = 1;
+			} else if (key >= 'A' && key <= 'Z') {
+				shift_pressed = 1;
+			}
+
+			// Handle other keys based on modifier state
+			if (shift_pressed) {
+				// Handle Shift key
+				// Modify 'key' as needed
+				// Example: Convert 'a' to 'A'
+				if (key >= 'a' && key <= 'z') {
+					key = key - 32;
+				}
+			}
+
+			if (ctrl_pressed) {
+				// Handle Ctrl key
+				// Example: Handle Ctrl + C (interrupt)
+				if (key == 'c' || key == 'C') {
+					// Implement your Ctrl + C action
+				}
+			}
+
 			putchar(key);
 		}
 	}
@@ -57,6 +88,6 @@ void keyboard_handler(register_t *reg)
 
 void keyboard_init()
 {
-	register_interrupt_handler(IRQ_BASE + 1, keyboard_handler);
-	//qemu_write_string("%s Keyboard driver initialized\n", POSITIVE_OUTPUT);
+	install_interrupt_handler(1, keyboard_handler);
+	qemu_write_string("%s Keyboard driver initialized\n", POSITIVE_OUTPUT);
 }

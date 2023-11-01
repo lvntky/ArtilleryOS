@@ -1,5 +1,5 @@
-#ifndef _COMMON_H
-#define _COMMON_H
+#ifndef _REGISTERT_H_
+#define _REGISTERT_H_
 
 typedef struct register_t {
 	unsigned int gs, fs, es, ds; /* pushed the segs last */

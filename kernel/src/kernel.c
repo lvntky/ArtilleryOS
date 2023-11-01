@@ -1,39 +1,21 @@
 #include "../include/kernel.h"
 
-extern void make_err();
+void test_idt()
+{
+	__asm__("int $0x04");
+}
+
 void kernel_main()
 {
 	terminal_init();
 	gdt_init();
 	idt_init();
+	timer_init(100);
+	keyboard_init();
 
-	tss_init(5, 0x10, 0);
-	uint32_t esp;
-	asm volatile("mov %%esp, %0" : "=r"(esp));
-	tss_set_stack(0x10, esp);
 #if TEST_IDT
-	make_err();
+	test_idt();
 #endif
-	//timer_init(150);
-	//keyboard_init();
-
-	//print_multiboot_magic(magic);
-
-	/*
-	if (is_multiboot_info_present(mboot_info)) {
-		printf("=== Memory Information ===\n");
-		printf("Lower Memory: 0x%x\n", mboot_info->mem_lower);
-		printf("Upper Memory: 0x%x\n", mboot_info->mem_upper);
-
-		//uint32_t start_addr = mboot_info->mmap_addr;
-		//multiboot_memory_map_t *mmap =
-		//	(multiboot_memory_map_t *)start_addr;
-
-	} else {
-		panic("Can't get memory information",
-		      "loader.asm, multiboot.h");
-	}
-	*/
 
 #if GUI_MODE
 	set_mode(320, 200, 8);

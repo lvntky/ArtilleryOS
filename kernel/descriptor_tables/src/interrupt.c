@@ -1,36 +1,28 @@
-/**
- * @file exception.c
- * @author levent 
- * @brief hard interrupts
- * @version 0.1
- * @date 2023-10-31
- * 
- * @copyright Copyright (c) 2023
- * 
- */
-
 #include "../include/isr.h"
-#include "../../include/common.h"
-#include "../../include/qemu_debug.h"
-#include "../../driver/include/pic.h"
+#include "../../include/io_port.h"
 
-isr_t interrupt_handlers[256];
+void *interrupt_handlers[256];
 
-/*
- * Register a function as the handler for a certian interrupt number, both exception and irq interrupt can change their handler using this function
- * */
-void register_interrupt_handler(int num, isr_t handler)
+void install_interrupt_handler(int irq_no, void (*handler)(register_t *r))
 {
-	qemu_write_string("IRQ %d Registered\n", num);
-	if (num < 256)
-		interrupt_handlers[num] = handler;
+	qemu_write_string("%s IRQ_NO: %d registered\n", POSITIVE_OUTPUT,
+			  irq_no);
+	interrupt_handlers[irq_no] = handler;
 }
 
-void final_irq_handler(register_t *reg)
+void interrupt_handler(register_t *r)
 {
-	if (interrupt_handlers[reg->int_no] != NULL) {
-		isr_t handler = interrupt_handlers[reg->int_no];
-		handler(reg);
+	/* This is a blank function pointer */
+	void (*handler)(struct register_t * r);
+
+	handler = interrupt_handlers[r->int_no - 32];
+	if (handler) {
+		handler(r);
 	}
-	irq_ack(reg->int_no);
+
+	if (r->int_no >= 40) {
+		outb(0xA0, 0x20);
+	}
+
+	outb(0x20, 0x20);
 }

@@ -6,7 +6,6 @@ objects = ./build/loader.o \
           ./build/kernel.o \
           ./build/tty.o \
 		  ./build/multiboot_util.o \
-		  ./build/exception_test.o \
           ./build/stdio.o \
 		  ./build/qemu_debug.o \
           ./build/cpu_info.o \
@@ -16,14 +15,14 @@ objects = ./build/loader.o \
           ./build/pic.o \
 		  ./build/gdt_flush.o \
           ./build/gdt.o \
-		  ./build/exception.o \
-		  ./build/interrupt.o \
-		  ./build/exception_helper.o \
-		  ./build/interrupt_helper.o \
 		  ./build/idt_flush.o \
-          ./build/idt.o \
-		  ./build/tss_helper.o \
-		  ./build/tss.o \
+		  ./build/idt.o \
+		  ./build/exception_helper.o \
+		  ./build/exception.o \
+		  ./build/interrupt_helper.o \
+		  ./build/interrupt.o \
+		  ./build/timer.o \
+		  ./build/keyboard.o \
           ./build/render_font.o \
           ./build/panic.o \
           ./build/render_image.o \

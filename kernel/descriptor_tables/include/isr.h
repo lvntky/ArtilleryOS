@@ -1,20 +1,13 @@
 #ifndef _ISR_H_
 #define _ISR_H_
 
-#include "../../include/common.h"
+#include "../../include/registert.h"
+#include "../../include/qemu_debug.h"
+#include "../../include/panic.h"
+#include "../../libc/include/string.h"
+#include "../../driver/include/pic.h"
 
-// Interrupt Service Routine function prototype
-typedef void (*isr_t)(register_t *);
-
-// Defined in exception.c
-void final_exception_handler(register_t reg);
-
-// Defined in interrupt.c
-extern isr_t interrupt_handlers[256];
-void register_interrupt_handler(int num, isr_t handler);
-void final_irq_handler(register_t *reg);
-
-// Defined in exception_helper.asm
+// BASE INTERRUPTS
 extern void exception0();
 extern void exception1();
 extern void exception2();
@@ -47,43 +40,30 @@ extern void exception28();
 extern void exception29();
 extern void exception30();
 extern void exception31();
-extern void exception128();
 
-// Defined in interrupt_helper.asm
-extern void irq0();
-extern void irq1();
-extern void irq2();
-extern void irq3();
-extern void irq4();
-extern void irq5();
-extern void irq6();
-extern void irq7();
-extern void irq8();
-extern void irq9();
-extern void irq10();
-extern void irq11();
-extern void irq12();
-extern void irq13();
-extern void irq14();
-extern void irq15();
+// BASE INTERRUPTS
+extern void interrupt0();
+extern void interrupt1();
+extern void interrupt2();
+extern void interrupt3();
+extern void interrupt4();
+extern void interrupt5();
+extern void interrupt6();
+extern void interrupt7();
+extern void interrupt8();
+extern void interrupt9();
+extern void interrupt10();
+extern void interrupt11();
+extern void interrupt12();
+extern void interrupt13();
+extern void interrupt14();
+extern void interrupt15();
 
-// Some IRQ constants
-#define IRQ_BASE 0x20
-#define IRQ0_Timer 0x00
-#define IRQ1_Keyboard 0x01
-#define IRQ2_CASCADE 0x02
-#define IRQ3_SERIAL_PORT2 0x03
-#define IRQ4_SERIAL_PORT1 0x04
-#define IRQ5_RESERVED 0x05
-#define IRQ6_DISKETTE_DRIVE 0x06
-#define IRQ7_PARALLEL_PORT 0x07
-#define IRQ8_CMOS_CLOCK 0x08
-#define IRQ9_CGA 0x09
-#define IRQ10_RESERVED 0x0A
-#define IRQ11_RESERVED 0x0B
-#define IRQ12_AUXILIARY 0x0C
-#define IRQ13_FPU 0x0D
-#define IRQ14_HARD_DISK 0x0E
-#define IRQ15_RESERVED 0x0F
+// kernel_level_exceptions
+void exception_fault_handler(register_t *);
+
+//INTERRUPT METHODS
+void install_interrupt_handler(int, void (*handler)(register_t *));
+void interrupt_handler(register_t *);
 
 #endif

@@ -1,7 +1,10 @@
 #ifndef _OPTIONS_H_
 #define _OPTIONS_H_
 
-#define GUI_MODE 0
-#define TEST_IDT 1
+#define TRUE 1
+#define FALSE 0
+
+#define GUI_MODE FALSE
+#define TEST_IDT FALSE
 
 #endif
