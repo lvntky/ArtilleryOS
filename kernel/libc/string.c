@@ -25,3 +25,19 @@ void *memcpy(void *destination, const void *source, size_t num_bytes)
 
 	return destination;
 }
+
+int strcmp(char *str1, char *str2)
+{
+	while (*str1 != '\0' && *str2 != '\0' && *str1 == *str2) {
+		str1++;
+		str2++;
+	}
+
+	if (*str1 == *str2) {
+		return 0; // Strings are equal
+	} else if (*str1 < *str2) {
+		return -1; // First differing character in str1 is smaller
+	} else {
+		return 1; // First differing character in str1 is larger
+	}
+}
