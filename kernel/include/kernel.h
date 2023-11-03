@@ -10,6 +10,7 @@
 #include "../driver/include/vga_driver.h"
 #include "../descriptor_tables/include/gdt.h"
 #include "../descriptor_tables/include/idt.h"
+#include "../descriptor_tables/include/tss.h"
 #include "../include/timer.h"
 #include "../driver/include/keyboard.h"
 #include "../../gui/render_font.h"

@@ -21,6 +21,8 @@ objects = ./build/loader.o \
 		  ./build/exception.o \
 		  ./build/interrupt_helper.o \
 		  ./build/interrupt.o \
+		  ./build/tss_flush.o \
+		  ./build/tss.o \
 		  ./build/timer.o \
 		  ./build/keyboard.o \
           ./build/render_font.o \

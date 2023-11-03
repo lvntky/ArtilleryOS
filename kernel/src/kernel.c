@@ -10,6 +10,15 @@ void kernel_main()
 	terminal_init();
 	gdt_init();
 	idt_init();
+
+	// TODO: TSS init need to be fixed
+	/*
+	tss_init(5, 0x10, 0);
+	uint32_t esp;
+	asm volatile("mov %%esp, %0" : "=r"(esp));
+	tss_set_stack(0x10, esp);
+	*/
+
 	timer_init(100);
 	keyboard_init();
 

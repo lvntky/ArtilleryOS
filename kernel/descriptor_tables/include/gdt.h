@@ -23,5 +23,6 @@ typedef struct gdt_ptr {
 
 /* Our GDT, with 3 entries, and finally our special GDT pointer */
 void gdt_init();
+void gdt_set_gate(uint32_t, uint32_t, uint32_t, uint8_t, uint8_t);
 
 #endif
