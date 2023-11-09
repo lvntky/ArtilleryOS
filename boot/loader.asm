@@ -1,8 +1,8 @@
 
 [BITS 32]
-extern kernel_main
+[extern kernel_main]
+[global start]
 
-global start
 start:
     mov esp, _sys_stack     ; This points the stack to our new stack area
     jmp stublet

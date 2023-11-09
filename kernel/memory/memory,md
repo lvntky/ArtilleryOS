@@ -1,0 +1,20 @@
+# Memory
+
+## Memory Layout 
+Each process in the Artillery OS runs in its own memory sandbox. This sandbox is the virtual address space, which in 32-bit mode is always a 4GB block of memory addresses. These virtual addresses are mapped to physical memory by page tables, which are maintained by the operating system kernel and consulted by the processor. Each process has its own set of page tables, but there is a catch. Once virtual addresses are enabled, they apply to all software running in the machine, including the kernel itself. Thus a portion of the virtual address space must be reserved to the kernel
+
+* Artillery OS User/Kernel Memory Split 
+
+..................... -> 0xFFFFFFFF
+.    Kernel Space   .
+.    (1GB)          .
+..................... -> 0xC0000000
+.                   .              
+.                   .
+.                   .
+.    User  Space    .
+.    Mode           .   
+.    (3GB)          .
+.                   .
+.                   .
+..................... 0x00000000
