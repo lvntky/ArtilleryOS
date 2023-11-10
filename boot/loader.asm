@@ -1,57 +1,83 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                                   ;
+;   Artillery OS GRUB BootLoader    ;
+;                                   ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [BITS 32]
-extern kernel_main
+global loader                           ; the entry point for the linker
 
-global start
-start:
-    mov esp, _sys_stack     ; This points the stack to our new stack area
-    jmp stublet
+extern kernel_main                            ; kmain is defined in kmain.c
+extern end_of_kernel
 
-; This part MUST be 4byte aligned, so we solve that issue using 'ALIGN 4'
-ALIGN 4
-mboot:
-    ; Multiboot macros to make a few lines later more readable
-    MULTIBOOT_PAGE_ALIGN	equ 1<<0
-    MULTIBOOT_MEMORY_INFO	equ 1<<1
-    MULTIBOOT_AOUT_KLUDGE	equ 1<<16
-    MULTIBOOT_HEADER_MAGIC	equ 0x1BADB002
-    MULTIBOOT_HEADER_FLAGS	equ MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO | MULTIBOOT_AOUT_KLUDGE
-    MULTIBOOT_CHECKSUM	equ -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_HEADER_FLAGS)
-    EXTERN code, bss, end
+; setting up the multiboot headers for GRUB
+MODULEALIGN equ 1<<0                    ; align loaded modules on page 
+                                        ; boundaries
+MEMINFO     equ 1<<1                    ; provide memory map
+FLAGS       equ MODULEALIGN | MEMINFO   ; the multiboot flag field
+MAGIC       equ 0x1BADB002              ; magic number for bootloader to 
+                                        ; find the header
+CHECKSUM    equ -(MAGIC + FLAGS)        ; checksum required
 
-    ; This is the GRUB Multiboot header. A boot signature
-    dd MULTIBOOT_HEADER_MAGIC
-    dd MULTIBOOT_HEADER_FLAGS
-    dd MULTIBOOT_CHECKSUM
-    
-    ; AOUT kludge - must be physical addresses. Make a note of these:
-    ; The linker script fills in the data for these ones!
-    dd mboot
-    dd code
-    dd bss
-    dd end
-    dd start
+; paging for the kernel
+KERNEL_VIRTUAL_BASE     equ 0xC0000000                  ; we start at 3GB
+KERNEL_PAGE_IDX         equ (KERNEL_VIRTUAL_BASE >> 22) ; PDT index for 4MB PDE
 
-; This is an endless loop here. Make a note of this: Later on, we
-; will insert an 'extern _main', followed by 'call _main', right
-; before the 'jmp $'.
-stublet:
-    call kernel_main
-    jmp $
+; the page directory used to boot the kernel into the higher half
+section .data
+align 4096                               ; align on 4kB blocks
+boot_page_directory:
+    dd 00000000000000000000000010001011b ; identity mapped first 4MB
+    times (KERNEL_PAGE_IDX-1) dd 0       ; no pages here
+    dd 00000000000000000000000010001011b ; map 0xC0000000 to the first 4MB
+    times (1024-KERNEL_PAGE_IDX-1) dd 0  ; no more pages
 
 
-; Shortly we will add code for loading the GDT right here!
+section .text
+align 4
+    dd MAGIC
+    dd FLAGS
+    dd CHECKSUM
 
+; the entry point, called by GRUB
+loader:
+    mov ecx, (boot_page_directory-KERNEL_VIRTUAL_BASE)
+    and ecx, 0xFFFFF000     ; we only care about the upper 20 bits
+    or  ecx, 0x08           ; PWT, enable page write through?
+    mov cr3, ecx            ; load pdt
 
-; In just a few pages in this tutorial, we will add our Interrupt
-; Service Routines (ISRs) right here!
+    mov ecx, cr4            ; read current config from cr4
+    or  ecx, 0x00000010     ; set bit enabling 4MB pages
+    mov cr4, ecx            ; enable it by writing to cr4
 
+    mov	ecx, cr0		    ; read current config from cr0
+	or	ecx, 0x80000000	    ; the highest bit controls paging
+	mov cr0, ecx		    ; enable paging by writing config to cr0
 
+    lea ecx, [higher_half]  ; store the address higher_half in ecx
+    jmp ecx                 ; now we jump into 0xC0100000
 
-; Here is the definition of our BSS section. Right now, we'll use
-; it just to store the stack. Remember that a stack actually grows
-; downwards, so we declare the size of the data before declaring
-; the identifier '_sys_stack'
-SECTION .bss
-    resb 8192               ; This reserves 8KBytes of memory here
-_sys_stack:
+; code executing from here on uses the page table, and is accessed through
+; the upper half, 0xC0100000
+higher_half:
+    mov     DWORD [boot_page_directory], 0  ; erase identity mapping of kernel
+    invlpg  [0]                             ; and flush any tlb-references to it
+
+    mov esp, stack+STACKSIZE            ; sets up the stack pointer
+    push end_of_kernel
+    push eax                            ; eax contains the MAGIC number
+    push ebx                            ; ebx contains the multiboot data 
+                                        ; structure
+    call kernel_main                          ; call the main function of the kernel
+
+hang:
+    jmp hang                            ; loop forever
+
+; reserve initial stack space
+STACKSIZE equ 0x4000                    ; 16kB
+
+section .bss
+align 4
+stack:
+    resb STACKSIZE                      ; reserve memory for stack on 
+                                        ; doubleworded memory

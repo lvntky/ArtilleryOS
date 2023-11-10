@@ -5,10 +5,11 @@
 #include "../libc/include/stdio.h"
 #include "qemu_debug.h"
 #include "config.h"
+#include "common.h"
 #include <stddef.h>
 #include <stdint.h>
 
-#define VIDEO_MEM_ADDRESS 0xB8000
+#define VIDEO_MEM_ADDRESS 0xB8000 + KERNEL_BASE_ADDR
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
 

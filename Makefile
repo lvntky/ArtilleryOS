@@ -25,6 +25,8 @@ objects = ./build/loader.o \
 		  ./build/tss.o \
 		  ./build/timer.o \
 		  ./build/keyboard.o \
+		  ./build/paging_enable.o \
+		  ./build/paging.o \
           ./build/render_font.o \
           ./build/panic.o \
           ./build/render_image.o \
@@ -55,7 +57,10 @@ build/%.o: gui/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 	
 # MEMORY
-build/%.o: kernel/memory/%.c
+build/%.o: kernel/memory/asm/%.asm
+	nasm -f elf32 -o $@ $<
+
+build/%.o: kernel/memory/src/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
 # LOADER ASM

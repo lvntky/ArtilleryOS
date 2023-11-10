@@ -1,24 +1,28 @@
-ENTRY(start)
-phys = 0x00100000;
+ENTRY(loader)
+
 SECTIONS
 {
-  .text phys : AT(phys) {
-    code = .;
-    *(.text)
-    *(.rodata)
-    . = ALIGN(4096);
-  }
-  .data : AT(phys + (data - code))
-  {
-    data = .;
-    *(.data)
-    . = ALIGN(4096);
-  }
-  .bss : AT(phys + (bss - code))
-  {
-    bss = .;
-    *(.bss)
-    . = ALIGN(4096);
-  }
-  end = .;
+    . = 0xC0100000;
+    
+    .text ALIGN (0x1000) : AT(ADDR(.text)-0xC0000000)
+    {
+        *(.text)
+    }
+
+    .rodata ALIGN (0x1000) : AT(ADDR(.rodata)-0xC0000000)
+    {
+        *(.rodata*)
+    }
+
+    .data ALIGN (0x1000) : AT(ADDR(.data)-0xC0000000)
+    {
+        *(.data)
+    }
+
+    .bss : AT(ADDR(.bss)-0xC0000000)
+    {
+        *(COMMON)
+        *(.bss)
+        end_of_kernel = .;
+    }
 }

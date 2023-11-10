@@ -3,6 +3,7 @@
 
 #include "multiboot_util.h"
 #include "system.h"
+#include "common.h"
 #include "../libc/include/stdio.h"
 #include "tty.h"
 #include "qemu_debug.h"
@@ -15,9 +16,10 @@
 #include "../driver/include/keyboard.h"
 #include "../../gui/render_font.h"
 #include "panic.h"
+#include "../memory/include/paging.h"
 #include "../../gui/render_image.h"
 #include "options.h"
 
-void kernel_main();
+void kernel_main(uint32_t, uint32_t, uint32_t);
 
 #endif
