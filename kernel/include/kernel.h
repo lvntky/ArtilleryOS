@@ -15,6 +15,7 @@
 #include "../driver/include/keyboard.h"
 #include "../../gui/render_font.h"
 #include "panic.h"
+#include "../memory/include/paging.h"
 #include "../../gui/render_image.h"
 #include "options.h"
 

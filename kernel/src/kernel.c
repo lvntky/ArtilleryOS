@@ -24,6 +24,7 @@ void kernel_main(multiboot_info_t *mbinfo, uint32_t mbmagic,
 	keyboard_init();
 	check_mboot_bootloader_magic(mbmagic);
 	display_memory_info(mbinfo, end_of_kernel);
+	paging_init(end_of_kernel);
 
 #if TEST_IDT
 	test_idt();

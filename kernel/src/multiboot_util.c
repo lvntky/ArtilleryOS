@@ -2,7 +2,7 @@
 
 void display_memory_info(multiboot_info_t *mbinfo, uint32_t end_of_kernel)
 {
-	qemu_write_string("\n%s INFO DUMP %s\n", MEMORY_OUTPUT, MEMORY_OUTPUT);
+	qemu_write_string("\n%s %s START\n", DEBUG_OUTPUT, MEMORY_OUTPUT);
 	/* From the GRUB multiboot manual section 3.3 boot information format
      * If flags[0] is set, then the fields mem_lower and mem_upper can be 
      * accessed.
@@ -12,7 +12,7 @@ void display_memory_info(multiboot_info_t *mbinfo, uint32_t end_of_kernel)
 	if (mbinfo->flags & 0x00000001) {
 		qemu_write_string("%s Size of the lower memory: %d kB\n",
 				  INFORMATION_OUTPUT, mbinfo->mem_lower);
-		qemu_write_string("%s Size of the upper memory: %d kB\n\n",
+		qemu_write_string("%s Size of the upper memory: %d kB\n",
 				  INFORMATION_OUTPUT, mbinfo->mem_upper);
 	}
 
@@ -42,6 +42,7 @@ void display_memory_info(multiboot_info_t *mbinfo, uint32_t end_of_kernel)
 	}
 	qemu_write_string("%s Kernel ends at: 0x%x\n", INFORMATION_OUTPUT,
 			  end_of_kernel);
+	qemu_write_string("%s %s END\n\n", DEBUG_OUTPUT, MEMORY_OUTPUT);
 }
 
 void check_mboot_bootloader_magic(uint32_t magic)
