@@ -1,5 +1,15 @@
 #include "../include/multiboot_util.h"
 
+multiboot_info_t *remap_multiboot_info(uint32_t mbinfo_addr)
+{
+	multiboot_info_t *mbinfo =
+		(multiboot_info_t *)(mbinfo_addr + KERNEL_BASE_ADDR);
+
+	mbinfo->mmap_addr += KERNEL_BASE_ADDR;
+
+	return mbinfo;
+}
+
 void display_memory_info(multiboot_info_t *mbinfo, uint32_t end_of_kernel)
 {
 	qemu_write_string("\n%s %s START\n", DEBUG_OUTPUT, MEMORY_OUTPUT);

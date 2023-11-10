@@ -3,6 +3,7 @@
 
 #include "multiboot_util.h"
 #include "system.h"
+#include "common.h"
 #include "../libc/include/stdio.h"
 #include "tty.h"
 #include "qemu_debug.h"
@@ -19,6 +20,6 @@
 #include "../../gui/render_image.h"
 #include "options.h"
 
-void kernel_main(multiboot_info_t *, uint32_t, uint32_t);
+void kernel_main(uint32_t, uint32_t, uint32_t);
 
 #endif
