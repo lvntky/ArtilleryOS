@@ -41,3 +41,20 @@ void display_memory_info(multiboot_info_t *mbinfo)
 		}
 	}
 }
+
+void check_mboot_bootloader_magic(uint32_t magic)
+{
+	qemu_write_string("%s Checking multiboot header magic...\n",
+			  INFORMATION_OUTPUT);
+	if (magic == MULTIBOOT_BOOTLOADER_MAGIC) {
+		qemu_write_string(
+			"%s Multiboot header magic is correct: 0x%x\n",
+			POSITIVE_OUTPUT, magic);
+	} else {
+		qemu_write_string(
+			"%s Multiboot header magic is invalid: 0x%x\n",
+			NEGATIVE_OUTPUT, magic);
+		panic("Invalid multiboot magic",
+		      "loader.asm - multiboot_util.c");
+	}
+}

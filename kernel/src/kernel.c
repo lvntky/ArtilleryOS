@@ -21,6 +21,7 @@ void kernel_main(multiboot_info_t *mbinfo, uint32_t mbmagic)
 
 	timer_init(100);
 	keyboard_init();
+	check_mboot_bootloader_magic(mbmagic);
 	display_memory_info(mbinfo);
 
 #if TEST_IDT
