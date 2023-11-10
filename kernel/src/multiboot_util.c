@@ -1,6 +1,6 @@
 #include "../include/multiboot_util.h"
 
-void display_memory_info(multiboot_info_t *mbinfo)
+void display_memory_info(multiboot_info_t *mbinfo, uint32_t end_of_kernel)
 {
 	qemu_write_string("\n%s INFO DUMP %s\n", MEMORY_OUTPUT, MEMORY_OUTPUT);
 	/* From the GRUB multiboot manual section 3.3 boot information format
@@ -40,6 +40,8 @@ void display_memory_info(multiboot_info_t *mbinfo)
 							   sizeof(entry->size));
 		}
 	}
+	qemu_write_string("%s Kernel ends at: 0x%x\n", INFORMATION_OUTPUT,
+			  end_of_kernel);
 }
 
 void check_mboot_bootloader_magic(uint32_t magic)

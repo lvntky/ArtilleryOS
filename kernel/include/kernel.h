@@ -18,6 +18,6 @@
 #include "../../gui/render_image.h"
 #include "options.h"
 
-void kernel_main(multiboot_info_t *, uint32_t);
+void kernel_main(multiboot_info_t *, uint32_t, uint32_t);
 
 #endif

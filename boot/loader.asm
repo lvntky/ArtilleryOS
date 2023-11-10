@@ -6,7 +6,9 @@
 
 [BITS 32]
 [global loader]
-[extern kernel_main]
+[extern kernel_main] ; comes from kernel.c
+[extern end_of_kernel] ; comes from linker.ld
+
 
 ; Setting up multibootheaders for GRUB
 MODULEALIGN equ 1<<0 ; align loaded modules on page boundary
@@ -26,6 +28,7 @@ align 4
 
 loader:
     mov esp, stack+STACKSIZE ; set up the stack pointer
+    push end_of_kernel
     push eax ; eax holds the MAGIC number
     push ebx ; ebx holds the Multiboot info
 
