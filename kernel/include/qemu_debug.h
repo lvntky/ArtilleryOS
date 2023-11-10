@@ -14,6 +14,7 @@
 #define DEBUG_OUTPUT "->"
 #define REGISTER_OUTPUT "[REGISTER]"
 #define EXCEPTION_OUTPUT "[EXCEPTION]"
+#define MEMORY_OUTPUT "[MEMORY]"
 
 void qemu_init_debug();
 void qemu_write_string(char *format, ...);

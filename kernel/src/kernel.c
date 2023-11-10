@@ -5,7 +5,7 @@ void test_idt()
 	__asm__("int $0x04");
 }
 
-void kernel_main()
+void kernel_main(multiboot_info_t *mbinfo, uint32_t mbmagic)
 {
 	terminal_init();
 	gdt_init();
@@ -21,6 +21,7 @@ void kernel_main()
 
 	timer_init(100);
 	keyboard_init();
+	display_memory_info(mbinfo);
 
 #if TEST_IDT
 	test_idt();
