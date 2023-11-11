@@ -40,6 +40,7 @@ void terminal_putchar(int x, int y, char c, enum VGA_COLOR color)
 	}
 
 	vid_mem[y * VGA_WIDTH + x] = terminal_makechar(c, color);
+	update_cursor(x, y);
 }
 
 void terminal_write(char c, enum VGA_COLOR color)
@@ -76,6 +77,8 @@ void handle_backspace()
 	} else if (terminal_cursor_y > 0) {
 		terminal_cursor_x = VGA_WIDTH - 1;
 		terminal_cursor_y--;
+	} else {
+		return; // Already at the beginning of the screen, nothing to do
 	}
 
 	vid_mem[terminal_cursor_y * VGA_WIDTH + terminal_cursor_x] =
@@ -130,6 +133,8 @@ void terminal_init(void)
 {
 	terminal_cursor_x = 0;
 	terminal_cursor_y = 0;
+	enable_cursor(14, 15);
+
 	for (int y = 0; y < TERMINAL_ROWS; y++) {
 		for (int x = 0; x < TERMINAL_COLS; x++) {
 			terminal_putchar(x, y, ' ', VGA_COLOR_BLACK);

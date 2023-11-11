@@ -19,6 +19,7 @@
 #include "../memory/include/paging.h"
 #include "../../gui/render_image.h"
 #include "options.h"
+#include "tty_cursor.h"
 
 void kernel_main(uint32_t, uint32_t, uint32_t);
 
