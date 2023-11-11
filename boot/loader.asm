@@ -6,6 +6,7 @@
 
 [BITS 32]
 global loader                           ; the entry point for the linker
+global boot_page_directory
 
 extern kernel_main                            ; kmain is defined in kmain.c
 extern end_of_kernel
@@ -68,6 +69,8 @@ higher_half:
     invlpg  [0]                             ; and flush any tlb-references to it
 
     mov esp, stack+STACKSIZE            ; sets up the stack pointer
+
+    push boot_page_directory
     
     push kernel_virtual_end             ; these are used by kmain, see
     push kernel_virtual_start           ; kernel_limits_t in kmain.c

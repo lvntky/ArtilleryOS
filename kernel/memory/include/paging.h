@@ -23,6 +23,11 @@ typedef struct page_table_entry {
 
 #define VIRTUAL_TO_PDT_IDX(a) ((a >> 20) & 0x3FF)
 
+#define PS_4KB 0x00
+#define PS_4MB 0x01
+
+#define IS_ENTRY_PRESENT(e) ((e)->config && 0x01)
+
 void paging_init(uint32_t);
 
 #endif

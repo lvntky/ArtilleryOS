@@ -22,6 +22,6 @@
 #include "options.h"
 #include "tty_cursor.h"
 
-void kernel_main(uint32_t, uint32_t, kernel_mem_limits_t);
+void kernel_main(uint32_t, uint32_t, kernel_mem_limits_t, uint32_t);
 
 #endif

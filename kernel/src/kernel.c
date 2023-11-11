@@ -6,7 +6,7 @@ void test_idt()
 }
 
 void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
-		 kernel_mem_limits_t kmlimits)
+		 kernel_mem_limits_t kmlimits, uint32_t boot_page_directory)
 {
 	multiboot_info_t *mbinfo = remap_multiboot_info(mbaddr);
 	terminal_init();
@@ -25,7 +25,7 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 	keyboard_init();
 	check_mboot_bootloader_magic(mbmagic);
 	display_memory_info(mbinfo, &kmlimits);
-	//paging_init(end_of_kernel);
+	paging_init(boot_page_directory);
 
 #if TEST_IDT
 	test_idt();
