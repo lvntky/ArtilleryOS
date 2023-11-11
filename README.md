@@ -26,7 +26,7 @@ ArtilleryOS is a unique graphical operating system that combines the simplicity 
 
 To get started with ArtilleryOS, follow these steps:
 
-1. [Download the latest release](https://github.com/yourusername/ArtilleryOS/releases).
+1. [Download the latest release](https://github.com/lvntky/ArtilleryOS/releases).
 2. Create a bootable USB drive or set up a virtual machine environment for testing.
 3. Boot into ArtilleryOS and follow the on-screen instructions for installation.
 
