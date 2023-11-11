@@ -17,10 +17,11 @@
 #include "../../gui/render_font.h"
 #include "panic.h"
 #include "../memory/include/paging.h"
+#include "../memory/include/kernel_mem_limits.h"
 #include "../../gui/render_image.h"
 #include "options.h"
 #include "tty_cursor.h"
 
-void kernel_main(uint32_t, uint32_t, uint32_t);
+void kernel_main(uint32_t, uint32_t, kernel_mem_limits_t);
 
 #endif

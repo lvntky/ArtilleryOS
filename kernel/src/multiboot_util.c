@@ -10,7 +10,8 @@ multiboot_info_t *remap_multiboot_info(uint32_t mbinfo_addr)
 	return mbinfo;
 }
 
-void display_memory_info(multiboot_info_t *mbinfo, uint32_t end_of_kernel)
+void display_memory_info(multiboot_info_t *mbinfo,
+			 kernel_mem_limits_t *kmlimits)
 {
 	qemu_write_string("\n%s %s START\n", DEBUG_OUTPUT, MEMORY_OUTPUT);
 	/* From the GRUB multiboot manual section 3.3 boot information format
@@ -50,8 +51,15 @@ void display_memory_info(multiboot_info_t *mbinfo, uint32_t end_of_kernel)
 							   sizeof(entry->size));
 		}
 	}
-	qemu_write_string("%s Kernel ends at: 0x%x\n", INFORMATION_OUTPUT,
-			  end_of_kernel);
+	qemu_write_string("%s Kernel physical start: 0x%x\n",
+			  INFORMATION_OUTPUT, kmlimits->kernel_physical_start);
+	qemu_write_string("%s Kernel physical end: 0x%x\n", INFORMATION_OUTPUT,
+			  kmlimits->kernel_physical_end);
+	qemu_write_string("%s Kernel virtual start: 0x%x\n", INFORMATION_OUTPUT,
+			  kmlimits->kernel_virtual_start);
+	qemu_write_string("%s Kernel virtual end: 0x%x\n", INFORMATION_OUTPUT,
+			  kmlimits->kernel_virtual_end);
+
 	qemu_write_string("%s %s END\n\n", DEBUG_OUTPUT, MEMORY_OUTPUT);
 }
 
