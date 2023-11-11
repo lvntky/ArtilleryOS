@@ -30,6 +30,7 @@ objects = ./build/loader.o \
           ./build/render_font.o \
           ./build/panic.o \
           ./build/render_image.o \
+		  ./build/tty_cursor.o \
 
 _mkdir := $(shell mkdir -p build)
 

@@ -6,6 +6,7 @@
 #include "qemu_debug.h"
 #include "config.h"
 #include "common.h"
+#include "tty_cursor.h"
 #include <stddef.h>
 #include <stdint.h>
 
