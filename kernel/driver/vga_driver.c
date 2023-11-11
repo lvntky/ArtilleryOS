@@ -86,13 +86,13 @@ uint8_t *get_frame_buffer_segment()
 	switch (segmentNumber) {
 	default:
 	case 0 << 2:
-		return (uint8_t *)0x00000;
+		return (uint8_t *)0x00000 + KERNEL_BASE_ADDR;
 	case 1 << 2:
-		return (uint8_t *)0xA0000;
+		return (uint8_t *)0xA0000 + KERNEL_BASE_ADDR;
 	case 2 << 2:
-		return (uint8_t *)0xB0000;
+		return (uint8_t *)0xB0000 + KERNEL_BASE_ADDR;
 	case 3 << 2:
-		return (uint8_t *)0xB8000;
+		return (uint8_t *)0xB8000 + KERNEL_BASE_ADDR;
 	}
 }
 
