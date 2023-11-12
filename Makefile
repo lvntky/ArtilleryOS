@@ -27,6 +27,7 @@ objects = ./build/loader.o \
 		  ./build/keyboard.o \
 		  ./build/paging_enable.o \
 		  ./build/paging.o \
+		  ./build/kernel_heap.o \
           ./build/render_font.o \
           ./build/panic.o \
           ./build/render_image.o \
