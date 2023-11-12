@@ -33,48 +33,39 @@ void qemu_write_char(char ch)
 	// Write the actual character
 	outb(QEMU_LOG_SERIAL_PORT, ch);
 }
-void itoa_dbg(int n, char *buffer, int base)
+
+void reverse_dbg(char *str, int len)
 {
-	int i = 0;
-	int isNegative = 0;
-
-	// Handle 0 explicitly, otherwise empty string is printed
-	if (n == 0) {
-		buffer[i++] = '0';
-		buffer[i] = '\0';
-	} else {
-		// Handle negative numbers only if the base is 10
-		if (n < 0 && base == 10) {
-			isNegative = 1;
-			n = -n;
-		}
-
-		// Process individual digits
-		while (n != 0) {
-			int rem = n % base;
-			buffer[i++] = (rem > 9) ? (rem - 10) + 'a' : rem + '0';
-			n = n / base;
-		}
-
-		// Append negative sign for base 10
-		if (isNegative && base == 10) {
-			buffer[i++] = '-';
-		}
-
-		buffer[i] = '\0'; // Null-terminate the string
-	}
-
-	// Reverse the string
 	int start = 0;
-	int end = i - 1;
+	int end = (len - 1);
 	while (start < end) {
-		// Swap characters
-		char temp = buffer[start];
-		buffer[start] = buffer[end];
-		buffer[end] = temp;
+		char temp = str[start];
+		str[start] = str[end];
+		str[end] = temp;
 		start++;
 		end--;
 	}
+}
+void itoa_dbg(unsigned int num, char *buffer, int base)
+{
+	int i = 0;
+
+	if (num == 0) {
+		buffer[i++] = '0';
+		buffer[i] = '\0';
+		return;
+	}
+
+	while (num != 0) {
+		int remainder = num % base;
+		buffer[i++] = (remainder < 10) ? (remainder + '0') :
+						 (remainder - 10 + 'A');
+		num = num / base;
+	}
+
+	buffer[i] = '\0';
+
+	reverse_dbg(buffer, i);
 }
 
 void qemu_write_string(char *format, ...)

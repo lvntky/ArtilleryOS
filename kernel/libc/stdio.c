@@ -13,10 +13,9 @@ void reverse(char *str, int len)
 	}
 }
 
-void itoa(int num, char *buffer, int base)
+void itoa(unsigned int num, char *buffer, int base)
 {
 	int i = 0;
-	bool isNegative = false;
 
 	if (num == 0) {
 		buffer[i++] = '0';
@@ -24,20 +23,11 @@ void itoa(int num, char *buffer, int base)
 		return;
 	}
 
-	if (num < 0 && base == 10) {
-		isNegative = true;
-		num = -num;
-	}
-
 	while (num != 0) {
 		int remainder = num % base;
 		buffer[i++] = (remainder < 10) ? (remainder + '0') :
 						 (remainder - 10 + 'A');
 		num = num / base;
-	}
-
-	if (isNegative) {
-		buffer[i++] = '-';
 	}
 
 	buffer[i] = '\0';
