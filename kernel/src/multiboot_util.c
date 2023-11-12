@@ -64,6 +64,21 @@ void display_kernel_mem_info(kernel_mem_limits_t *kmlimits)
 	qemu_write_string("%s Kernel virtual end: 0x%x\n", INFORMATION_OUTPUT,
 			  kmlimits->kernel_virtual_end);
 
+	uint32_t kernel_size_phy =
+		kmlimits->kernel_physical_end - kmlimits->kernel_physical_start;
+
+	uint32_t kernel_size_virt =
+		kmlimits->kernel_virtual_end - kmlimits->kernel_virtual_start;
+
+	qemu_write_string("%s Cheking kernel size...\n", INFORMATION_OUTPUT);
+	if (kernel_size_phy != kernel_size_virt) {
+		panic("Kernel Memmory Error", "paging.c");
+	} else {
+		qemu_write_string("%s Kernel Size -> HEX: 0x%x DEC: %d\n",
+				  INFORMATION_OUTPUT, kernel_size_phy,
+				  kernel_size_phy);
+	}
+
 	qemu_write_string("%s %s END\n\n", DEBUG_OUTPUT, MEMORY_OUTPUT);
 }
 
