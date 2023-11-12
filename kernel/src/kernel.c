@@ -25,6 +25,7 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 	keyboard_init();
 	check_mboot_bootloader_magic(mbmagic);
 	display_memory_info(mbinfo);
+	display_kernel_mem_info(&kmlimits);
 
 	paging_init(boot_page_directory);
 
