@@ -24,7 +24,8 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 	timer_init(100);
 	keyboard_init();
 	check_mboot_bootloader_magic(mbmagic);
-	display_memory_info(mbinfo, &kmlimits);
+	display_memory_info(mbinfo);
+
 	paging_init(boot_page_directory);
 
 #if TEST_IDT

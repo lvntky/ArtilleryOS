@@ -1,42 +1,46 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;                                   ;
-;   Artillery OS GRUB BootLoader    ;
-;                                   ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-[BITS 32]
 global loader                           ; the entry point for the linker
 global boot_page_directory
 
-extern kernel_main                            ; kmain is defined in kmain.c
-extern end_of_kernel
+extern kernel_main                            ; kernel_main is defined in kernel_main.c
 extern kernel_virtual_end               ; these are defined in the link script
 extern kernel_virtual_start
 extern kernel_physical_end
 extern kernel_physical_start
 
 ; setting up the multiboot headers for GRUB
-MODULEALIGN equ 1<<0                    ; align loaded modules on page 
+MODULEALIGN equ 1<<0                    ; align loaded modules on page
                                         ; boundaries
 MEMINFO     equ 1<<1                    ; provide memory map
 FLAGS       equ MODULEALIGN | MEMINFO   ; the multiboot flag field
-MAGIC       equ 0x1BADB002              ; magic number for bootloader to 
+MAGIC       equ 0x1BADB002              ; magic number for bootloader to
                                         ; find the header
 CHECKSUM    equ -(MAGIC + FLAGS)        ; checksum required
 
 ; paging for the kernel
-KERNEL_VIRTUAL_BASE     equ 0xC0000000                  ; we start at 3GB
-KERNEL_PAGE_IDX         equ (KERNEL_VIRTUAL_BASE >> 22) ; PDT index for 4MB PDE
+KERNEL_VIRTUAL_BASE equ 0xC0000000                  ; we start at 3GB
+KERNEL_PAGE_SIZE    equ 0x00400000                  ; the page is 4 MB
+KERNEL_PDT_IDX      equ KERNEL_VIRTUAL_BASE >> 22   ; index = highest 10 bits
+
+; stack management
+; the stack grows from the end of the page towards lower address
+; the stack must be aligned at 4 bytes, hence -4 instead of -1
+KERNEL_STACK_VIRTURAL_ADDRESS equ KERNEL_VIRTUAL_BASE + KERNEL_PAGE_SIZE - 4
 
 ; the page directory used to boot the kernel into the higher half
 section .data
 align 4096                               ; align on 4kB blocks
 boot_page_directory:
-    dd 00000000000000000000000010001011b ; identity mapped first 4MB
-    times (KERNEL_PAGE_IDX-1) dd 0       ; no pages here
-    dd 00000000000000000000000010001011b ; map 0xC0000000 to the first 4MB
-    times (1024-KERNEL_PAGE_IDX-1) dd 0  ; no more pages
-
+    ; the following macro identity maps all the memory except 0xC0000000 that
+    ; maps to 0x00000000
+    %assign mem 0
+    %rep    1024
+        %if mem == KERNEL_VIRTUAL_BASE
+            dd 00000000000000000000000010001011b
+        %else
+            dd (mem | 00000000000000000000000010001011b)
+        %endif
+        %assign mem mem+0x00400000
+    %endrep
 
 section .text
 align 4
@@ -46,6 +50,7 @@ align 4
 
 ; the entry point, called by GRUB
 loader:
+set_up_paging:
     mov ecx, (boot_page_directory-KERNEL_VIRTUAL_BASE)
     and ecx, 0xFFFFF000     ; we only care about the upper 20 bits
     or  ecx, 0x08           ; PWT, enable page write through?
@@ -55,9 +60,9 @@ loader:
     or  ecx, 0x00000010     ; set bit enabling 4MB pages
     mov cr4, ecx            ; enable it by writing to cr4
 
-    mov	ecx, cr0		    ; read current config from cr0
-	or	ecx, 0x80000000	    ; the highest bit controls paging
-	mov cr0, ecx		    ; enable paging by writing config to cr0
+    mov	ecx, cr0	    ; read current config from cr0
+    or  ecx, 0x80000000	    ; the highest bit controls paging
+    mov cr0, ecx	    ; enable paging by writing config to cr0
 
     lea ecx, [higher_half]  ; store the address higher_half in ecx
     jmp ecx                 ; now we jump into 0xC0100000
@@ -65,31 +70,43 @@ loader:
 ; code executing from here on uses the page table, and is accessed through
 ; the upper half, 0xC0100000
 higher_half:
-    mov     DWORD [boot_page_directory], 0  ; erase identity mapping of kernel
-    invlpg  [0]                             ; and flush any tlb-references to it
 
-    mov esp, stack+STACKSIZE            ; sets up the stack pointer
+move_multiboot_modules:
+    mov     esp, mini_stack + MINI_STACK_SIZE   ; set up a temp min stack
+    push    eax                                 ; save eax on the stack
+    push    ebx                                 ; ebx = multiboot data
+    ; call move_modules
+    pop     ebx                                 ; restore ebx
+    pop     eax                                 ; restora eax
 
+restore_pdt:
+    %assign i 0
+    %assign mem 0
+    %rep    1024
+        %if i != KERNEL_PDT_IDX
+            mov DWORD [boot_page_directory + i*4], 0
+            invlpg [mem]
+        %endif
+        %assign i i+1
+        %assign mem mem+0x00400000
+    %endrep
+
+enter_kernel_main:
+    mov esp, KERNEL_STACK_VIRTURAL_ADDRESS  ; set up the stack
     push boot_page_directory
-    
-    push kernel_virtual_end             ; these are used by kmain, see
-    push kernel_virtual_start           ; kernel_limits_t in kmain.c
+    push kernel_virtual_end             ; these are used by kernel_main, see
+    push kernel_virtual_start           ; kernel_limits_t in kernel_main.c
     push kernel_physical_end
     push kernel_physical_start
-    
     push eax                            ; eax contains the MAGIC number
-    push ebx                            ; ebx contains the multiboot data 
+    push ebx                            ; ebx contains the multiboot data
                                         ; structure
     call kernel_main                          ; call the main function of the kernel
-
 hang:
     jmp hang                            ; loop forever
 
-; reserve initial stack space
-STACKSIZE equ 0x4000                    ; 16kB
-
-section .bss
+MINI_STACK_SIZE equ 0x400
+section .bss:
 align 4
-stack:
-    resb STACKSIZE                      ; reserve memory for stack on 
-                                        ; doubleworded memory
+mini_stack:
+    resb MINI_STACK_SIZE

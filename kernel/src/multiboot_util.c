@@ -3,15 +3,15 @@
 multiboot_info_t *remap_multiboot_info(uint32_t mbinfo_addr)
 {
 	multiboot_info_t *mbinfo =
-		(multiboot_info_t *)(mbinfo_addr + KERNEL_BASE_ADDR);
+		(multiboot_info_t *)PHYSICAL_TO_VIRTUAL(mbinfo_addr);
 
-	mbinfo->mmap_addr += KERNEL_BASE_ADDR;
+	mbinfo->mmap_addr = PHYSICAL_TO_VIRTUAL(mbinfo->mmap_addr);
+	mbinfo->mods_addr = PHYSICAL_TO_VIRTUAL(mbinfo->mods_addr);
 
 	return mbinfo;
 }
 
-void display_memory_info(multiboot_info_t *mbinfo,
-			 kernel_mem_limits_t *kmlimits)
+void display_memory_info(multiboot_info_t *mbinfo)
 {
 	qemu_write_string("\n%s %s START\n", DEBUG_OUTPUT, MEMORY_OUTPUT);
 	/* From the GRUB multiboot manual section 3.3 boot information format
@@ -51,6 +51,10 @@ void display_memory_info(multiboot_info_t *mbinfo,
 							   sizeof(entry->size));
 		}
 	}
+}
+
+void display_kernel_mem_info(kernel_mem_limits_t *kmlimits)
+{
 	qemu_write_string("%s Kernel physical start: 0x%x\n",
 			  INFORMATION_OUTPUT, kmlimits->kernel_physical_start);
 	qemu_write_string("%s Kernel physical end: 0x%x\n", INFORMATION_OUTPUT,
@@ -65,16 +69,14 @@ void display_memory_info(multiboot_info_t *mbinfo,
 
 void check_mboot_bootloader_magic(uint32_t magic)
 {
-	qemu_write_string("%s Checking multiboot header magic...\n",
+	qemu_write_string("%s Checking multiboot magic...\n",
 			  INFORMATION_OUTPUT);
 	if (magic == MULTIBOOT_BOOTLOADER_MAGIC) {
-		qemu_write_string(
-			"%s Multiboot header magic is correct: 0x%x\n",
-			POSITIVE_OUTPUT, magic);
+		qemu_write_string("%s Multiboot magic is correct: 0x%x\n",
+				  POSITIVE_OUTPUT, magic);
 	} else {
-		qemu_write_string(
-			"%s Multiboot header magic is invalid: 0x%x\n",
-			NEGATIVE_OUTPUT, magic);
+		qemu_write_string("%s Multiboot header is invalid: 0x%x\n",
+				  NEGATIVE_OUTPUT, magic);
 		panic("Invalid multiboot magic",
 		      "loader.asm - multiboot_util.c");
 	}
