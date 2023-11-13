@@ -1,8 +1,6 @@
 #ifndef _KERNEL_H
 #define _KERNEL_H
 
-#define KERNEL_HEAP_SIZE 0x10000
-
 #include "multiboot_util.h"
 #include "system.h"
 #include "common.h"

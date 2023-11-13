@@ -7,4 +7,6 @@
 #define VIRTUAL_TO_PHYSICAL(addr) ((addr)-KERNEL_BASE_ADDR)
 #define PHYSICAL_TO_VIRTUAL(addr) ((addr) + KERNEL_BASE_ADDR)
 
+#define KERNEL_HEAP_SIZE 0x10000
+
 #endif

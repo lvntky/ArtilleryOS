@@ -27,6 +27,48 @@ void kmalloc_init(uint32_t addr, size_t nbytes)
 			  (uint32_t)&base, base.s.size);
 }
 
+void *kmalloc(size_t nbytes)
+{
+	header_t *p, *prevp;
+	size_t nunits;
+
+	if (nbytes == 0) {
+		return 0;
+	}
+
+	//TODO: %u implementation needed
+	nunits = (nbytes + sizeof(header_t) - 1) / sizeof(header_t) + 1;
+	qemu_write_string("%s kmalloc() nbytes: %d, nunits %d\n",
+			  INFORMATION_OUTPUT, nbytes, nunits);
+	prevp = freep;
+
+	for (p = prevp->s.next;; prevp = p, p = p->s.next) {
+		if (p->s.size >= nunits) {
+			/* the block is big enough */
+			if (p->s.size == nunits) {
+				/* exactly */
+				prevp->s.next = p->s.next;
+			} else {
+				/* allocate at the tail end of the block and create a new
+                 * header in front of allocated block */
+				p->s.size -= nunits;
+				p += p->s.size; /* make p point to new header */
+				p->s.size = nunits;
+			}
+			freep = prevp;
+			qemu_write_string("%s malloc: %x (header_t: %x)\n",
+					  INFORMATION_OUTPUT, (uint32_t)(p + 1),
+					  (uint32_t)p);
+			return (void *)(p + 1);
+		}
+		if (p == freep) {
+			qemu_write_string(
+				"%s kmalloc() cannot allocate memory sizeof %d\n",
+				NEGATIVE_OUTPUT, nbytes);
+		}
+	}
+}
+
 void kfree(void *ap)
 {
 	header_t *bp, *p;
