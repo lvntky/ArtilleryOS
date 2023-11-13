@@ -5,5 +5,6 @@
 #include <stdint.h>
 
 void gui_draw_string(uint32_t, uint32_t, const char *, uint8_t);
+void gui_draw_char(uint32_t, uint32_t, char, uint8_t);
 
 #endif

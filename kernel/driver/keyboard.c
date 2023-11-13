@@ -40,6 +40,8 @@ unsigned char scan_code;
 // Modifier key state
 unsigned char shift_pressed = 0;
 unsigned char ctrl_pressed = 0;
+int gui_x = 0;
+int gui_y = 0;
 
 void keyboard_handler(register_t *reg)
 {
@@ -53,6 +55,7 @@ void keyboard_handler(register_t *reg)
 			putchar('\n'); // Handle Enter
 		} else if (key == '\b') {
 			putchar('\b'); // Handle Backspace
+		} else if (key == '\t') {
 		} else if (key != 0) {
 			// Check for modifier keys
 			if (key == '\b') {
@@ -80,8 +83,13 @@ void keyboard_handler(register_t *reg)
 					// Implement your Ctrl + C action
 				}
 			}
+#if GUI_MODE
+			gui_draw_char(gui_x, gui_y, key, 0x04);
+#endif
 
+#if !GUI_MODE
 			putchar(key);
+#endif
 		}
 	}
 }

@@ -1,7 +1,7 @@
 #include "render_font.h"
 #include "font.h"
 
-void draw_char(uint32_t x, uint32_t y, char ch, uint8_t colorIndex)
+void gui_draw_char(uint32_t x, uint32_t y, char ch, uint8_t colorIndex)
 {
 	// Get the bitmap for the character
 	char *bitmap = font8x8_basic[(int)ch];
@@ -22,7 +22,7 @@ void gui_draw_string(uint32_t x, uint32_t y, const char *str,
 {
 	// Draw each character in the string
 	while (*str != '\0') {
-		draw_char(x, y, *str, colorIndex);
+		gui_draw_char(x, y, *str, colorIndex);
 		x += 8;
 		++str;
 	}

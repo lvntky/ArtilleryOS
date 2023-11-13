@@ -6,6 +6,8 @@
 #include "../../descriptor_tables/include/isr.h"
 #include "../../include/registert.h"
 #include "../../include/qemu_debug.h"
+#include "../../../gui/render_font.h"
+#include "../../include/options.h"
 
 void keyboard_init();
 

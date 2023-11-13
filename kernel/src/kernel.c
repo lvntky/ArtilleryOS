@@ -40,7 +40,7 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 #if GUI_MODE
 	set_mode(320, 200, 8);
 	clear_screen_withcolor(0x3F);
-	gui_draw_string(8, 16, " > GUI Mode Enabled", 0x2C);
+
 #if VGA_DEMO
 	int color = 0;
 	while (1) {
