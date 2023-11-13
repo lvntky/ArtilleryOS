@@ -1,6 +1,8 @@
 #ifndef _KERNEL_H
 #define _KERNEL_H
 
+#define KERNEL_HEAP_SIZE 0x10000
+
 #include "multiboot_util.h"
 #include "system.h"
 #include "common.h"
@@ -18,6 +20,7 @@
 #include "panic.h"
 #include "../memory/include/paging.h"
 #include "../memory/include/kernel_mem_limits.h"
+#include "../memory/include/kernel_heap.h"
 #include "../../gui/render_image.h"
 #include "options.h"
 #include "tty_cursor.h"
