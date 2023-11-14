@@ -32,6 +32,7 @@ objects = ./build/loader.o \
           ./build/panic.o \
           ./build/render_image.o \
 		  ./build/tty_cursor.o \
+		  ./build/multiboot_module.o \
 
 _mkdir := $(shell mkdir -p build)
 

@@ -9,4 +9,6 @@
 
 #define KERNEL_HEAP_SIZE 0x10000
 
+#define ALIGN(addr, alignment) (addr) + (alignment - ((addr) % alignment))
+
 #endif
