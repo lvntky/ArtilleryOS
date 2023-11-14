@@ -21,23 +21,19 @@ void create_pt_entry(page_table_entry_t *pt, uint32_t n, uint32_t addr)
 
 void paging_init(uint32_t boot_page_directory)
 {
-	uint32_t i, cr3;
+	uint32_t i;
 	page_directory_entry_t *pdt =
 		(page_directory_entry_t *)boot_page_directory;
 
-	create_pdt_entry(pdt, 1, 0x10000000, PS_4MB);
-
-	cr3 = VIRTUAL_TO_PHYSICAL(boot_page_directory) | (0x01 << 3);
-	pdt_set(cr3);
-
+	/*create_pdt_entry(pdt, 1, 0x10000000, PS_4MB);*/
 	qemu_write_string("%s Paging initialized\n", POSITIVE_OUTPUT);
-	qemu_write_string("%s Boot page directory: 0x%x\n", INFORMATION_OUTPUT,
+	qemu_write_string("%s boot page directory: %x\n", INFORMATION_OUTPUT,
 			  (uint32_t)pdt);
-	qemu_write_string("%s Present pages:\n", INFORMATION_OUTPUT);
-
+	qemu_write_string("%s present pages:\n", INFORMATION_OUTPUT);
+	// TODO: %u needed
 	for (i = 0; i < NUM_ENTRIES; ++i) {
 		if (IS_ENTRY_PRESENT(pdt + i)) {
-			qemu_write_string("%d: 0x%x\n", i, pdt[i]);
+			qemu_write_string("    %d: %x\n", i, pdt[i]);
 		}
 	}
 
