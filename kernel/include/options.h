@@ -7,5 +7,6 @@
 #define GUI_MODE FALSE
 #define TEST_IDT FALSE
 #define VGA_DEMO FALSE
+#define DISPLAY_VBE_INFO FALSE
 
 #endif

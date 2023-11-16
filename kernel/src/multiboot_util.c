@@ -96,3 +96,29 @@ void check_mboot_bootloader_magic(uint32_t magic)
 		      "loader.asm - multiboot_util.c");
 	}
 }
+
+void display_vbe_info(multiboot_info_t *mbinfo)
+{
+	if (mbinfo->flags & MULTIBOOT_INFO_VIDEO_INFO) {
+		qemu_write_string("%s Displaying VBE info\n", POSITIVE_OUTPUT);
+		qemu_write_string("%s VBE control info: 0x%x\n",
+				  INFORMATION_OUTPUT, mbinfo->vbe_control_info);
+		qemu_write_string("%s VBE mode info: 0x%x\n",
+				  INFORMATION_OUTPUT, mbinfo->vbe_mode_info);
+		qemu_write_string("%s VBE mode: 0x%x\n", INFORMATION_OUTPUT,
+				  mbinfo->vbe_mode);
+		qemu_write_string("%s VBE interface segment: 0x%x\n",
+				  INFORMATION_OUTPUT,
+				  mbinfo->vbe_interface_seg);
+		qemu_write_string("%s VBE interface offset: 0x%x\n",
+				  INFORMATION_OUTPUT,
+				  mbinfo->vbe_interface_off);
+		qemu_write_string("%s VBE interface length: 0x%x\n",
+				  INFORMATION_OUTPUT,
+				  mbinfo->vbe_interface_len);
+	} else {
+		qemu_write_string(
+			"%s Can't obtain VBE information from GRUB Multiboot!\n",
+			NEGATIVE_OUTPUT);
+	}
+}

@@ -31,6 +31,10 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 
 	kmalloc_init(NEXT_ADDR(kmlimits.kernel_virtual_end), KERNEL_HEAP_SIZE);
 
+#if DISPLAY_VBE_INFO
+	display_vbe_info(mbinfo);
+#endif
+
 #if TEST_IDT
 	test_idt();
 #endif
