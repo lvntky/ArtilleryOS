@@ -14,6 +14,7 @@
 
 #include "../util.h"
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef struct node {
 	void *data;
@@ -43,11 +44,10 @@ void all_enqueue(art_linked_list_t *, void *);
 node_t *all_dequeue(art_linked_list_t *);
 void *all_peek_front(art_linked_list_t *);
 void *all_peek_back(art_linked_list_t *);
-void all_destroy(art_linked_list_t *);
+void all_full_destroy(art_linked_list_t *);
 void all_node_destroy(node_t *);
-int all_does_contain(art_linked_list_t *, void *);
+bool all_does_contain(art_linked_list_t *, void *);
 node_t *all_get_node_by_index(art_linked_list_t *, int);
 void *all_remove_by_index(art_linked_list_t *, int);
-void all_print_int_data(void *);
 
 #endif
