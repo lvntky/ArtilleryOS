@@ -1,1 +1,0 @@
-#include "../../kernel/memory/include/kernel_heap.h"
