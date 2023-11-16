@@ -29,9 +29,7 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 
 	paging_init(boot_page_directory);
 
-	kmalloc_init(kmlimits.kernel_virtual_end -
-			     (kmlimits.kernel_virtual_end % 4) + 4,
-		     KERNEL_HEAP_SIZE);
+	kmalloc_init(NEXT_ADDR(kmlimits.kernel_virtual_end), KERNEL_HEAP_SIZE);
 
 #if TEST_IDT
 	test_idt();

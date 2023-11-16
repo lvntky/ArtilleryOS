@@ -57,11 +57,11 @@ void move_multiboot_modules(multiboot_info_t *mbinfo)
 			uint32_t tmp_area = 0;
 			if (end_addr <
 			    MODULES_BASE_PHYSICAL_ADDRESS + total_size) {
-				tmp_area = ALIGN(MODULES_BASE_PHYSICAL_ADDRESS +
-							 total_size,
-						 4);
+				tmp_area = NEXT_ADDR(
+					MODULES_BASE_PHYSICAL_ADDRESS +
+					total_size);
 			} else {
-				tmp_area = ALIGN(end_addr, 4);
+				tmp_area = NEXT_ADDR(end_addr);
 			}
 
 			copy_modules(mbinfo, tmp_area);
