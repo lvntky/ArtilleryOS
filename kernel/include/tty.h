@@ -7,6 +7,7 @@
 #include "config.h"
 #include "common.h"
 #include "tty_cursor.h"
+#include "../driver/include/cmos.h"
 #include <stddef.h>
 #include <stdint.h>
 

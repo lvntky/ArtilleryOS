@@ -183,12 +183,13 @@ bool all_does_contain(art_linked_list_t *list, void *data)
 }
 node_t *all_get_node_by_index(art_linked_list_t *list, int node_index)
 {
-	node_t *realted_node;
+	node_t *related_node = NULL;
 
 	// TODO: do stuff
-	return realted_node;
+	return related_node;
 }
-void *all_remove_by_index(art_linked_list_t *, int)
+void *all_remove_by_index(art_linked_list_t *list, int node_index)
 {
 	// TODO: do stuff;
+	return NULL;
 }

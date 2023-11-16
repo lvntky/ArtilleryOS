@@ -14,6 +14,7 @@
 #include "../descriptor_tables/include/tss.h"
 #include "../include/timer.h"
 #include "../driver/include/keyboard.h"
+#include "../driver/include/cmos.h"
 #include "../../gui/render_font.h"
 #include "panic.h"
 #include "../memory/include/paging.h"

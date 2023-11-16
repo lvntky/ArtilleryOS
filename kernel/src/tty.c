@@ -140,6 +140,7 @@ void terminal_init(void)
 			terminal_putchar(x, y, ' ', VGA_COLOR_BLACK);
 		}
 	}
+
 	print_logo();
 	qemu_write_string("%s Video mode initialized (80 * 25 text)\n",
 			  POSITIVE_OUTPUT);
@@ -147,6 +148,7 @@ void terminal_init(void)
 	terminal_putstr_with_colors("  Artillery OS  ", VGA_COLOR_RED,
 				    VGA_COLOR_WHITE);
 	terminal_print_color(" v0.2.4-alpha\n\n", VGA_COLOR_GREEN);
+	cmos_display_date_ddmmyyyy_hhmmss();
 	printf("artillery-kernel> ");
 }
 
