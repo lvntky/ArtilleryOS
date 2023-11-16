@@ -1,14 +1,14 @@
 # Artillery OS - Technical TODO List
 
 ## Kernel Initialization and Essential Components
-1. [ ] Set up basic kernel initialization routines.
-2. [ ] Initialize essential data structures (e.g., page tables, process tables).
-3. [ ] Implement early-stage hardware detection and initialization.
+1. [x] Set up basic kernel initialization routines.
+2. [x] Initialize essential data structures (e.g., page tables, process tables).
+3. [x] Implement early-stage hardware detection and initialization.
 
 ## Memory Management
-4. [ ] Develop memory management functions (e.g., malloc, free).
-5. [ ] Implement virtual memory support with paging (if applicable).
-6. [ ] Manage physical and virtual memory efficiently.
+4. [x] Develop memory management functions (e.g., malloc, free).
+5. [x] Implement virtual memory support with paging (if applicable).
+6. [x] Manage physical and virtual memory efficiently.
 7. [ ] Handle memory fragmentation.
 
 ## Process Management and Scheduling
@@ -19,20 +19,20 @@
 12. [ ] Handle multi-threading (if needed).
 
 ## Device Drivers and Hardware Support
-13. [ ] Write device drivers for essential hardware components (e.g., keyboard, display, storage devices).
+13. x ] Write device drivers for essential hardware components (e.g., keyboard, display, storage devices).
 14. [ ] Develop a driver model for managing and communicating with hardware devices.
-15. [ ] Implement interrupt handling for hardware events.
-16. [ ] Ensure hardware compatibility and stability.
+15. [x] Implement interrupt handling for hardware events.
+16. [x] Ensure hardware compatibility and stability.
 
 ## System Calls and User Space
 17. [ ] Define a set of system calls for user programs to interact with the kernel.
 18. [ ] Implement a system call handler to process user requests.
-19. [ ] Support standard POSIX system calls (if desired).
+19. [ ] Support standard POSIX system calls 
 20. [ ] Develop a user-space environment with user programs and libraries.
 21. [ ] Implement a shell or command-line interface for user interaction.
 
 ## File Systems (if applicable)
-22. [ ] Choose or create a file system architecture (e.g., FAT, ext4).
+22. [ ] Choose or create a file system architecture (ext2).
 23. [ ] Implement file I/O, directory management, and file operations.
 24. [ ] Support file permissions and access control.
 
@@ -45,8 +45,8 @@
 ## Error Handling and Testing
 29. [ ] Create test cases to verify the correctness of kernel components.
 30. [ ] Use testing frameworks and automated testing tools.
-31. [ ] Test on real hardware and emulation environments (e.g., QEMU).
-32. [ ] Implement error handling and logging mechanisms.
+31. [x] Test on real hardware and emulation environments (e.g., QEMU).
+32. [x] Implement error handling and logging mechanisms.
 
 ## Optimization and Performance
 33. [ ] Profile and optimize critical kernel components for better performance.
@@ -58,7 +58,7 @@
 37. [ ] Document kernel internals, APIs, and usage instructions for contributors and users.
 38. [ ] Foster a community of contributors and users.
 39. [ ] Set up communication channels for collaboration and support.
-40. [ ] Encourage contributions and manage pull requests.
+40. [x] Encourage contributions and manage pull requests.
 
 ## Project Management and Clean-up
 41. [ ] Plan milestones, tasks, and timelines for development.
