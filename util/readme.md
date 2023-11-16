@@ -1,5 +1,6 @@
 # Artillery OS - Util
 
-General Libraries that created for building, developing and developing softwares for Artillery OS.
+General Libraries that created for building and developing softwares for Artillery OS.
 
 * ArtLib: ArtilleryOS Graphics Library
+* data_structures: Common data structures

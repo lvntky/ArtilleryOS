@@ -33,6 +33,7 @@ objects = ./build/loader.o \
           ./build/render_image.o \
 		  ./build/tty_cursor.o \
 		  ./build/multiboot_module.o \
+		  ./build/art_linked_list.o \
 
 _mkdir := $(shell mkdir -p build)
 
@@ -62,6 +63,10 @@ build/%.o: gui/%.c
 # MEMORY
 build/%.o: kernel/memory/asm/%.asm
 	nasm -f elf32 -o $@ $<
+
+# UTIL
+build/%.o: util/%.c
+	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
 build/%.o: kernel/memory/src/%.c
 	i686-elf-gcc $(CFLAGS) -c -o $@ $<
