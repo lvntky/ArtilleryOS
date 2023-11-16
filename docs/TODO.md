@@ -72,6 +72,7 @@
 47. [ ] Support additional hardware platforms or architectures.
 48. [ ] Implement advanced features (e.g., symmetric multiprocessing, real-time support).
 49. [ ] Explore energy efficiency and power management.
+50. [ ] Set VBE 3.0 gfx, test with 3d rotating cube.
 
 ## Conclusion
 This detailed `TODO.md` file provides a prioritized roadmap for developing of Artillery OS. Regularly update and prioritize tasks as the project progresses, and adapt the list to align with evolving requirements and priorities.
