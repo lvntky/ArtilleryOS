@@ -22,6 +22,7 @@
 #include "../../gui/render_image.h"
 #include "options.h"
 #include "tty_cursor.h"
+#include "../../util/include/art_linked_list.h"
 
 void kernel_main(uint32_t, uint32_t, kernel_mem_limits_t, uint32_t);
 
