@@ -45,29 +45,29 @@ static const char *cmos_enum_to_month_str(cmos_month_enum_t month)
 {
 	switch (month) {
 	case JANUARY:
-		return "January";
+		return "JAN";
 	case FEBRUARY:
-		return "February";
+		return "FEB";
 	case MARCH:
-		return "March";
+		return "MARCH";
 	case APRIL:
-		return "April";
+		return "APRIL";
 	case MAY:
-		return "May";
+		return "MAY";
 	case JUNE:
-		return "June";
+		return "JUNE";
 	case JULY:
-		return "July";
+		return "JULY";
 	case AUGUST:
-		return "August";
+		return "AUG";
 	case SEPTEMBER:
-		return "September";
+		return "SEP";
 	case OCTOBER:
-		return "October";
+		return "OCT";
 	case NOVEMBER:
-		return "November";
+		return "NOV";
 	case DECEMBER:
-		return "December";
+		return "DEC";
 	default:
 		return "Invalid Month";
 	}
