@@ -35,6 +35,45 @@ void itoa(unsigned int num, char *buffer, int base)
 	reverse(buffer, i);
 }
 
+void ftoa(double num, char *buffer, int precision)
+{
+	// Handle negative numbers
+	int is_negative = 0;
+	if (num < 0) {
+		is_negative = 1;
+		num = -num;
+	}
+
+	// Extract integer and fractional parts
+	unsigned int int_part = (unsigned int)num;
+	double frac_part = num - int_part;
+
+	// Convert integer part to string
+	itoa(int_part, buffer, 10);
+
+	// Append the decimal point
+	int len = strlen(buffer);
+	buffer[len] = '.';
+	len++;
+
+	// Convert fractional part to string with specified precision
+	int i;
+	for (i = 0; i < precision; ++i) {
+		frac_part *= 10;
+		buffer[len + i] = '0' + (int)frac_part;
+		frac_part -= (int)frac_part;
+	}
+
+	buffer[len + i] = '\0';
+	reverse(buffer, len + i);
+
+	// Add the negative sign if necessary
+	if (is_negative) {
+		memmove(buffer + 1, buffer, len + i + 1);
+		buffer[0] = '-';
+	}
+}
+
 int printf(const char *format, ...)
 {
 	va_list args;
@@ -65,6 +104,19 @@ int printf(const char *format, ...)
 				unsigned int num = va_arg(args, unsigned int);
 				char buffer[12]; // Enough for a 32-bit unsigned integer
 				itoa(num, buffer, 10);
+				int i = 0;
+				while (buffer[i]) {
+					terminal_write_default(buffer[i]);
+					written++;
+					i++;
+				}
+				break;
+			}
+			case 'f': {
+				double num = va_arg(args, double);
+				char buffer[30]; // Adjust size as needed
+				ftoa(num, buffer,
+				     6); // 6 is the default precision, adjust as needed
 				int i = 0;
 				while (buffer[i]) {
 					terminal_write_default(buffer[i]);

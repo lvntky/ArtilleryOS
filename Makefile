@@ -35,6 +35,7 @@ objects = ./build/loader.o \
 		  ./build/multiboot_module.o \
 		  ./build/art_linked_list.o \
 		  ./build/cmos.o \
+		  ./build/math.o \
 
 _mkdir := $(shell mkdir -p build)
 

@@ -41,3 +41,26 @@ int strcmp(char *str1, char *str2)
 		return 1; // First differing character in str1 is larger
 	}
 }
+
+#include <stddef.h>
+
+void *memmove(void *dest, const void *src, size_t n)
+{
+	unsigned char *d = dest;
+	const unsigned char *s = src;
+
+	// If source and destination overlap and source is before destination
+	if (s < d && d < s + n) {
+		s += n;
+		d += n;
+		while (n--) {
+			*(--d) = *(--s);
+		}
+	} else {
+		while (n--) {
+			*d++ = *s++;
+		}
+	}
+
+	return dest;
+}
