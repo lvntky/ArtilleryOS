@@ -1,0 +1,15 @@
+=============================================================
+
+This implemetation contains the first file system prototype 
+for Artillery OS.
+
+it's read-only, initialized by grub befor kernel loads. 
+
+We using this just for testing/prototype
+purposes and its temporary.
+Until we switch to the main file system of
+Artillery OS which is ext2. 
+
+- Levent 17/11/2023
+
+=============================================================
