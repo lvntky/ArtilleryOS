@@ -36,6 +36,8 @@ objects = ./build/loader.o \
 		  ./build/art_linked_list.o \
 		  ./build/cmos.o \
 		  ./build/math.o \
+		  ./build/stdlib.o \
+		  ./build/bresenham.o \
 
 _mkdir := $(shell mkdir -p build)
 

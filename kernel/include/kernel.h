@@ -22,6 +22,7 @@
 #include "../memory/include/kernel_mem_limits.h"
 #include "../memory/include/kernel_heap.h"
 #include "../../gui/render_image.h"
+#include "../../gui/bresenham.h"
 #include "options.h"
 #include "tty_cursor.h"
 #include "../../util/include/art_linked_list.h"
