@@ -161,6 +161,7 @@ void all_full_destroy(art_linked_list_t *list)
 
 	while (current != NULL) {
 		next = current->next;
+		kfree(current->data);
 		kfree(current);
 		current = next;
 	}
@@ -170,6 +171,11 @@ void all_full_destroy(art_linked_list_t *list)
 
 void all_node_destroy(node_t *node)
 {
+	if (node != NULL) {
+		kfree(node->data);
+
+		kfree(node);
+	}
 }
 
 bool all_does_contain(art_linked_list_t *list, void *data)
@@ -178,18 +184,50 @@ bool all_does_contain(art_linked_list_t *list, void *data)
 		return false;
 	}
 
-	// Todo: ITERATE
-	return false;
+	node_t *current = list->head;
+
+	while (current != NULL) {
+		if (current->data == data) {
+			return true; // Found the data in the list
+		}
+		current = current->next;
+	}
+
+	return false; // Data not found in the list
 }
+
 node_t *all_get_node_by_index(art_linked_list_t *list, int node_index)
 {
-	node_t *related_node = NULL;
+	if (list == NULL || node_index < 0) {
+		return NULL; // Invalid input
+	}
 
-	// TODO: do stuff
-	return related_node;
+	node_t *current = list->head;
+	int index = 0;
+
+	while (current != NULL && index < node_index) {
+		current = current->next;
+		index++;
+	}
+
+	return current; // Returns NULL if the index is out of bounds
 }
+
 void *all_remove_by_index(art_linked_list_t *list, int node_index)
 {
-	// TODO: do stuff;
-	return NULL;
+	if (list == NULL || node_index < 0) {
+		return NULL; // Invalid input
+	}
+
+	node_t *node_to_remove = all_get_node_by_index(list, node_index);
+
+	if (node_to_remove == NULL) {
+		return NULL; // Index out of bounds
+	}
+
+	void *data = all_remove_node(list, node_to_remove);
+	all_node_destroy(
+		node_to_remove); // Free the memory occupied by the removed node
+
+	return data;
 }
