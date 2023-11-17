@@ -5,6 +5,7 @@
 #include "system.h"
 #include "common.h"
 #include "../libc/include/stdio.h"
+#include "../libc/include/math.h"
 #include "tty.h"
 #include "qemu_debug.h"
 #include "cpu_info.h"
