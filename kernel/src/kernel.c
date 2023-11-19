@@ -9,6 +9,7 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 		 kernel_mem_limits_t kmlimits, uint32_t boot_page_directory)
 {
 	multiboot_info_t *mbinfo = remap_multiboot_info(mbaddr);
+
 	terminal_init();
 	gdt_init();
 	idt_init();
@@ -30,6 +31,10 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 	paging_init(boot_page_directory);
 
 	kmalloc_init(NEXT_ADDR(kmlimits.kernel_virtual_end), KERNEL_HEAP_SIZE);
+
+	unsigned int address_of_module = mbinfo->mods_addr;
+	qemu_write_string("%s Loaded module address: 0x%x", INFORMATION_OUTPUT,
+			  address_of_module);
 
 #if DISPLAY_VBE_INFO
 	display_vbe_info(mbinfo);

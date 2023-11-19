@@ -20,10 +20,12 @@ set -e
 ISO_FOLDER="iso"
 MODULE_FOLER="module"
 GRUB_CFG_LOCATION="./scripts/grub.cfg"
+GRUB_MODULES_LOCATION="./kernel/modules"
 
 mkdir -p $ISO_FOLDER
 mkdir -p $ISO_FOLDER/boot
 mkdir -p $ISO_FOLDER/boot/grub
+mkdir -p $ISO_FOLDER/modules
 
 echo -e "$YELLOW[INFO]$NC copying kernel.elf to iso/boot/..."
 cp kernel.elf iso/boot/kernel.elf
@@ -33,10 +35,15 @@ echo -e "$YELLOW[INFO]$NC copying ./scrtipts/grub.cfg to iso/boot/grub/..."
 cp $GRUB_CFG_LOCATION iso/boot/grub/grub.cfg
 echo -e "$GREEN[DONE]$NC copying ./scrtipts/grub.cfg to iso/boot/grub/...\n"
 
+echo -e "$YELLOW[INFO]$NC copying test_module to $ISO_FOLDER/modules"
+echo "$GRUB_MODULES_LOCATION/test_module"
+cp $GRUB_MODULES_LOCATION/test_module $ISO_FOLDER/modules/
+echo -e "$GREEN[DONE]$NC copying test_module to $ISO_FOLDER/modules\n"
+
 echo -e "$YELLOW[INFO]$NC generating ISO..."
 grub-mkrescue --output=artillery.iso iso
 echo -e "$GREEN[DONE]$NC ISO Location: ./artillery.iso!\n"
 
-echo -e "$YELLOW[INFO]$NC Removing ./iso foler..."
-rm -rf $ISO_FOLDER
-echo -e "$GREEN[DONE]$NC Removing ./iso foler...\n"
+#echo -e "$YELLOW[INFO]$NC Removing ./iso foler..."
+#rm -rf $ISO_FOLDER
+#echo -e "$GREEN[DONE]$NC Removing ./iso foler...\n"
