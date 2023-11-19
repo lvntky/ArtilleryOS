@@ -2,6 +2,7 @@
 #define _KERNEL_H
 
 #include "multiboot_util.h"
+#include "multiboot_module.h"
 #include "system.h"
 #include "common.h"
 #include "../libc/include/stdio.h"

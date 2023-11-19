@@ -1,6 +1,6 @@
 [bits 32]
 section .text:
 align 4
-    int 0xAE
-    int 0xAE
+    mov edi, 0xDEADBEEF 
+    int 0x00
     ret

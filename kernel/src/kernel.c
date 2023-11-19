@@ -32,9 +32,14 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 
 	kmalloc_init(NEXT_ADDR(kmlimits.kernel_virtual_end), KERNEL_HEAP_SIZE);
 
-	unsigned int address_of_module = mbinfo->mods_addr;
-	qemu_write_string("%s Loaded module address: 0x%x", INFORMATION_OUTPUT,
-			  address_of_module);
+	void (*module_entry_point)(void) = (void (*)(void))0xC0400000;
+	uint32_t *module = (uint32_t *)0xC0400000;
+
+	for (uint32_t i = 0; i < 4; ++i, ++module) {
+		qemu_write_string("m: 0x%x -> 0x%x\n", module, *module);
+	}
+	//module_entry_point();
+	UNUSED_ARGUMENT(module_entry_point);
 
 #if DISPLAY_VBE_INFO
 	display_vbe_info(mbinfo);
