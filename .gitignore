@@ -98,4 +98,3 @@ dkms.conf
 /*.iso*
 
 bin/*
-kernel/modules/test_module
