@@ -101,3 +101,4 @@ bin/*
 initrd.img
 kernel/fs/tempfs/filesystem_generator
 
+kernel/fs/tempfs/initrd_generator/bin/initrd_generator

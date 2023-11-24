@@ -1,5 +1,7 @@
 // this one is compiled with gcc, not corss-compiler
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 struct initrd_header {
 	unsigned char
@@ -13,7 +15,7 @@ int main(char argc, char **argv)
 {
 	int nheaders = (argc - 1) / 2;
 	struct initrd_header headers[64];
-	printf("size of header: %d\n", sizeof(struct initrd_header));
+	printf("size of header: %ld\n", sizeof(struct initrd_header));
 	unsigned int off = sizeof(struct initrd_header) * 64 + sizeof(int);
 	int i;
 	for (i = 0; i < nheaders; i++) {

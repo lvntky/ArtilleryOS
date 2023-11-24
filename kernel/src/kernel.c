@@ -45,7 +45,7 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 	// Therefore this is made optional
 	// Will fix by the v0.2.5-alpha
 
-#ifndef INIT_VFS
+#if INIT_VFS
 	uint32_t initrd_module_location = *((uint32_t *)mbinfo->mods_addr);
 
 	// TODO:
