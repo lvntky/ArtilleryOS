@@ -41,6 +41,44 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 	//module_entry_point();
 	UNUSED_ARGUMENT(module_entry_point);
 
+	// The content reading is still buggy
+	// Therefore this is made optional
+	// Will fix by the v0.2.5-alpha
+
+#ifndef INIT_VFS
+	uint32_t initrd_module_location = *((uint32_t *)mbinfo->mods_addr);
+
+	// TODO:
+	// I get the module location with debugging.
+	// And this is a bad approach
+	// The more valid way to getting this via
+	// grub header functions
+
+	fs_root = tempfs_initrd_init(initrd_module_location);
+
+	// list the contents of /
+	int i = 0;
+	struct dirent *node = 0;
+	while ((node = readdir_fs(fs_root, i)) != 0) {
+		printf("Found file\n%s", node->name);
+		tempfs_node_t *fsnode = finddir_fs(fs_root, node->name);
+
+		if ((fsnode->flags & 0x7) == FS_DIRECTORY) {
+			printf("\n    (directory)\n");
+		} else {
+			printf("\n    contents: \"");
+			char buf[256];
+			uint32_t sz = read_fs(fsnode, 0, 256, buf);
+			int j;
+			for (j = 0; j < sz; j++)
+				qemu_write_string("%s ", buf[j]);
+
+			printf("\"\n");
+		}
+		i++;
+	}
+#endif
+
 #if DISPLAY_VBE_INFO
 	display_vbe_info(mbinfo);
 #endif

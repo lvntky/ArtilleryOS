@@ -64,3 +64,18 @@ void *memmove(void *dest, const void *src, size_t n)
 
 	return dest;
 }
+
+void strcpy(char *dest, char *source)
+{
+	while (*source != '\0') {
+		// Copy the character from source to destination
+		*dest = *source;
+
+		// Move to the next character in both source and destination
+		dest++;
+		source++;
+	}
+
+	// Null-terminate the destination string
+	*dest = '\0';
+}

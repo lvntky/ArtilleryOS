@@ -27,6 +27,8 @@
 #include "options.h"
 #include "tty_cursor.h"
 #include "../../util/include/art_linked_list.h"
+#include "../fs/tempfs/include/tempfs.h"
+#include "../fs/tempfs/include/tempfs_initrd.h"
 
 void kernel_main(uint32_t, uint32_t, kernel_mem_limits_t, uint32_t);
 

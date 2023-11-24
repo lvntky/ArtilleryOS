@@ -98,3 +98,6 @@ dkms.conf
 /*.iso*
 
 bin/*
+initrd.img
+kernel/fs/tempfs/filesystem_generator
+

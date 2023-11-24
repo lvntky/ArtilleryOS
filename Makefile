@@ -38,6 +38,8 @@ objects = ./build/loader.o \
 		  ./build/math.o \
 		  ./build/stdlib.o \
 		  ./build/bresenham.o \
+		  ./build/tempfs.o \
+		  ./build/tempfs_initrd.o \
 
 _mkdir := $(shell mkdir -p build)
 
@@ -67,6 +69,10 @@ build/%.o: gui/%.c
 # MEMORY
 build/%.o: kernel/memory/asm/%.asm
 	nasm -f elf32 -o $@ $<
+
+# FILE SYSTEM
+build/%.o: kernel/fs/tempfs/%.c
+	i686-elf-gcc $(CFLAGS) -c -o $@ $<
 
 # UTIL
 build/%.o: util/%.c

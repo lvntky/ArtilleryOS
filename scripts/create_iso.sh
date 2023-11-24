@@ -40,6 +40,11 @@ echo "$GRUB_MODULES_LOCATION/test_module"
 cp $GRUB_MODULES_LOCATION/test_module $ISO_FOLDER/modules/
 echo -e "$GREEN[DONE]$NC copying test_module to $ISO_FOLDER/modules\n"
 
+echo -e "$YELLOW[INFO]$NC copying test_module to $ISO_FOLDER/modules"
+echo "$GRUB_MODULES_LOCATION/initrd.img"
+cp $GRUB_MODULES_LOCATION/initrd.img $ISO_FOLDER/modules/
+echo -e "$GREEN[DONE]$NC copying initrd.img to $ISO_FOLDER/modules\n"
+
 echo -e "$YELLOW[INFO]$NC generating ISO..."
 grub-mkrescue --output=artillery.iso iso
 echo -e "$GREEN[DONE]$NC ISO Location: ./artillery.iso!\n"

@@ -18,7 +18,7 @@
 struct tempfs_node;
 
 typedef uint32_t (*read_type_t)(struct tempfs_node *, uint32_t, uint32_t,
-				uint8_t *);
+				char *);
 typedef uint32_t (*write_type_t)(struct tempfs_node *, uint32_t, uint32_t,
 				 uint8_t *);
 typedef void (*open_type_t)(struct tempfs_node *);
@@ -52,7 +52,7 @@ struct dirent {
 extern tempfs_node_t *fs_root; // root of the filesystem.
 
 uint32_t read_fs(tempfs_node_t *node, uint32_t offset, uint32_t size,
-		 uint8_t *buffer);
+		 char *buffer);
 uint32_t write_fs(tempfs_node_t *node, uint32_t offset, uint32_t size,
 		  uint8_t *buffer);
 void open_fs(tempfs_node_t *node, uint8_t read, uint8_t write);
