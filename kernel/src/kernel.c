@@ -48,32 +48,28 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 #if INIT_VFS
 	uint32_t initrd_module_location = *((uint32_t *)mbinfo->mods_addr);
 
-	// TODO:
-	// I get the module location with debugging.
-	// And this is a bad approach
-	// The more valid way to getting this via
-	// grub header functions
-
 	fs_root = tempfs_initrd_init(initrd_module_location);
 
 	// list the contents of /
 	int i = 0;
 	struct dirent *node = 0;
 	while ((node = readdir_fs(fs_root, i)) != 0) {
-		printf("Found file\n%s", node->name);
 		tempfs_node_t *fsnode = finddir_fs(fs_root, node->name);
 
 		if ((fsnode->flags & 0x7) == FS_DIRECTORY) {
-			printf("\n    (directory)\n");
+			printf("\n\t>Directory: %s\n", node->name);
 		} else {
-			printf("\n    contents: \"");
-			char buf[256];
+			printf("\t\t>File: %s\n", node->name);
+			printf("\t\t\t>content: {\n\t\t\t\t");
+			unsigned char buf[256];
 			uint32_t sz = read_fs(fsnode, 0, 256, buf);
 			int j;
-			for (j = 0; j < sz; j++)
-				qemu_write_string("%s ", buf[j]);
 
-			printf("\"\n");
+			for (j = 0; j < sz; j++) {
+				printf("%c", buf[j]);
+			}
+
+			printf("\t\t\t}\n");
 		}
 		i++;
 	}

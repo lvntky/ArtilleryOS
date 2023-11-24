@@ -1,25 +1,24 @@
 
 #include "./include/tempfs_initrd.h"
 
-initrd_header_t *initrd_header; // The header.
-initrd_file_header_t *file_headers; // The list of file headers.
-tempfs_node_t *initrd_root; // Our root directory node.
-tempfs_node_t *
-	initrd_dev; // We also add a directory node for /dev, so we can mount devfs later on.
-tempfs_node_t *root_nodes; // List of file nodes.
-int nroot_nodes; // Number of file nodes.
+initrd_header_t *initrd_header;
+initrd_file_header_t *file_headers;
+tempfs_node_t *initrd_root;
+tempfs_node_t *initrd_dev;
+tempfs_node_t *root_nodes;
+int nroot_nodes;
 
 struct dirent dirent;
 
 static uint32_t initrd_read(tempfs_node_t *node, uint32_t offset, uint32_t size,
-			    char *buffer)
+			    unsigned char *buffer)
 {
 	initrd_file_header_t header = file_headers[node->inode];
 	if (offset > header.length)
 		return 0;
 	if (offset + size > header.length)
 		size = header.length - offset;
-	memcpy(buffer, (uint8_t *)(header.offset + offset), size);
+	memcpy(buffer, (unsigned char *)(header.offset + offset), size);
 	return size;
 }
 
@@ -54,12 +53,11 @@ static tempfs_node_t *initrd_finddir(tempfs_node_t *node, char *name)
 
 tempfs_node_t *tempfs_initrd_init(uint32_t location)
 {
-	// Initialise the main and file header pointers and populate the root directory.
 	initrd_header = (initrd_header_t *)location;
 	file_headers =
 		(initrd_file_header_t *)(location + sizeof(initrd_header_t));
 
-	// Initialise the root directory.
+	//root directory.
 	initrd_root = (tempfs_node_t *)kmalloc(sizeof(tempfs_node_t));
 	strcpy(initrd_root->name, "initrd");
 	initrd_root->mask = initrd_root->uid = initrd_root->gid =
@@ -74,7 +72,7 @@ tempfs_node_t *tempfs_initrd_init(uint32_t location)
 	initrd_root->ptr = 0;
 	initrd_root->impl = 0;
 
-	// Initialise the /dev directory (required!)
+	// init dev directory
 	initrd_dev = (tempfs_node_t *)kmalloc(sizeof(tempfs_node_t));
 	strcpy(initrd_dev->name, "dev");
 	initrd_dev->mask = initrd_dev->uid = initrd_dev->gid =
@@ -93,14 +91,9 @@ tempfs_node_t *tempfs_initrd_init(uint32_t location)
 					      initrd_header->nfiles);
 	nroot_nodes = initrd_header->nfiles;
 
-	// For every file...
 	int i;
 	for (i = 0; i < initrd_header->nfiles; i++) {
-		// Edit the file's header - currently it holds the file offset
-		// relative to the start of the ramdisk. We want it relative to the start
-		// of memory.
 		file_headers[i].offset += location;
-		// Create a new file node.
 		strcpy(root_nodes[i].name, file_headers[i].name);
 		root_nodes[i].mask = root_nodes[i].uid = root_nodes[i].gid = 0;
 		root_nodes[i].length = file_headers[i].length;
@@ -114,5 +107,6 @@ tempfs_node_t *tempfs_initrd_init(uint32_t location)
 		root_nodes[i].close = 0;
 		root_nodes[i].impl = 0;
 	}
+	qemu_write_string("%s TempFS initialized\n", POSITIVE_OUTPUT);
 	return initrd_root;
 }

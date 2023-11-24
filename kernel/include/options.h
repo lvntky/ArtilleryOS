@@ -9,6 +9,6 @@
 #define VGA_DEMO FALSE
 #define DISPLAY_VBE_INFO FALSE
 #define GUI_DRAW_LINE FALSE
-#define INIT_VFS FALSE
+#define INIT_VFS TRUE
 
 #endif

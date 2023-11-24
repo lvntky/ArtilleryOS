@@ -61,6 +61,8 @@ We welcome contributions from the community to improve and expand ArtilleryOS. T
 ## Screenshots
 We are tracking the progress of Artillery OS with screenshots. You can find more of them in [Documentation](docs/) folder.
 
+* Artillery OS File System
+![FileSystem](docs/filesystem.png)
 * Time in Artillery :<br>
 ![Time](docs/time.png)
 

@@ -53,6 +53,13 @@ void terminal_write(char c, enum VGA_COLOR color)
 			scroll_terminal();
 			terminal_cursor_y = VGA_HEIGHT - 1;
 		}
+	} else if (c == '\t') {
+		terminal_cursor_x += 4;
+
+		if (terminal_cursor_y >= VGA_HEIGHT) {
+			scroll_terminal();
+			terminal_cursor_y = VGA_HEIGHT - 1;
+		}
 	} else {
 		terminal_putchar(terminal_cursor_x, terminal_cursor_y, c,
 				 color);
@@ -126,7 +133,8 @@ void print_logo()
 		" /_/ \\_\\_|  \\__|_|_|_\\___|_|  \\_, |  \\___/|___/\n");
 	qemu_write_string("                              |__/\n");
 
-	qemu_write_string("\n%s version 0.2.4-alpha\n", INFORMATION_OUTPUT);
+	qemu_write_string("\n%s version %s\n", INFORMATION_OUTPUT,
+			  ARTILLERYOS_VERSION);
 }
 
 void terminal_init(void)
@@ -147,7 +155,7 @@ void terminal_init(void)
 	printf("\nWelcome to ");
 	terminal_putstr_with_colors("  Artillery OS  ", VGA_COLOR_RED,
 				    VGA_COLOR_WHITE);
-	terminal_print_color(" v0.2.4-alpha\n\n", VGA_COLOR_GREEN);
+	terminal_print_color(" v0.2.5-alpha\n\n", VGA_COLOR_GREEN);
 	cmos_display_date_ddmmyyyy_hhmmss();
 	printf("artillery-kernel> ");
 }

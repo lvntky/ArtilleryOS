@@ -78,7 +78,7 @@ void cmos_display_date_ddmmyyyy_hhmmss()
 	cmos_t cmos; // Declare a cmos_t variable directly, not a pointer
 	cmos_get_datetime(&cmos);
 
-	printf("Date: %d %s %d\nLogin Time: %d:%d:%d\n\n", cmos.day_of_month,
+	printf("Date: %d %s %d %d:%d:%d\n\n", cmos.day_of_month,
 	       cmos_enum_to_month_str(cmos.month), cmos.year, cmos.hours,
 	       cmos.minutes, cmos.seconds);
 	qemu_write_string("%s Date: %d/%d/%d\n", INFORMATION_OUTPUT,
