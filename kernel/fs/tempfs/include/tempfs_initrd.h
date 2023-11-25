@@ -19,9 +19,5 @@ typedef struct {
 } initrd_file_header_t;
 
 tempfs_node_t *tempfs_initrd_init(uint32_t location);
-void tempfs_check_initialization()
-{
-	if (strcmp("dev", fs_root))
-}
 
 #endif
