@@ -45,6 +45,8 @@ We welcome contributions from the community to improve and expand ArtilleryOS. T
 3. Make your changes and commit them.
 4. Push your changes
 
+For more about that, please check the guidelines in the [contributing](./docs/contributing.md) document.
+
 ## Dependencies
 
 - `gcc`: GNU Compiler Collection
