@@ -41,69 +41,15 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 	//module_entry_point();
 	UNUSED_ARGUMENT(module_entry_point);
 
-	// The content reading is still buggy
-	// Therefore this is made optional
-	// Will fix by the v0.2.5-alpha
-
-#if INIT_VFS
 	uint32_t initrd_module_location = *((uint32_t *)mbinfo->mods_addr);
 
 	fs_root = tempfs_initrd_init(initrd_module_location);
-
-	// list the contents of /
-	int i = 0;
-	struct dirent *node = 0;
-	while ((node = readdir_fs(fs_root, i)) != 0) {
-		tempfs_node_t *fsnode = finddir_fs(fs_root, node->name);
-
-		if ((fsnode->flags & 0x7) == FS_DIRECTORY) {
-			printf("\n\t>Directory: %s\n", node->name);
-		} else {
-			printf("\t\t>File: %s\n", node->name);
-			printf("\t\t\t>content: {\n\t\t\t\t");
-			unsigned char buf[256];
-			uint32_t sz = read_fs(fsnode, 0, 256, buf);
-			int j;
-
-			for (j = 0; j < sz; j++) {
-				printf("%c", buf[j]);
-			}
-
-			printf("\t\t\t}\n");
-		}
-		i++;
-	}
-#endif
-
-#if DISPLAY_VBE_INFO
-	display_vbe_info(mbinfo);
-#endif
-
-#if TEST_IDT
-	test_idt();
-#endif
-
-#if GUI_MODE
-	set_mode(320, 200, 8);
-	clear_screen_withcolor(0x3F);
-
-#if VGA_DEMO
-	int color = 0;
-	while (1) {
-		if (color > 256) {
-			color = 0;
-		}
-		for (int i = 0; i < 99999999; i++) {
-			// pseudo sleep()
-		}
-		gui_draw_string(8, 32, " > VGA Demo!", color);
-		for (int i = 0; i < 99999999; i++) {
-			// pseudo sleep()
-		}
-		color++;
+	if (fs_root != NULL) {
+		qemu_write_string("%s TempFS initialized\n", POSITIVE_OUTPUT);
+	} else {
+		qemu_write_string("%s TempFS can't initialized\n",
+				  NEGATIVE_OUTPUT);
 	}
 
-#endif
-
-#endif
+	optional_inits();
 }

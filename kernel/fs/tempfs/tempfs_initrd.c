@@ -107,6 +107,5 @@ tempfs_node_t *tempfs_initrd_init(uint32_t location)
 		root_nodes[i].close = 0;
 		root_nodes[i].impl = 0;
 	}
-	qemu_write_string("%s TempFS initialized\n", POSITIVE_OUTPUT);
 	return initrd_root;
 }

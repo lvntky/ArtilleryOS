@@ -30,6 +30,7 @@ objects = ./build/loader.o \
 		  ./build/kernel_heap.o \
           ./build/render_font.o \
           ./build/panic.o \
+		  ./build/options.o \
           ./build/render_image.o \
 		  ./build/tty_cursor.o \
 		  ./build/multiboot_module.o \
