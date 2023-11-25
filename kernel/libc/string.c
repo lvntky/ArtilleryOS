@@ -79,3 +79,161 @@ void strcpy(char *dest, char *source)
 	// Null-terminate the destination string
 	*dest = '\0';
 }
+
+/**
+ *
+ * Copies at most n characters from the source string to the destination buffer.
+ * If the source string is shorter than n characters, null bytes are added to
+ * pad the destination buffer.
+ */
+void strncpy(char* dest, char* src, size_t n) {
+    while (*dest != '\0' && n > 0) {
+        *dest = *src;
+        dest++;
+        src++;
+        n--;
+    }
+    while (n > 0) {
+        *dest = '\0';
+        dest++;
+        n--;
+    }
+}
+
+
+
+/**
+ *
+ * Appends the characters of the source string to the end of the destination
+ * string, and null-terminates the resulting string.
+ *
+ * Returns: A pointer to the destination buffer.
+ */
+char* strcat(char* dest, char* src) {
+    char* retString = dest;
+
+    while (*dest != '\0') {
+        dest++;
+    }
+    while (*src != '\0') {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+    *dest = '\0';
+    return retString;
+}
+
+
+
+/**
+ * Appends at most n characters from the source string to the end of the
+ * destination string, and null-terminates the resulting string.
+ *
+ * Returns: A pointer to the destination buffer.
+ */
+char* strncat(char* dest, char* src, size_t n) {
+    char* retString = dest;
+
+    while (*dest != '\0') {
+        dest++;
+    }
+    while (*src != '\0' && n > 0) {
+        *dest = *src;
+        dest++;
+        src++;
+        n--;
+    }
+    *dest = '\0';
+    return retString;
+}
+
+
+
+/**
+ *
+ * Compares the first n characters of two strings lexicographically.
+ *
+ * Returns:
+ *   -1 if str1 is less than str2,
+ *    1 if str1 is greater than str2,
+ *    0 if the strings are equal up to n characters.
+ */
+int strncmp(const char* str1, const char* str2, size_t n) {
+    while (*str1 != '\0' && *str2 != '\0' && n > 0) {
+        if (*str1 < *str2) {
+            return -1;
+        } else if (*str1 > *str2) {
+            return 1;
+        }
+        str1++;
+        str2++;
+        n--;
+    }
+    if (n > 0) {
+        if (*str1 == '\0' && *str2 != '\0') {
+            return -1;
+        } else if (*str1 != '\0' && *str2 == '\0') {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
+
+/**
+ *
+ * Returns a pointer to the first occurrence of 'ch' in the string. If 'ch' is
+ * not found, then return NULL.
+ */
+char* strchr(const char* str, int ch) {
+    while (*str != '\0') {
+        if (*str == ch) {
+            return (char*)str;
+        }
+        str++;
+    }
+    return NULL;
+}
+
+
+/**
+ *
+ * Returns a pointer to the next token in the string. Modifies the input string
+ * by replacing the delimiter after the current token with a null character.
+ * On the first call, provide the original string; on subsequent calls, use
+ * NULL to continue tokenizing the same string.
+ */
+char* strtok(char* str, const char* delim) {
+    static char* savedToken = NULL;
+
+    if (str != NULL) {
+        savedToken = str;
+    } else if (savedToken == NULL) {
+        return NULL;
+    }
+
+    while (*savedToken != '\0' && strchr(delim, *savedToken) != NULL) {
+        savedToken++;
+    }
+
+    if (*savedToken == '\0') {
+        savedToken = NULL;
+        return NULL;
+    }
+
+    char* tokenStart = savedToken;
+
+    while (*savedToken != '\0' && strchr(delim, *savedToken) == NULL) {
+        savedToken++;
+    }
+
+    if (*savedToken != '\0') {
+        *savedToken = '\0';
+        savedToken++;
+    }
+
+    return tokenStart;
+}
+
