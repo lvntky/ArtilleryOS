@@ -29,3 +29,8 @@ double cos(double x)
 	return 1.0 - (x * x) / 2.0 + (x * x * x * x) / 24.0 -
 	       (x * x * x * x * x * x) / 720.0;
 }
+
+double tan(double x)
+{
+	return sin(x)/cos(x);
+}

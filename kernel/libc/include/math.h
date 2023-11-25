@@ -17,12 +17,17 @@
 #define PI_OVER_2 (PI / 2.0)
 #define PI_OVER_4 (PI / 4.0)
 
-/*Returns the sine of a radian angle x.*/
+/* Returns the reduced angle of the specified angle */
+static double reduce_angle(double angle);
+
+/* Returns the sine of a radian angle x. */
 double sin(double);
 
-/*Returns the cosine of a radian angle x.*/
+/* Returns the cosine of a radian angle x. */
 double cos(double);
 
+/* Returns the tangent of a radian angle x. */
+double tan(double x);
 
 
 #endif
