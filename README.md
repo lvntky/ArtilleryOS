@@ -52,7 +52,8 @@ We welcome contributions from the community to improve and expand ArtilleryOS. T
 - `make`: For building automatically
 - `i686-elf-tools`: For cross-compiling code
 - `mtools`: For the use of the `mformat` command
-- `xorriso` - To manipulate ISO 9660 filesystems
+- `libisoburn` - To manipulate ISO 9660 filesystems
+- `cdrkit`
 
 ## Contributors
 
