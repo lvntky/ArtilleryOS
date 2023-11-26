@@ -59,7 +59,7 @@ For more about that, please check the guidelines in the [contributing](./docs/co
 
 ## Contributors
 
-- [angelpilled](https://github.com/angelpilled)
+[moussacodes](https://github.com/moussacodes), [angelpilled](https://github.com/angelpilled)
 
 ## Screenshots
 We are tracking the progress of Artillery OS with screenshots. You can find more of them in [Documentation](docs/) folder.
