@@ -29,5 +29,15 @@ double cos(double);
 /* Returns the tangent of a radian angle x. */
 double tan(double x);
 
+/* Returns the inverse sine of x sine. */
+double arcsin(double x);
+
+/* Returns the factorial of n */
+int factorial(int n);
+
+/* Returns the exponention of b raised to the power of n */
+double exp(double b, double n);
+
+/* Returns the square root of x */
 
 #endif
