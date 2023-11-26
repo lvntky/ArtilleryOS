@@ -44,10 +44,10 @@ int strcmp(char *str1, char *str2)
 
 #include <stddef.h>
 
-void *memmove(void *dest, const void *src, size_t n)
+void *memmove(void *destination, const void *source, size_t n)
 {
-	unsigned char *d = dest;
-	const unsigned char *s = src;
+	unsigned char *d = destination;
+	const unsigned char *s = source;
 
 	// If source and destination overlap and source is before destination
 	if (s < d && d < s + n) {
@@ -62,22 +62,22 @@ void *memmove(void *dest, const void *src, size_t n)
 		}
 	}
 
-	return dest;
+	return destination;
 }
 
-void strcpy(char *dest, char *source)
+void strcpy(char *destination, char *source)
 {
 	while (*source != '\0') {
 		// Copy the character from source to destination
-		*dest = *source;
+		*destination = *source;
 
 		// Move to the next character in both source and destination
-		dest++;
+		destination++;
 		source++;
 	}
 
 	// Null-terminate the destination string
-	*dest = '\0';
+	*destination = '\0';
 }
 
 /**
@@ -86,16 +86,16 @@ void strcpy(char *dest, char *source)
  * If the source string is shorter than n characters, null bytes are added to
  * pad the destination buffer.
  */
-void strncpy(char* dest, char* src, size_t n) {
-    while (*dest != '\0' && n > 0) {
-        *dest = *src;
-        dest++;
-        src++;
+void strncpy(char* destination, char* source, size_t n) {
+    while (*source != '\0' && n > 0) {
+        *destination = *source;
+        destination++;
+        source++;
         n--;
     }
     while (n > 0) {
-        *dest = '\0';
-        dest++;
+        *destination = '\0';
+        destination++;
         n--;
     }
 }
@@ -109,18 +109,18 @@ void strncpy(char* dest, char* src, size_t n) {
  *
  * Returns: A pointer to the destination buffer.
  */
-char* strcat(char* dest, char* src) {
-    char* retString = dest;
+char* strcat(char* destination, char* source) {
+    char* retString = destination;
 
-    while (*dest != '\0') {
-        dest++;
+    while (*destination != '\0') {
+        destination++;
     }
-    while (*src != '\0') {
-        *dest = *src;
-        dest++;
-        src++;
+    while (*source != '\0') {
+        *destination = *source;
+        destination++;
+        source++;
     }
-    *dest = '\0';
+    *destination = '\0';
     return retString;
 }
 
@@ -132,19 +132,19 @@ char* strcat(char* dest, char* src) {
  *
  * Returns: A pointer to the destination buffer.
  */
-char* strncat(char* dest, char* src, size_t n) {
-    char* retString = dest;
+char* strncat(char* destination, char* source, size_t n) {
+    char* retString = destination;
 
-    while (*dest != '\0') {
-        dest++;
+    while (*destination != '\0') {
+        destination++;
     }
-    while (*src != '\0' && n > 0) {
-        *dest = *src;
-        dest++;
-        src++;
+    while (*source != '\0' && n > 0) {
+        *destination = *source;
+        destination++;
+        source++;
         n--;
     }
-    *dest = '\0';
+    *destination = '\0';
     return retString;
 }
 
