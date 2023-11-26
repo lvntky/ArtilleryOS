@@ -13,11 +13,11 @@ static double reduce_angle(double angle)
 	return angle;
 }
 
+// Taylor series expansion for sine function
 double sin(double x)
 {
-	// x = reduce_angle(x);
+	x = reduce_angle(x);
 
-	// Taylor series expansion for sine function
 	return x - (x * x * x) / 6.0 + (x * x * x * x * x) / 120.0 -
 	       (x * x * x * x * x * x * x) / 5040.0;
 }
@@ -37,13 +37,13 @@ double tan(double x)
 	return sin(x)/cos(x);
 }
 
-// Arcsin - Inverse Sine
-// Taylor series expansion for inverse sine function
+// Taylor series expansion for inverse sine function (arcsin)
 double arcsin(double x)
 {
     return x + ( (exp(x, 3))/factorial(3) ) + (( 1 * 3 * exp(x, 5)) / 40.0 ) + ( ( 1 * 3 * 5 * exp(x, 7) ) / 384.0 );
 }
 
+// Factorial
 int factorial(int n)
 {
     int result = n;
@@ -62,8 +62,8 @@ int factorial(int n)
     return result;
 }
 
-
-double exp(double b, int n)
+// Exponentiation
+double exp(double b, double n)
 {
     double result = 1.0;
     while (n != 0)
@@ -72,4 +72,10 @@ double exp(double b, int n)
 	n--;
     }
     return result;
+}
+
+// Square root
+double sqrt(double x)
+{
+   return exp(x, 0.5); 
 }

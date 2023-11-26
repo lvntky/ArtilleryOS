@@ -36,7 +36,7 @@ double arcsin(double x);
 int factorial(int n);
 
 /* Returns the exponention of b raised to the power of n */
-double exp(double b, int n);
+double exp(double b, double n);
 
 /* Returns the square root of x */
 
