@@ -18,16 +18,16 @@ Before you begin, ensure that you have the following installed on your system:
 
 1. **Clone ArtilleryOS Repository:**
 
-   ```bash
-   git clone https://github.com/your-username/artillery-os.git
-   cd artillery-os
+```bash
+git clone https://github.com/your-username/artillery-os.git
+cd artillery-os
 ```
 
-2.  **Build ArtilleryOS:**
+2. **Build ArtilleryOS:**
 
 Build the ArtilleryOS kernel following the project's build instructions.
 
-3.  **Start QEMU with GDB Server:**
+3. **Start QEMU with GDB Server:**
 
 Start QEMU with the GDB server, enabling remote debugging:
 
@@ -50,7 +50,7 @@ Load the symbol file for the kernel.elf at the correct address:
 
 add-symbol-file ./kernel.elf 0xC0100000
 
-6.  **Set Disassembly Flavor:**
+6. **Set Disassembly Flavor:**
 
 Set the disassembly flavor to Intel syntax for readability:
 
@@ -58,7 +58,7 @@ Set the disassembly flavor to Intel syntax for readability:
 set disassembly-flavor intel
 ```
 
-7.  **Set Breakpoint:**
+7. **Set Breakpoint:**
 
 Set a breakpoint at a specific line in the source code (e.g., kernel.c:43):
 
@@ -66,7 +66,7 @@ Set a breakpoint at a specific line in the source code (e.g., kernel.c:43):
 break kernel.c:43
 ```
 
-8.  **Connect to QEMU:**
+8. **Connect to QEMU:**
 
 Connect GDB to the QEMU GDB server:
 
@@ -74,7 +74,7 @@ Connect GDB to the QEMU GDB server:
 target remote | qemu-system-x86_64 -cdrom ./artillery.iso -gdb stdio -S
 ```
 
-9.  **Continue Execution:**
+9. **Continue Execution:**
 
 Continue the execution
 
