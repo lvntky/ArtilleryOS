@@ -40,7 +40,7 @@ double tan(double x)
 // Taylor series expansion for inverse sine function (arcsin)
 double arcsin(double x)
 {
-    return x + ( (exp(x, 3))/factorial(3) ) + (( 1 * 3 * exp(x, 5)) / 40.0 ) + ( ( 1 * 3 * 5 * exp(x, 7) ) / 384.0 );
+    return x + ( (exp(x, 3))/6 ) + (( 1 * 3 * exp(x, 5)) / 40.0 ) + ( ( 1 * 3 * 5 * exp(x, 7) ) / 384.0 );
 }
 
 // Factorial
@@ -66,6 +66,11 @@ int factorial(int n)
 double exp(double b, double n)
 {
     double result = 1.0;
+    if (n < 0)
+    {
+	return -1;
+    }
+
     while (n != 0)
     {
 	result *= b;
@@ -77,5 +82,9 @@ double exp(double b, double n)
 // Square root
 double sqrt(double x)
 {
-   return exp(x, 0.5); 
+    if (x < 0)
+    {
+	return -1;
+    }
+    return exp(x, 0.5); 
 }
