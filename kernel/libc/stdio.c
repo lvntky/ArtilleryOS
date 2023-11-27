@@ -64,7 +64,6 @@ void ftoa(double num, char *buffer, int precision)
 	}
 
 	buffer[len + i] = '\0';
-	//reverse(buffer, len + i);
 
 	// Add the negative sign if necessary
 	if (is_negative) {
