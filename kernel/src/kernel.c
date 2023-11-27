@@ -27,7 +27,7 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 	check_mboot_bootloader_magic(mbmagic);
 	display_memory_info(mbinfo);
 	display_kernel_mem_info(&kmlimits);
-
+	
 	paging_init(boot_page_directory);
 
 	kmalloc_init(NEXT_ADDR(kmlimits.kernel_virtual_end), KERNEL_HEAP_SIZE);
@@ -39,6 +39,9 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 		qemu_write_string("m: 0x%x -> 0x%x\n", module, *module);
 	}
 	//module_entry_point();
+	srand(42);
+	int random = rand(5, 1452);
+	printf("%d", random);
 	UNUSED_ARGUMENT(module_entry_point);
 
 	uint32_t initrd_module_location = *((uint32_t *)mbinfo->mods_addr);
