@@ -1,4 +1,5 @@
 #include "./include/math.h"
+#include <math.h>
 
 // Trigonometry functions
 // Helper function to reduce angles to the range [-PI, PI]
@@ -18,8 +19,8 @@ double sin(double x)
 {
 	x = reduce_angle(x);
 
-	return x - (x * x * x) / 6.0 + (x * x * x * x * x) / 120.0 -
-	       (x * x * x * x * x * x * x) / 5040.0;
+	return x - exp(x, 3) / 6.0 + exp(x, 5) / 120.0 -
+	       exp(x, 7) / 5040.0;
 }
 
 // Taylor series expansion for cosine
@@ -27,8 +28,8 @@ double cos(double x)
 {
 	x = reduce_angle(x);
 
-	return 1.0 - (x * x) / 2.0 + (x * x * x * x) / 24.0 -
-	       (x * x * x * x * x * x) / 720.0;
+	return 1.0 - exp(x, 2) / 2.0 + exp(x, 4) / 24.0 -
+	       exp(x, 6) / 720.0;
 }
 
 // Tangent calculation
@@ -41,6 +42,20 @@ double tan(double x)
 double arcsin(double x)
 {
     return x + ( (exp(x, 3))/6 ) + (( 1 * 3 * exp(x, 5)) / 40.0 ) + ( ( 1 * 3 * 5 * exp(x, 7) ) / 384.0 );
+}
+
+// Taylor series expansion for inverse cosine (arccos)
+double arccos(double x)
+{
+    return ( PI / 2 ) - x - (exp(x, 3)/6.0) - ( 3 * exp(x, 5)) / 40.0 + ( 15 * exp(x, 7)) / 336.0;
+}
+
+// Taylor series expansion for inverse tangent (arctan)
+
+double arctan(double x)
+{
+    return x - exp(x, 3) / 3.0 + exp(x, 5) / 5.0 - exp(x, 7) / 7.0 + exp(x, 9) / 9.0 - exp(x, 11) / 11.0
+    + exp(x, 13) / 13.0 - exp(x, 15) / 15.0 + exp(x, 17) / 17.0;
 }
 
 // Factorial
