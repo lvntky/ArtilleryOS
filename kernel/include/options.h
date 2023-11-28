@@ -9,7 +9,8 @@
 #define VGA_DEMO FALSE
 #define DISPLAY_VBE_INFO FALSE
 #define GUI_DRAW_LINE FALSE
-#define TEMPFS_INFO TRUE
+#define TEMPFS_INFO FALSE
+#define TEST_RANDOM TRUE
 
 void optional_inits();
 
