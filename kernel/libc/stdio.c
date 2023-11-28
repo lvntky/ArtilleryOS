@@ -31,7 +31,6 @@ void itoa(unsigned int num, char *buffer, int base)
 	}
 
 	buffer[i] = '\0';
-
 	reverse(buffer, i);
 }
 
