@@ -39,5 +39,16 @@ int factorial(int n);
 double exp(double b, double n);
 
 /* Returns the square root of x */
+double sqrt(double x);
+
+/* Return the absolute value of x */
+double abs(double x);
+
+/* Conversion from radian to degree - Conversion to degree */
+double toDeg(double rad);
+
+/* Conversion from degree to radian - Conversion to radian */
+double toRad(double deg);
+
 
 #endif

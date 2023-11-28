@@ -1,5 +1,4 @@
 #include "./include/math.h"
-#include <math.h>
 
 // Trigonometry functions
 // Helper function to reduce angles to the range [-PI, PI]
@@ -51,14 +50,14 @@ double arccos(double x)
 }
 
 // Taylor series expansion for inverse tangent (arctan)
-
+// Use this with caution, needs to be re-implemented later for more accuracy.
 double arctan(double x)
 {
     return x - exp(x, 3) / 3.0 + exp(x, 5) / 5.0 - exp(x, 7) / 7.0 + exp(x, 9) / 9.0 - exp(x, 11) / 11.0
     + exp(x, 13) / 13.0 - exp(x, 15) / 15.0 + exp(x, 17) / 17.0;
 }
 
-// Factorial
+// Returns the value of n factorial
 int factorial(int n)
 {
     int result = n;
@@ -77,7 +76,7 @@ int factorial(int n)
     return result;
 }
 
-// Exponentiation
+// Returns the value of b to the power of n
 double exp(double b, double n)
 {
     double result = 1.0;
@@ -94,7 +93,7 @@ double exp(double b, double n)
     return result;
 }
 
-// Square root
+// Returns square root of x
 double sqrt(double x)
 {
     if (x < 0)
@@ -102,4 +101,26 @@ double sqrt(double x)
 	return -1;
     }
     return exp(x, 0.5); 
+}
+
+// Returns absolute value of x
+double abs(double x)
+{
+    if (x < 0)
+    {
+	return -x ;
+    }
+    return x;
+}
+
+// Conversion from radian to degree - Conversion to degree
+double toDeg(double rad)
+{
+    return rad * (180 / PI); 
+}
+
+// Conversion from degree to radian - Conversion to radian
+double toRad(double deg)
+{
+    return deg * (PI / 180);
 }
