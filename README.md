@@ -9,8 +9,9 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/lvntky/ArtilleryOS)
 
 
-
+<center>
 ![ArtilleryOS Logo](/docs/logo.png)
+</center>
 
 ArtilleryOS is a unique graphical operating system that combines the simplicity and power of Unix-like systems with a tiling window management environment. Featuring a custom-designed kernel, ArtilleryOS offers an efficient and user-friendly computing experience.
 
