@@ -39,9 +39,7 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 		qemu_write_string("m: 0x%x -> 0x%x\n", module, *module);
 	}
 	//module_entry_point();
-	srand(42);
-	int random = rand(5, 1452);
-	printf("%d", random);
+	optional_inits();
 	UNUSED_ARGUMENT(module_entry_point);
 
 	uint32_t initrd_module_location = *((uint32_t *)mbinfo->mods_addr);
@@ -54,5 +52,5 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 				  NEGATIVE_OUTPUT);
 	}
 
-	optional_inits();
+	
 }
