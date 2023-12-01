@@ -1,10 +1,5 @@
 #include "../include/kernel.h"
 
-void test_idt()
-{
-	__asm__("int $0x04");
-}
-
 void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 		 kernel_mem_limits_t kmlimits, uint32_t boot_page_directory)
 {
@@ -27,7 +22,7 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 	check_mboot_bootloader_magic(mbmagic);
 	display_memory_info(mbinfo);
 	display_kernel_mem_info(&kmlimits);
-	
+
 	paging_init(boot_page_directory);
 
 	kmalloc_init(NEXT_ADDR(kmlimits.kernel_virtual_end), KERNEL_HEAP_SIZE);
@@ -51,6 +46,4 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 		qemu_write_string("%s TempFS can't initialized\n",
 				  NEGATIVE_OUTPUT);
 	}
-
-	
 }

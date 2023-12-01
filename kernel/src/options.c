@@ -46,15 +46,15 @@ void optional_inits()
 	display_vbe_info(mbinfo);
 #endif
 
-// test random 
-#if TEST_RANDOM	
+// test random
+#if TEST_RANDOM
 	srand(42);
-        int random = rand(5, 1452);
+	int random = rand(5, 1452);
 	qemu_write_string("%d", random);
 #endif
 
 #if TEST_IDT
-	test_idt();
+	__asm__ __volatile("int $0x0");
 #endif
 
 #if GUI_MODE
