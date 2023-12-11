@@ -1,5 +1,6 @@
 #include "./include/string.h"
 
+
 void *memset(void *ptr, int value, size_t num)
 {
 	unsigned char *p = ptr;
@@ -35,11 +36,9 @@ int strcmp(char *str1, char *str2)
 
 	if (*str1 == *str2) {
 		return 0; // Strings are equal
-	} else if (*str1 < *str2) {
-		return -1; // First differing character in str1 is smaller
-	} else {
-		return 1; // First differing character in str1 is larger
-	}
+	} 
+	return 	*(unsigned char*)str1 - *(unsigned char*)str2; // return the difference between the
+							       // strings
 }
 
 #include <stddef.h>

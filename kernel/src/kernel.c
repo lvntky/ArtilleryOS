@@ -33,7 +33,7 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 	for (uint32_t i = 0; i < 4; ++i, ++module) {
 		qemu_write_string("m: 0x%x -> 0x%x\n", module, *module);
 	}
-	//module_entry_point();
+
 	optional_inits();
 	UNUSED_ARGUMENT(module_entry_point);
 
