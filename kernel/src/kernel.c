@@ -39,6 +39,8 @@ void kernel_main(uint32_t mbaddr, uint32_t mbmagic,
 		qemu_write_string("m: 0x%x -> 0x%x\n", module, *module);
 	}
 	//module_entry_point();
+	int d = strcmp("abc", "abc");
+	printf("%d", d);
 	UNUSED_ARGUMENT(module_entry_point);
 
 	uint32_t initrd_module_location = *((uint32_t *)mbinfo->mods_addr);
