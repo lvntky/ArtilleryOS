@@ -31,7 +31,6 @@ void itoa(unsigned int num, char *buffer, int base)
 	}
 
 	buffer[i] = '\0';
-
 	reverse(buffer, i);
 }
 
@@ -65,7 +64,6 @@ void ftoa(double num, char *buffer, int precision)
 	}
 
 	buffer[len + i] = '\0';
-	reverse(buffer, len + i);
 
 	// Add the negative sign if necessary
 	if (is_negative) {
