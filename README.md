@@ -6,6 +6,7 @@
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/lvntky/ArtilleryOS)
 ![GitHub License](https://img.shields.io/github/license/lvntky/ArtilleryOS)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/lvntky/ArtilleryOS)
+![GitHub tag (with filter)](https://img.shields.io/github/v/tag/lvntky/ArtilleryOS?label=version)
 
 
 <p align="center">
