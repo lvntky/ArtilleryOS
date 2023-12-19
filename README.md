@@ -88,6 +88,9 @@ We are tracking the progress of Artillery OS with screenshots. You can find more
 ![kernelPanic](docs/kernel_panic.png)
 
 
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/lvntky/ArtilleryOS.svg)](https://starchart.cc/lvntky/ArtilleryOS)
 
 ## License
 
