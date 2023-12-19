@@ -105,4 +105,4 @@ kernel/fs/tempfs/initrd_generator/bin/initrd_generator
 limine/
 .ccls-cache
 kernel/bin
-kernel/o
+kernel/obj
