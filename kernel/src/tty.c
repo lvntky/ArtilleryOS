@@ -137,6 +137,28 @@ void print_logo()
 			  ARTILLERYOS_VERSION);
 }
 
+
+void print_terminal_banner()
+{
+	char *welcome_message = "/dev/console ";
+	char *os_name = "  Artillery OS  ";
+	char *version = " version0.2.5";
+
+	int total_message_len = strlen(welcome_message) + strlen(os_name) + strlen(version);
+	int padding = ((VGA_WIDTH - total_message_len) / 2);
+	for(int i = 0;  i < padding; i++) {
+	  terminal_putstr_with_colors(" ", VGA_COLOR_GREEN, VGA_COLOR_GREEN);
+	}
+	terminal_putstr_with_colors(welcome_message, VGA_COLOR_BLACK, VGA_COLOR_GREEN);
+	terminal_putstr_with_colors(os_name, VGA_COLOR_WHITE, VGA_COLOR_RED);
+	terminal_putstr_with_colors(version, VGA_COLOR_BLACK, VGA_COLOR_GREEN);
+	for(int j = 0; j < padding; j++) {
+	  terminal_putstr_with_colors(" ", VGA_COLOR_GREEN, VGA_COLOR_GREEN);
+	}
+	printf("\n");
+}
+
+
 void terminal_init(void)
 {
 	terminal_cursor_x = 0;
@@ -152,10 +174,8 @@ void terminal_init(void)
 	print_logo();
 	qemu_write_string("%s Video mode initialized (80 * 25 text)\n",
 			  POSITIVE_OUTPUT);
-	printf("\nWelcome to ");
-	terminal_putstr_with_colors("  Artillery OS  ", VGA_COLOR_RED,
-				    VGA_COLOR_WHITE);
-	terminal_print_color(" v0.2.5-alpha\n\n", VGA_COLOR_GREEN);
+
+	print_terminal_banner();
 	cmos_display_date_ddmmyyyy_hhmmss();
 	printf("artillery-kernel> ");
 }
