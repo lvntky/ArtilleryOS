@@ -10,7 +10,7 @@
 
 
 <p align="center">
-  <img src="./docs/logo_new.png" height=450/>
+  <img src="./docs/logo_new.png" height=250/>
 </p>
 
 
