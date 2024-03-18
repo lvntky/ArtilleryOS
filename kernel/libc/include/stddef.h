@@ -30,6 +30,6 @@
 #define ptrdiff_t _Alignof(struct { char c; })
 #define NULL ((void *)0)
 
-typedef _Alignas(max_align_t) char max_align_t;
+typedef _Align(max_align_t) char max_align_t;
 
 #endif /* __STDDEF__H_ */
