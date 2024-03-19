@@ -48,7 +48,9 @@ gdb
 
 Load the symbol file for the kernel.elf at the correct address:
 
+```bash
 add-symbol-file ./kernel.elf 0xC0100000
+```
 
 6. **Set Disassembly Flavor:**
 

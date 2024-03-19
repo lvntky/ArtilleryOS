@@ -1,7 +1,7 @@
 global loader                           ; the entry point for the linker
 global boot_page_directory
 
-extern kernel_main                            ; kernel_main is defined in kernel_main.c
+extern kernel_main                      ; kernel_main is defined in kernel_main.c
 extern move_multiboot_modules           ; defined in module.c
 extern kernel_virtual_end               ; these are defined in the link script
 extern kernel_virtual_start
