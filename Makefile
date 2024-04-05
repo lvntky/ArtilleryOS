@@ -1,4 +1,5 @@
-CFLAGS = -m32 -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
+CFLAGS = -m32 -ggdb -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
+TESTING_CFLAGS = -m32 -ggdb -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -Wall -O0 -Iinc
 ASPARAMS = --32
 LDPARAMS = -melf_i386 -g
 
@@ -43,6 +44,10 @@ objects = ./build/loader.o \
 		  ./build/tempfs_initrd.o \
 
 _mkdir := $(shell mkdir -p build)
+
+# LIBC TESTING 
+testing:
+	gcc -o libc_testing kernel/libc/stdlib.c tests/libc/stdlib_test.c
 
 # BASE KERNEL SOURCE
 build/%.o: kernel/src/%.c
