@@ -1,4 +1,15 @@
 # ArtilleryOS 
+
+## Important Note
+> This branch is a snapshot of Artillery OS in version 0.2.5-alpha
+> Most likely the last branch that uses GRUB as a bootlader
+> Artillery OS supports more than GRUB after this version
+> And had a reviwrite on it with Limine bootloader and it's own bootloader
+> This branch is taken as a archive and re-use purpose
+> Please don't merge any new code on it
+> - Levent :)
+
+
 [![Discord](https://img.shields.io/discord/1148155381290369074?logo=Discord&label=Discord)](https://discord.gg/jgmtqrJshV)
 ![GitHub contributors](https://img.shields.io/github/contributors/lvntky/ArtilleryOS)
 ![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/lvntky/ArtilleryOS)
