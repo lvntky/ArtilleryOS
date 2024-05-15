@@ -28,7 +28,7 @@
 
 #ifndef _int_types_h_
 #define _int_types_h_
-
+/*
 // Define your own integer types
 typedef signed char int8_t;
 typedef unsigned char uint8_t;
@@ -44,6 +44,6 @@ typedef unsigned long long uint64_t;
 
 typedef unsigned long size_t;
 //typedef unsigned long long ssize_t;
-
+*/
 
 #endif /* _int_types_h_ */

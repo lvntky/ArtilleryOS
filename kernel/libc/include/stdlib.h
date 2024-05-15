@@ -5,8 +5,6 @@
 
 #define MEMORY_SIZE 1024
 
-#define NULL ((void*)0)
-
 typedef struct Node {
     unsigned long long size;
     struct Node* next;
@@ -16,7 +14,7 @@ extern char memory[MEMORY_SIZE];
 extern Node *head;
 
 int abs(int);
-void srand(uint32_t seed);
+void srand(short seed);
 int rand(int min, int max);
 
 /**
