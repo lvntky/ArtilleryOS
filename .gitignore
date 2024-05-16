@@ -101,3 +101,6 @@ bin/*
 kernel/fs/tempfs/filesystem_generator
 
 kernel/fs/tempfs/initrd_generator/bin/initrd_generator
+
+# Misc files
+mem.txt
