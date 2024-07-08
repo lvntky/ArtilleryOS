@@ -1,46 +1,47 @@
 #!/bin/bash
 
-TARGET="i686-elf"
-PREFIX="$HOME/.artillery-compiler/opt/cross"
-CUSTOM_NAME="artillery-compiler"
-PATH="$PREFIX/bin:$PATH"
+# Specify the installation directory for the cross-compiler
+INSTALL_DIR=$HOME/.artillery-compiler
+TARGET=x86_64-elf
+BINUTILS_VERSION=2.37
+GCC_VERSION=11.2.0
 
-# Exit on error
-set -e
+# Ensure build essentials are installed
+sudo apt-get update
+sudo apt-get install build-essential bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo
 
-# Install prerequisites
-sudo apt-get install build-essential bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo wget
+# Create a directory for storing the source and build files
+mkdir -p $INSTALL_DIR/src
+cd $INSTALL_DIR/src
 
-# Create a directory for the build and navigate into it
-mkdir -p $HOME/src
-cd $HOME/src
+# Download Binutils source
+wget https://ftp.gnu.org/gnu/binutils/binutils-$BINUTILS_VERSION.tar.gz
+tar -xf binutils-$BINUTILS_VERSION.tar.gz
 
-# Download the source packages
-wget https://ftp.gnu.org/gnu/binutils/binutils-2.36.tar.gz
-wget https://ftp.gnu.org/gnu/gcc/gcc-11.2.0/gcc-11.2.0.tar.gz
+# Download GCC source
+wget https://ftp.gnu.org/gnu/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.gz
+tar -xf gcc-$GCC_VERSION.tar.gz
 
-# Extract the source packages
-tar -xf binutils-2.36.tar.gz
-tar -xf gcc-11.2.0.tar.gz
-
-# Build binutils
-mkdir build-binutils
+# Build and install Binutils
+mkdir -p build-binutils
 cd build-binutils
-../binutils-2.36/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
-make
+../binutils-$BINUTILS_VERSION/configure --target=$TARGET --prefix=$INSTALL_DIR --with-sysroot --disable-nls --disable-werror
+make -j$(nproc)
 make install
-cd ..
 
-# Build GCC
-mkdir build-gcc
+# Build and install GCC
+cd ../gcc-$GCC_VERSION
+contrib/download_prerequisites
+mkdir -p build-gcc
 cd build-gcc
-../gcc-11.2.0/configure --target=$TARGET --prefix="$PREFIX" --program-prefix=$CUSTOM_NAME --disable-nls --enable-languages=c,c++ --without-headers
-make all-gcc
-make all-target-libgcc
+../configure --target=$TARGET --prefix=$INSTALL_DIR --disable-nls --enable-languages=c,c++ --without-headers
+make all-gcc -j$(nproc)
 make install-gcc
+
+# Finish GCC installation
+make all-target-libgcc -j$(nproc)
 make install-target-libgcc
-cd ..
 
-echo "Cross compiler ($CUSTOM_NAME) has been built and installed to $PREFIX"
-echo "Add $PREFIX/bin to your PATH to use it"
-
+# Verify installation
+echo "Cross-compiler installed in $INSTALL_DIR"
+echo "Verify by running: $TARGET-gcc --version"
