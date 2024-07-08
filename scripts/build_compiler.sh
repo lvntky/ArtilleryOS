@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TARGET="i686-elf"
-PREFIX="$HOME/artillery/opt/cross"
+PREFIX="$HOME/.artillery-compiler/opt/cross"
 CUSTOM_NAME="artillery-compiler"
 PATH="$PREFIX/bin:$PATH"
 
