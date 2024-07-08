@@ -1,8 +1,0 @@
-==========================================================
-This is the first temporary file system for Artillery OS
-this is a UNIX-Like fs that used for prototyping 
-purposes only, UNTIL we switch the actual fs
-which is ext2.
-
--Levent 24/11/2023
-==========================================================
