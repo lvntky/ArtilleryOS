@@ -7,7 +7,7 @@ BINUTILS_VERSION=2.37
 GCC_VERSION=11.2.0
 
 # Ensure development essentials are installed
-sudo pacman -Syu --needed base-devel bison flex gmp libmpc mpfr texinfo wget
+sudo pacman -S base-devel bison flex gmp libmpc mpfr texinfo wget
 
 # Create a directory for storing the source and build files
 mkdir -p $INSTALL_DIR/src
