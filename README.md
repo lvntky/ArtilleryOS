@@ -7,6 +7,7 @@
 ![GitHub License](https://img.shields.io/github/license/lvntky/ArtilleryOS)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/lvntky/ArtilleryOS)
 ![GitHub tag (with filter)](https://img.shields.io/github/v/tag/lvntky/ArtilleryOS?label=version)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a6ceb82f16454071b2e65cc786aeb638)](https://app.codacy.com/gh/lvntky/ArtilleryOS/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 
 <p align="center">
