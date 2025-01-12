@@ -1,3 +1,5 @@
+Artillery OS was archived on January 1, 2025. No new development will be released after this date.
+
 # ArtilleryOS 
 [![Discord](https://img.shields.io/discord/1148155381290369074?logo=Discord&label=Discord)](https://discord.gg/jgmtqrJshV)
 ![GitHub contributors](https://img.shields.io/github/contributors/lvntky/ArtilleryOS)
